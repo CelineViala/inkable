@@ -1,0 +1,15 @@
+################################################################################
+# Fichier de test des routes HTTP de l'API
+# Nécessite l'extension REST Client pour VSCode
+# https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+################################################################################
+@endpoint = http://localhost:{{$dotenv PORT}}/api
+
+###test
+GET {{endpoint}}/
+
+###test2
+GET {{endpoint}}/ping
+
+###récupère la liste des pros (pas encore codé)
+GET {{endpoint}}/pro
