@@ -1,7 +1,5 @@
 BEGIN;
 
-DROP DOMAIN IF EXISTS "email", "zipcode";
-
 CREATE DOMAIN "email" AS text CHECK (
     value ~ '^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$'
 );
@@ -16,20 +14,27 @@ CREATE DOMAIN "zipcode" AS text CHECK (
     OR value ~ '^9{5}$' -- code postal de la poste
 );
 
-DROP TABLE IF EXISTS "pro", "consumer", "project", "tatoo", "appointment", "message", "style", "city", "categorise";
+
+CREATE TABLE "city" (
+    "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "zipcode" ZIPCODE NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+    "updated_at" TIMESTAMPTZ
+);
 
 CREATE TABLE "pro" (
     "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "studio_name" TEXT NOT NULL,
     "email" EMAIL NOT NULL,
-    
     "password" TEXT NOT NULL,
-    "confirmed_password" TEXT NOT NULL,
     "profile_picture_path_pro" TEXT,
     "description" TEXT NOT NULL,
     "instagram" TEXT NOT NULL,
     "color" BOOLEAN NOT NULL,
     "black_and_white" BOOLEAN NOT NULL,
+    "role" TEXT NOT NULL,
+    "city_id" INT NOT NULL REFERENCES "city" ("id"),
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ
 );
@@ -41,7 +46,8 @@ CREATE TABLE "consumer" (
     "last_name" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "profile_picture_path_consumer" TEXT,
-    "date_of_birth" TEXT NOT NULL, 
+    "date_of_birth" TEXT NOT NULL,
+    "role" TEXT NOT NULL,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ
 );
@@ -53,6 +59,8 @@ CREATE TABLE "project" (
     "status" TEXT NOT NULL,
     "color" BOOLEAN NOT NULL,
     "area" TEXT NOT NULL,
+    "pro_id" INT NOT NULL REFERENCES "pro" ("id"),
+    "consumer_id" INT NOT NULL REFERENCES "consumer" ("id"),
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ
 );
@@ -88,14 +96,6 @@ CREATE TABLE "message" (
 CREATE TABLE "style" (
     "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "name" TEXT NOT NULL,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-    "updated_at" TIMESTAMPTZ
-);
-
-CREATE TABLE "city" (
-    "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "name" TEXT NOT NULL,
-    "zipcode" ZIPCODE NOT NULL,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ
 );
