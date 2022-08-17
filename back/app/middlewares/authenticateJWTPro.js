@@ -1,10 +1,11 @@
+const jwt=require('jsonwebtoken');
 const authenticateJWTPro = (req, res, next) => {
     const authHeader = req.headers.authorization;
-    
+    const accessTokenSecretPro = 'accessPro';
     if (authHeader) {
         const token = authHeader.split(' ')[1];
 
-        jwt.verify(token, accessTokenSecret, (err, user) => {
+        jwt.verify(token, accessTokenSecretPro, (err, user) => {
             if (err) {
                 return res.sendStatus(403);
             }
@@ -16,4 +17,5 @@ const authenticateJWTPro = (req, res, next) => {
     }
 }
 
-module.exports=authenticateJWTConsumer;
+
+module.exports=authenticateJWTPro;

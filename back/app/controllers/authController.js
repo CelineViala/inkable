@@ -6,7 +6,12 @@ const authController={
     signup(req,res){
         //traitement du formulaire d'inscription lors de la soumission
     },
-    
+    testConsumer(req,res){
+        res.json("Page autorisée seulement aux consumers");
+    },
+    testPro(req, res){
+        res.json("Page autorisée seulement aux pros");
+    },
     async login(req,res){
        
         const { email, password } = req.body;
@@ -23,6 +28,17 @@ const authController={
                 email: req.body.email
             }
         });
+
+
+        //!TODO
+        //Vérification du formulaire d'inscription
+        // const errors = [];
+
+        //vérification de chaque champs
+        // if (!req.body.studio_name || !req.body.email || !req.body.password || !req.body.passwordConfirm || !req.body.couleur || !req.body.black_and_white) {
+        // errors.push('Vous devez remplir tous les champs !');
+        // }
+
         
         consumer={email:"a@a.com",password:123};
         const accessTokenSecretConsumer = 'accessConsumer';
@@ -30,7 +46,7 @@ const authController={
         let accessToken;
         if(pro)
         {
-            accessToken = jwt.sign({email: consumer.email,  role: 'pro'}, accessTokenSecretPro);
+            accessToken = jwt.sign({email: pro.email,  role: 'pro'}, accessTokenSecretPro);
         }
         else if(consumer)
         {
