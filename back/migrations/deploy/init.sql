@@ -22,7 +22,9 @@ CREATE TABLE "pro" (
     "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "studio_name" TEXT NOT NULL,
     "email" EMAIL NOT NULL,
+    
     "password" TEXT NOT NULL,
+    "confirmed_password" TEXT NOT NULL,
     "profile_picture_path_pro" TEXT,
     "description" TEXT NOT NULL,
     "instagram" TEXT NOT NULL,
