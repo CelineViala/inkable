@@ -1,7 +1,19 @@
 const dataMapper = require('../models'); //adapter le require
 module.exports = {
    
-    async getAllByPro(_, res) {
+    async getAllApointmentsByPro(_, res) {
         
-    }
+    },
+
+    async addAppointement(_, res) {
+        
+    },
+
+    async modifyAppointement(_, res) {
+        
+    },
+
+    async deleteAppointement(_, res) {
+        
+    },
 }
