@@ -1,6 +1,27 @@
 const dataMapper = require('../models');
 module.exports = {
-    // async getOne(_, res) {
-        
-    // }
+    async getOneProject(_, res) {
+
+    },
+
+    async createProject(_, res) {
+
+    },
+
+    async modifyProject(_, res) {
+
+    },
+
+    async deleteProject(_, res) {
+
+    },
+
+    async getAllProjectsByPro(_, res) {
+
+    },
+
+    async getAllProjectsByConsumer(_, res) {
+
+    },
+
 }
