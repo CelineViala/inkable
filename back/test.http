@@ -11,5 +11,5 @@ GET {{endpoint}}/
 ###test2
 GET {{endpoint}}/ping
 
-###récupère la liste des pros (pas encore codé)
-GET {{endpoint}}/pro
+###récupère la liste des villes
+GET {{endpoint}}/cities
