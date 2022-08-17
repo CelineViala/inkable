@@ -1,0 +1,51 @@
+.AppHeader {
+    height: 8rem;
+    width: 100%;
+    // background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+
+    &_nav {
+        display: flex;
+        margin-right: 1rem;
+    }
+
+    &_nav-ul {
+        list-style-type: none;
+        display: flex;
+        align-items: center;
+        
+        li {
+            padding: 1rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 10px;
+
+        }
+    }
+
+    &_button {
+        text-decoration: none;
+        border: 1px solid #ccc;
+        background-color: rgb(168, 243, 243);
+        padding: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        
+        &-profil {
+            background: none;
+            border: none;
+            font-size: 2rem;
+        }
+    }
+
+
+    &_logo {
+        width: 100px;
+        height: 70px;
+        background-color: rgb(218, 72, 104);
+        margin: 0 3rem ;
+    }
+}
