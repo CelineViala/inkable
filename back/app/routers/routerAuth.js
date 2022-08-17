@@ -1,11 +1,24 @@
 const express = require('express');
-const authController=require('../controllers/authController');
+const { errorHandler } = require('../helpers/errorHandler');
+
+const authController = require('../controllers/authController');
 const authenticateJWTConsumer = require('../middlewares/authenticateJWTConsumer');
 const authenticateJWTPro = require('../middlewares/authenticateJWTPro');
+
 const router = express.Router();
+
+// à compléter
 router.post('/login', authController.login);
-router.get('/testConsumer', authenticateJWTConsumer,authController.testConsumer);
-router.get('/testPro', authenticateJWTPro,authController.testPro);
 
+// route de test JWT
+router.get('/testConsumer', authenticateJWTConsumer, authController.testConsumer);
 
-module.exports=router;
+// route de test JWT
+router.get('/testPro', authenticateJWTPro, authController.testPro);
+
+// traitement formulaire inscription
+router.post('/signupPro', authController.signupPro);
+
+router.use(errorHandler);
+
+module.exports = router;
