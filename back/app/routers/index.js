@@ -1,21 +1,22 @@
 const express = require('express');
 const {
-  consumerController,
-  proController,
-  appointmentController,
-  projectController
-  }=require('../controllers');
+    consumerController,
+    proController,
+    appointmentController,
+    projectController,
+} = require('../controllers');
+
 const router = express.Router();
 
-//Routes de test
+// Routes de test
 router.get('/api', (req, res) => {
-  res.send('hello world');
+    res.send('hello world');
 });
 router.get('/api/ping', (req, res) => {
-  res.send('pong');
+    res.send('pong');
 });
 
-//!Première route pas encore fonctionnelle !
+//! Première route pas encore fonctionnelle !
 // Routes pour la partie Pro
 router.get('/api/pro', proController.getAllPro);
 router.post('/api/pro', proController.AddPro);
