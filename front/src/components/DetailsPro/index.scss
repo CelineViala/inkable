@@ -1,0 +1,76 @@
+.headerPro {
+    margin-top: 2rem;
+    width: 900px;
+    margin: 2rem auto;
+    display: flex;
+    &_profil {
+        width: 250px;
+        height: 300px;
+
+        img{
+            width: 100%;
+        }
+    }
+
+    &_infos-content{
+        display: flex;
+        flex-direction: column;
+        margin: 2rem;
+    }
+
+    &_infos {
+        margin: 1rem 1rem;
+        font-size: 2.5rem;
+    }
+
+    &_infos:nth-child(2){
+        font-size: 1.5rem;
+    }
+    span{
+        margin-left: 1rem;
+    }
+}
+
+.achievements{
+    width: 900px;
+  
+    margin: auto;
+   
+    display: flex;
+
+    &_img{
+        height: 350px;
+        width: 350px;
+        
+    }
+
+    &_small-content{
+        display: flex;
+        width: auto;
+        padding: 0 0.2rem;
+        
+    }
+
+    &_img-small{
+        height: 170px;
+        // width: 170px;
+        margin: 0 0.8rem 0.5rem;
+    }
+    
+}
+
+.speciality{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 2rem auto;
+    width: 905px;
+
+
+    &_tag{
+     padding: 0.6rem 1.5rem;
+     border-radius: 5px;
+     border: none;
+     margin-right: 2rem;
+     background-color:#74b9ff;
+    }
+}
