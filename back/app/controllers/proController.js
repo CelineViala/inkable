@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 const { Pro, Tattoo } = require('../models');
 
 module.exports = {
@@ -27,6 +28,7 @@ module.exports = {
                 color,
                 black_and_white,
                 role,
+                city_id,
             } = req.body;
 
             if (
@@ -34,22 +36,24 @@ module.exports = {
                 !email,
                 !password,
                 !color,
-                !black_and_white
+                !black_and_white,
+                !city_id
             ) {
                 res.status(400).json({
-                    message: 'Le champ name est obligatoire',
+                    message: 'Le champ est obligatoire',
                 });
             } else {
                 const newPro = await Pro.create({
-                    studio_name,
-                    email,
-                    password,
-                    profile_picture_path_pro,
-                    description,
-                    instagram,
-                    color,
-                    black_and_white,
-                    role,
+                    studio_name: studio_name,
+                    email: email,
+                    password: password,
+                    profile_picture_path_pro: profile_picture_path_pro,
+                    description: description,
+                    instagram: instagram,
+                    color: color,
+                    black_and_white: black_and_white,
+                    role: role,
+                    city_id: city_id,
                 });
                 res.json(newPro);
             }
@@ -115,7 +119,7 @@ module.exports = {
                     pro.black_and_white = req.body.black_and_white;
                 }
                 // on sauvegarde dans le BDD
-                const proSaved = await pro.saved();
+                const proSaved = await pro.save();
                 res.json(proSaved);
             } else {
                 res.status(404).json(`Aucune pro à l'id ${id}`);
@@ -164,10 +168,17 @@ module.exports = {
 
     async addTattoo(req, res) {
         try {
-            const newTattoo = await Tattoo.create({
-                tatoo_picture_path: req.body.tatoo_picture_path,
-            });
-            res.json(newTattoo);
+            const { id } = req.params;
+            const findOnePro = await Pro.findByPk(id);
+            if (findOnePro) {
+                const newTattoo = await Tattoo.create({
+                    tattoo_picture_path: req.body.tattoo_picture_path,
+                    pro_id: id,
+                });
+                res.json(newTattoo);
+            } else {
+                res.status(404).json(`Aucun pro à l'id ${id}`);
+            }
         } catch (error) {
             console.trace(error);
             res.status(500).json({
