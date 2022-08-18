@@ -18,10 +18,9 @@ Pro.init({
     color: DataTypes.BOOLEAN,
     black_and_white: DataTypes.BOOLEAN,
     role: DataTypes.TEXT
-    
 },{
     sequelize,
     tableName:'pro'
 })
 
-module.exports=Pro;
+module.exports = Pro;
