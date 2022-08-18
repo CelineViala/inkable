@@ -1,20 +1,27 @@
 import './index.scss';
-import profil from "../../assets/images/profil.png";
 
-const TattooCard = () => {
+import { Link, useParams } from 'react-router-dom';
+
+
+const TattooCard = ({infos}) => {
+    console.log(infos);
+
     return (
+        
+        <Link className='tattooCardLink' to={`/pro-details/${infos.id}`}>
         <div className="tattooCard">
             
                 <div className="tattooCard_profil">
-                    <img src={profil} alt="profil" className=""/>
+                    <img src={infos.profil_img} alt="profil" className=""/>
                 </div>
                 <div className="tattooCard_content">
-                    <p>Nom :</p>
-                    <p>Spécialitées :</p>
+                    <p className='tattooCard_text'>Nom : {infos.name}</p>
+                    <p className='tattooCard_text'>Spécialitées : {infos.speciality}</p>
                 </div>
            
             
         </div>
+       </Link>
     )
 }
   
