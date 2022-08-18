@@ -7,6 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
+    "resetDB": "sqitch revert -y; sqitch deploy; DEBUG=import:* psql -d inkable -f ./data/seeding_V1.sql",
     "start": "node .",
     "dev": "DEBUG=*,-express*,-nodemon*,-body-parser* npx nodemon"
   },
