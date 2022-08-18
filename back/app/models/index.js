@@ -5,7 +5,7 @@ const Message = require('./message');
 const Pro = require('./pro');
 const Project = require('./project');
 const Style = require('./style');
-const Tatoo = require('./tatoo');
+const Tattoo = require('./tattoo');
 
 Message.belongsTo(Project, {
     as: 'project',
@@ -67,13 +67,13 @@ Pro.hasMany(Appointement, {
     foreignKey: 'pro_id',
 });
 
-Tatoo.belongsTo(Pro, {
+Tattoo.belongsTo(Pro, {
     as: 'pro',
     foreignKey: 'pro_id',
 });
 
-Pro.hasMany(Tatoo, {
-    as: 'tatoos',
+Pro.hasMany(Tattoo, {
+    as: 'tattoos',
     foreignKey: 'pro_id',
 });
 
@@ -101,5 +101,5 @@ module.exports = {
     Pro,
     Project,
     Style,
-    Tatoo,
+    Tattoo,
 };

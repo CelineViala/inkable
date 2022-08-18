@@ -2,7 +2,7 @@
 
 BEGIN;
 
-DROP TABLE "categorise", "city", "style", "message", "appointment", "tatoo", "project", "consumer", "pro";
+DROP TABLE "categorise", "city", "style", "message", "appointment", "tattoo", "project", "consumer", "pro";
 
 DROP DOMAIN "zipcode", "email";
 
