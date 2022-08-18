@@ -13,3 +13,23 @@ GET {{endpoint}}/ping
 
 ###récupère la liste des villes
 GET {{endpoint}}/cities
+
+###récupère un projet avec son id
+GET {{endpoint}}/projet/1
+
+###Supprime un projet d'après son id
+DELETE {{endpoint}}/projet/1
+
+###Crée un projet
+POST {{endpoint}}/projet/
+content-type: application/json
+
+{
+	"title": "titre projet",
+    "description":"decription du projet",
+    "status":"en attente",
+    "color":true,
+    "area":"pied",
+    "pro_id":1,
+    "consumer_id":1
+}

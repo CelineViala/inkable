@@ -59,8 +59,8 @@ CREATE TABLE "project" (
     "status" TEXT NOT NULL,
     "color" BOOLEAN NOT NULL,
     "area" TEXT NOT NULL,
-    "pro_id" INT NOT NULL REFERENCES "pro" ("id"),
-    "consumer_id" INT NOT NULL REFERENCES "consumer" ("id"),
+    "pro_id" INT NOT NULL REFERENCES "pro" ("id") ON DELETE CASCADE,
+    "consumer_id" INT NOT NULL REFERENCES "consumer" ("id") ON DELETE CASCADE,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ
 );
@@ -68,7 +68,7 @@ CREATE TABLE "project" (
 CREATE TABLE "tattoo" (
     "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "tattoo_picture_path" TEXT,
-    "pro_id" INT NOT NULL REFERENCES "pro" ("id"),
+    "pro_id" INT NOT NULL REFERENCES "pro" ("id") ON DELETE CASCADE,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ
 );
@@ -80,7 +80,7 @@ CREATE TABLE "appointment" (
     "beginning_hour" TIMESTAMPTZ NOT NULL,
     "ending_hour" TIMESTAMPTZ NOT NULL,
     "pro_id" INT NOT NULL REFERENCES "pro" ("id"),
-    "project_id" INT NOT NULL REFERENCES "project" ("id"),
+    "project_id" INT NOT NULL REFERENCES "project" ("id") ON DELETE CASCADE,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ
 );
@@ -88,9 +88,9 @@ CREATE TABLE "appointment" (
 CREATE TABLE "message" (
     "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "content" TEXT NOT NULL,
-    "project_id" INT NOT NULL REFERENCES "project" ("id"),
-    "pro_id" INT REFERENCES "pro"("id"),
-    "consumer_id" INT REFERENCES "consumer"("id"),
+    "project_id" INT NOT NULL REFERENCES "project" ("id") ON DELETE CASCADE,
+    "pro_id" INT REFERENCES "pro"("id") ON DELETE CASCADE,
+    "consumer_id" INT REFERENCES "consumer"("id") ON DELETE CASCADE,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ
 );
