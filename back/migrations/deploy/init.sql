@@ -65,9 +65,9 @@ CREATE TABLE "project" (
     "updated_at" TIMESTAMPTZ
 );
 
-CREATE TABLE "tatoo" (
+CREATE TABLE "tattoo" (
     "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "tatoo_picture_path" TEXT,
+    "tattoo_picture_path" TEXT,
     "pro_id" INT NOT NULL REFERENCES "pro" ("id"),
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ
@@ -77,8 +77,8 @@ CREATE TABLE "appointment" (
     "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "title" TEXT NOT NULL,
     "note" TEXT,
-    "beginning_hour" TEXT NOT NULL,
-    "ending_hour" TEXT NOT NULL,
+    "beginning_hour" TIMESTAMPTZ NOT NULL,
+    "ending_hour" TIMESTAMPTZ NOT NULL,
     "pro_id" INT NOT NULL REFERENCES "pro" ("id"),
     "project_id" INT NOT NULL REFERENCES "project" ("id"),
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -89,6 +89,8 @@ CREATE TABLE "message" (
     "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "content" TEXT NOT NULL,
     "project_id" INT NOT NULL REFERENCES "project" ("id"),
+    "pro_id" INT REFERENCES "pro"("id"),
+    "consumer_id" INT REFERENCES "consumer"("id"),
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ
 );
