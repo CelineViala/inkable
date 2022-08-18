@@ -9,7 +9,7 @@ Consumer.init({
     last_name: DataTypes.TEXT,
     password: DataTypes.TEXT,
     profile_picture_path_consumer: DataTypes.TEXT,
-    date_of_birth: DataTypes.DATEONLY,
+    date_of_birth: DataTypes.TEXT,
     role: DataTypes.TEXT,
 }, {
     sequelize,

@@ -1,16 +1,16 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-class Appointement extends Model {}
+class Appointment extends Model {}
 
-Appointement.init({
+Appointment.init({
     title: DataTypes.TEXT,
     note: DataTypes.TEXT,
     beginning_hour: DataTypes.DATE,
     ending_hour: DataTypes.DATE,
 }, {
     sequelize,
-    tableName: 'appointement',
+    tableName: 'appointment',
 });
 
-module.exports = Appointement;
+module.exports = Appointment;

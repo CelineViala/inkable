@@ -1,4 +1,4 @@
-const Appointement = require('./appointement');
+const Appointment = require('./appointment');
 const City = require('./city');
 const Consumer = require('./consumer');
 const Message = require('./message');
@@ -27,12 +27,12 @@ Consumer.hasMany(Project, {
     foreignKey: 'consumer_id',
 });
 
-Appointement.belongsTo(Project, {
+Appointment.belongsTo(Project, {
     as: 'project',
     foreignKey: 'project_id',
 });
 
-Project.hasMany(Appointement, {
+Project.hasMany(Appointment, {
     as: 'appointments',
     foreignKey: 'project_id',
 });
@@ -57,12 +57,12 @@ City.hasMany(Pro, {
     foreignKey: 'city_id',
 });
 
-Appointement.belongsTo(Pro, {
+Appointment.belongsTo(Pro, {
     as: 'pro',
     foreignKey: 'pro_id',
 });
 
-Pro.hasMany(Appointement, {
+Pro.hasMany(Appointment, {
     as: 'appointments',
     foreignKey: 'pro_id',
 });
@@ -94,7 +94,7 @@ Pro.belongsToMany(Style, {
 });
 
 module.exports = {
-    Appointement,
+    Appointment,
     City,
     Consumer,
     Message,
