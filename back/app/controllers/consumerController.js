@@ -1,5 +1,4 @@
 const { Consumer } = require('../models');
-const ApiError = require('../errors/apiError');
 
 module.exports = {
 
@@ -37,7 +36,7 @@ module.exports = {
         } catch (error) {
             console.error(error);
             res.status(500).json({
-                message: 'Erreur',
+                message: 'Rdv non créer',
             });
         }
     },
@@ -62,11 +61,64 @@ module.exports = {
         }
     },
 
-    async modifyConsumer(_, res) {
-
+    async modifyConsumer(req, res) {
+        try {
+            // récupère l'id du consumer
+            const { id } = req.params;
+            // trouve le consumer
+            const consumer = await Consumer.findByPk(id);
+            // si tout va bien on modofie
+            if (consumer) {
+                if (req.body.email) {
+                    consumer.email = req.body.email;
+                }
+                if (req.body.first_name) {
+                    consumer.first_name = req.body.first_name;
+                }
+                if (req.body.last_name) {
+                    consumer.last_name = req.body.last_name;
+                }
+                if (req.body.password) {
+                    consumer.password = req.body.password;
+                }
+                if (req.body.profile_picture_path_consumer) {
+                    consumer.profile_picture_path_consumer = req.body.profile_picture_path_consumer;
+                }
+                if (req.body.date_of_birth) {
+                    consumer.date_of_birth = req.body.date_of_birth;
+                }
+                // on sauvegarde en bdd
+                const savedConsumer = await consumer.save();
+                // on renvoie le json
+                res.json(savedConsumer);
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: 'consumer non modifié',
+            });
+        }
     },
 
-    async deleteConsumer(_, res) {
-
+    async deleteConsumer(req, res) {
+        try {
+            // récupérer l'id demandé
+            const { id } = req.params;
+            // trouver le consumer
+            const consumer = await Consumer.findByPk(id);
+            // si on trouve
+            if (consumer) {
+                // on supprime
+                await consumer.destroy();
+                res.json('Consumer supprimé');
+            } else {
+                res.status(404).json(`Aucun consumer à l'id ${id}`);
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: 'consumer non supprimé',
+            });
+        }
     },
 };
