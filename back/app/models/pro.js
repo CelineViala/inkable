@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-class Pro extends Model{}
+class Pro extends Model {}
 
 Pro.init({
     // id:{
@@ -9,9 +9,9 @@ Pro.init({
     //     autoIncrement:true,
     //     primaryKey:true,
     // },
-    studio_name :DataTypes.TEXT,
-    email:DataTypes.TEXT,
-    password:DataTypes.TEXT,
+    studio_name: DataTypes.TEXT,
+    email: DataTypes.TEXT,
+    password: DataTypes.TEXT,
     profile_picture_path_pro: DataTypes.TEXT,
     description: DataTypes.TEXT,
     instagram: DataTypes.TEXT,
@@ -19,8 +19,11 @@ Pro.init({
     black_and_white: DataTypes.BOOLEAN,
     role: DataTypes.TEXT
 },{
+
     sequelize,
-    tableName:'pro'
-})
+    tableName: 'pro',
+});
+
 
 module.exports = Pro;
+

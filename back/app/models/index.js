@@ -1,5 +1,5 @@
-const Pro=require('./pro');
-module.exports={
-    Pro
-}
+const Pro = require('./pro');
 
+module.exports = {
+    Pro,
+};

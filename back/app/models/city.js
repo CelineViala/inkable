@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-class City extends Model{}
+class City extends Model {}
 
 City.init({
     // id:{
@@ -9,20 +9,20 @@ City.init({
     //     autoIncrement:true,
     //     primaryKey:true,
     // },
-    name:{
-        type:DataTypes.TEXT,
-        allowNull:false,
-        defaultValue:'',
+    name: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        defaultValue: '',
     },
-    zipcode:{
-        type:DataTypes.TEXT,
-        allowNull:false,
-        dafaultValue:'',
-    }
-    
-},{
-    sequelize,
-    tableName:'city'
-})
+    zipcode: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        dafaultValue: '',
+    },
 
-module.exports=City;
+}, {
+    sequelize,
+    tableName: 'city',
+});
+
+module.exports = City;
