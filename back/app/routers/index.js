@@ -46,7 +46,7 @@ router.delete('/api/consumer/:id', consumerController.deleteConsumer);
 
 // Routes pour la partie projet
 router.get('/api/projet/:id', projectController.getOneProject);
-router.post('/api/projet/:id', projectController.createProject);
+router.post('/api/projet', projectController.createProject);
 router.patch('/api/projet/:id', projectController.modifyProject);
 router.delete('/api/projet/:id', projectController.deleteProject);
 
