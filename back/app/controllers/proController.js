@@ -1,10 +1,10 @@
-const { Pro } = require('../models');
+const { Pro, Tattoo } = require('../models');
 
 module.exports = {
     async getAllPro(_, res) {
         try {
             const pros = await Pro.findAll({
-                include: ['style', 'tatouage', 'city'],
+                include: ['styles', 'tattoos', 'city'],
             });
             return res.json(pros);
         } catch (error) {
@@ -18,7 +18,7 @@ module.exports = {
     async AddPro(req, res) {
         try {
             const {
-                studio_name, 
+                studio_name,
                 email,
                 password,
                 profile_picture_path_pro,
@@ -26,8 +26,8 @@ module.exports = {
                 instagram,
                 color,
                 black_and_white,
-                role
-            } = req.body
+                role,
+            } = req.body;
 
             if (
                 !studio_name,
@@ -35,32 +35,33 @@ module.exports = {
                 !password,
                 !color,
                 !black_and_white
-            ){
+            ) {
                 res.status(400).json({
                     message: 'Le champ name est obligatoire',
-                  });
+                });
             } else {
                 const newPro = await Pro.create({
-                    studio_name: studio_name, 
-                    email: email,
-                    password: password,
-                    profile_picture_path_pro: profile_picture_path_pro,
-                    description: description,
-                    instagram : instagram,
-                    color: color,
-                    black_and_white: black_and_white,
-                    role : role
+                    studio_name,
+                    email,
+                    password,
+                    profile_picture_path_pro,
+                    description,
+                    instagram,
+                    color,
+                    black_and_white,
+                    role,
                 });
-                res.json(newPro)
+                res.json(newPro);
             }
         } catch (error) {
             console.log(error);
             res.status(500).json({
-              message: 'Erreur lors de la création du pro',
+                message: 'Erreur lors de la création du pro',
             });
+        }
     },
 
-    async CreateSearch(_, res) {
+    async CreateSearch(req, res) {
 
     },
 
@@ -83,24 +84,114 @@ module.exports = {
         }
     },
 
-    async modifyPro(_, res) {
-
+    async modifyPro(req, res) {
+        try {
+            const { id } = req.params;
+            const pro = await Pro.findByPk(id);
+            if (pro) {
+                if (req.body.studio_name) {
+                    pro.studio_name = req.body.studio_name;
+                }
+                if (req.body.email) {
+                    pro.email = req.body.email;
+                }
+                //! Attention à encoder à nouveau le password pour la sécurité
+                if (req.body.password) {
+                    pro.password = req.body.password;
+                }
+                if (req.body.profile_picture_path_pro) {
+                    pro.profile_picture_path_pro = req.body.profile_picture_path_pro;
+                }
+                if (req.body.description) {
+                    pro.description = req.body.description;
+                }
+                if (req.body.instagram) {
+                    pro.instagram = req.body.instagram;
+                }
+                if (req.body.color) {
+                    pro.color = req.body.color;
+                }
+                if (req.body.black_and_white) {
+                    pro.black_and_white = req.body.black_and_white;
+                }
+                // on sauvegarde dans le BDD
+                const proSaved = await pro.saved();
+                res.json(proSaved);
+            } else {
+                res.status(404).json(`Aucune pro à l'id ${id}`);
+            }
+        } catch (error) {
+            console.trace(error);
+            res.status(500).json({
+                message: 'Erreur lors de la modification du pro',
+            });
+        }
     },
 
-    async deletePro(_, res) {
-
+    async deletePro(req, res) {
+        try {
+            const { id } = req.params;
+            const pro = await Pro.findByPk(id);
+            if (pro) {
+                await pro.destroy();
+                res.json('Pro supprimé');
+            } else {
+                res.status(404).json(`Aucun pro à l'id ${id}`);
+            }
+        } catch (error) {
+            console.trace(error);
+            res.status(500).json({
+                message: 'Erreur lors de la suppression du pro',
+            });
+        }
     },
 
-    async getAllTattoosByPro(_, res) {
-
+    async getAllTattoosByPro(req, res) {
+        try {
+            const { id } = req.params;
+            const tattoos = await Tattoo.findAll({
+                where: {
+                    pro_id: id,
+                },
+                include: 'pro',
+            });
+            res.json(tattoos);
+        } catch (error) {
+            console.trace(error);
+            res.status(500).json(error);
+        }
     },
 
-    async addTattoo(_, res) {
-
+    async addTattoo(req, res) {
+        try {
+            const newTattoo = await Tattoo.create({
+                tatoo_picture_path: req.body.tatoo_picture_path,
+            });
+            res.json(newTattoo);
+        } catch (error) {
+            console.trace(error);
+            res.status(500).json({
+                message: 'Impossible de rajouter le tatouage',
+            });
+        }
     },
 
-    async deleteTattoo(_, res) {
-
+    async deleteTattoo(req, res) {
+        try {
+            const { id } = req.params;
+            const tattoo = await Tattoo.findByPk(id);
+            if (tattoo) {
+                await tattoo.destroy();
+                res.json('Tatouage supprimé');
+            } else {
+                res.status(404).json(`Aucun tatouage à l'id ${id}`);
+            }
+        } catch (error) {
+            console.trace(error);
+            res.status(500).json({
+                message: 'Erreur lors de la suppression du tatouage',
+            });
+        }
     },
 
 };
