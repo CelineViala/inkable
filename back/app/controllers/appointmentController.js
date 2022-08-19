@@ -2,8 +2,21 @@ const { Appointment } = require('../models');
 
 module.exports = {
 
-    async getAllApointmentsByPro(_, res) {
-        // manque ca
+    async getAllApointmentsByPro(req, res) {
+        try {
+            // On récupère les rdv liés à un pro
+            const { id } = req.params;
+            const appointment = await Appointment.findAll({
+                where: {
+                    pro_id: id,
+                },
+                include: 'pro',
+            });
+            res.json(appointment);
+        } catch (error) {
+            console.trace(error);
+            res.status(500).json(error);
+        }
     },
 
     async addAppointement(req, res) {

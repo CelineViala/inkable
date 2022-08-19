@@ -17,13 +17,11 @@ Pro.init({
     instagram: DataTypes.TEXT,
     color: DataTypes.BOOLEAN,
     black_and_white: DataTypes.BOOLEAN,
-    role: DataTypes.TEXT
-},{
+    role: DataTypes.TEXT,
+}, {
 
     sequelize,
     tableName: 'pro',
 });
 
-
 module.exports = Pro;
-
