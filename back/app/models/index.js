@@ -47,16 +47,6 @@ Pro.hasMany(Project, {
     foreignKey: 'pro_id',
 });
 
-Pro.belongsTo(City, {
-    as: 'city',
-    foreignKey: 'city_id',
-});
-
-City.hasMany(Pro, {
-    as: 'pros',
-    foreignKey: 'city_id',
-});
-
 Appointment.belongsTo(Pro, {
     as: 'pro',
     foreignKey: 'pro_id',

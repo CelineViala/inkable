@@ -10,6 +10,7 @@ Pro.init({
     //     primaryKey:true,
     // },
     studio_name: DataTypes.TEXT,
+    city: DataTypes.TEXT,
     email: DataTypes.TEXT,
     password: DataTypes.TEXT,
     profile_picture_path_pro: DataTypes.TEXT,
@@ -17,13 +18,11 @@ Pro.init({
     instagram: DataTypes.TEXT,
     color: DataTypes.BOOLEAN,
     black_and_white: DataTypes.BOOLEAN,
-    role: DataTypes.TEXT
-},{
+    role: DataTypes.TEXT,
+}, {
 
     sequelize,
     tableName: 'pro',
 });
 
-
 module.exports = Pro;
-
