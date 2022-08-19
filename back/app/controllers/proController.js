@@ -66,7 +66,22 @@ module.exports = {
     },
 
     async CreateSearch(req, res) {
+        // ! a continuer plus tard et à tester !
+        // try {
+        //     const searchCity = req.body.city;
+        //     const searchColor = req.body.color;
+        //     const searchBw = req.body.black_and_white;
 
+        //     if(searchCity) {
+        //         const sqlCity = 'SELECT city FROM "pro" WHERE city = searchCity'
+        //         const resultCity = await
+        //     }
+        // } catch (error) {
+        //     console.log(error);
+        //     res.status(500).json({
+        //         message: 'Erreur lors de la récupération des filtres',
+        //     });
+        // }
     },
 
     async getOnePro(req, res) {

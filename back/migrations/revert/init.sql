@@ -4,7 +4,6 @@ BEGIN;
 
 DROP TABLE
     "categorise",
-    "city",
     "style",
     "message",
     "appointment",

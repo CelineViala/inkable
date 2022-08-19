@@ -14,100 +14,98 @@ CREATE DOMAIN "zipcode" AS text CHECK (
     OR value ~ '^9{5}$' -- code postal de la poste
 );
 
+CREATE TABLE
+    "pro" (
+        "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        "studio_name" TEXT NOT NULL,
+        "city" TEXT NOT NULL,
+        "email" EMAIL NOT NULL,
+        "password" TEXT NOT NULL,
+        "profile_picture_path_pro" TEXT,
+        "description" TEXT,
+        "instagram" TEXT,
+        "color" BOOLEAN NOT NULL,
+        "black_and_white" BOOLEAN NOT NULL,
+        "role" TEXT NOT NULL,
+        "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+        "updated_at" TIMESTAMPTZ
+    );
 
-CREATE TABLE "city" (
-    "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "name" TEXT NOT NULL,
-    "zipcode" ZIPCODE NOT NULL,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-    "updated_at" TIMESTAMPTZ
-);
+CREATE TABLE
+    "consumer" (
+        "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        "email" EMAIL NOT NULL,
+        "first_name" TEXT NOT NULL,
+        "last_name" TEXT NOT NULL,
+        "password" TEXT NOT NULL,
+        "profile_picture_path_consumer" TEXT,
+        "date_of_birth" TEXT NOT NULL,
+        "role" TEXT NOT NULL,
+        "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+        "updated_at" TIMESTAMPTZ
+    );
 
-CREATE TABLE "pro" (
-    "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "studio_name" TEXT NOT NULL,
-    "email" EMAIL NOT NULL,
-    "password" TEXT NOT NULL,
-    "profile_picture_path_pro" TEXT,
-    "description" TEXT NOT NULL,
-    "instagram" TEXT NOT NULL,
-    "color" BOOLEAN NOT NULL,
-    "black_and_white" BOOLEAN NOT NULL,
-    "role" TEXT NOT NULL,
-    "city_id" INT NOT NULL REFERENCES "city" ("id"),
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-    "updated_at" TIMESTAMPTZ
-);
+CREATE TABLE
+    "project" (
+        "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        "title" TEXT NOT NULL,
+        "description" TEXT NOT NULL,
+        "status" TEXT NOT NULL,
+        "color" BOOLEAN NOT NULL,
+        "area" TEXT NOT NULL,
+        "pro_id" INT NOT NULL REFERENCES "pro" ("id") ON DELETE CASCADE,
+        "consumer_id" INT NOT NULL REFERENCES "consumer" ("id") ON DELETE CASCADE,
+        "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+        "updated_at" TIMESTAMPTZ
+    );
 
-CREATE TABLE "consumer" (
-    "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "email" EMAIL NOT NULL,
-    "first_name" TEXT NOT NULL,
-    "last_name" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "profile_picture_path_consumer" TEXT,
-    "date_of_birth" TEXT NOT NULL,
-    "role" TEXT NOT NULL,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-    "updated_at" TIMESTAMPTZ
-);
+CREATE TABLE
+    "tattoo" (
+        "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        "tattoo_picture_path" TEXT,
+        "pro_id" INT NOT NULL REFERENCES "pro" ("id") ON DELETE CASCADE,
+        "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+        "updated_at" TIMESTAMPTZ
+    );
 
-CREATE TABLE "project" (
-    "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "title" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "status" TEXT NOT NULL,
-    "color" BOOLEAN NOT NULL,
-    "area" TEXT NOT NULL,
-    "pro_id" INT NOT NULL REFERENCES "pro" ("id") ON DELETE CASCADE,
-    "consumer_id" INT NOT NULL REFERENCES "consumer" ("id") ON DELETE CASCADE,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-    "updated_at" TIMESTAMPTZ
-);
+CREATE TABLE
+    "appointment" (
+        "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        "title" TEXT NOT NULL,
+        "note" TEXT,
+        "beginning_hour" TIMESTAMPTZ NOT NULL,
+        "ending_hour" TIMESTAMPTZ NOT NULL,
+        "pro_id" INT NOT NULL REFERENCES "pro" ("id"),
+        "project_id" INT NOT NULL REFERENCES "project" ("id") ON DELETE CASCADE,
+        "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+        "updated_at" TIMESTAMPTZ
+    );
 
-CREATE TABLE "tattoo" (
-    "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "tattoo_picture_path" TEXT,
-    "pro_id" INT NOT NULL REFERENCES "pro" ("id") ON DELETE CASCADE,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-    "updated_at" TIMESTAMPTZ
-);
+CREATE TABLE
+    "message" (
+        "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        "content" TEXT NOT NULL,
+        "project_id" INT NOT NULL REFERENCES "project" ("id") ON DELETE CASCADE,
+        "pro_id" INT REFERENCES "pro"("id") ON DELETE CASCADE,
+        "consumer_id" INT REFERENCES "consumer"("id") ON DELETE CASCADE,
+        "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+        "updated_at" TIMESTAMPTZ
+    );
 
-CREATE TABLE "appointment" (
-    "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "title" TEXT NOT NULL,
-    "note" TEXT,
-    "beginning_hour" TIMESTAMPTZ NOT NULL,
-    "ending_hour" TIMESTAMPTZ NOT NULL,
-    "pro_id" INT NOT NULL REFERENCES "pro" ("id"),
-    "project_id" INT NOT NULL REFERENCES "project" ("id") ON DELETE CASCADE,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-    "updated_at" TIMESTAMPTZ
-);
+CREATE TABLE
+    "style" (
+        "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        "name" TEXT NOT NULL,
+        "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+        "updated_at" TIMESTAMPTZ
+    );
 
-CREATE TABLE "message" (
-    "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "content" TEXT NOT NULL,
-    "project_id" INT NOT NULL REFERENCES "project" ("id") ON DELETE CASCADE,
-    "pro_id" INT REFERENCES "pro"("id") ON DELETE CASCADE,
-    "consumer_id" INT REFERENCES "consumer"("id") ON DELETE CASCADE,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-    "updated_at" TIMESTAMPTZ
-);
-
-CREATE TABLE "style" (
-    "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "name" TEXT NOT NULL,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-    "updated_at" TIMESTAMPTZ
-);
-
-CREATE TABLE "categorise" (
-    "pro_id" INT NOT NULL REFERENCES "pro" ("id") ON DELETE CASCADE,
-    "style_id" INT NOT NULL REFERENCES "style" ("id") ON DELETE CASCADE,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    PRIMARY KEY ("pro_id", "style_id") -- on crée une clé composite, une clé composée de plusieurs colonnes, ça garantit l'unicité de la combinaison
-
-);
+CREATE TABLE
+    "categorise" (
+        "pro_id" INT NOT NULL REFERENCES "pro" ("id") ON DELETE CASCADE,
+        "style_id" INT NOT NULL REFERENCES "style" ("id") ON DELETE CASCADE,
+        "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        PRIMARY KEY ("pro_id", "style_id") -- on crée une clé composite, une clé composée de plusieurs colonnes, ça garantit l'unicité de la combinaison
+    );
 
 COMMIT;
