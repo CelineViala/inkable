@@ -11,17 +11,28 @@ GET {{endpoint}}/
 ###test2
 GET {{endpoint}}/ping
 
-###récupère la liste des villes
-GET {{endpoint}}/cities
-
 ###récupère un projet avec son id
-GET {{endpoint}}/projet/1
+GET {{endpoint}}/projet/5
 
 ###Supprime un projet d'après son id
 DELETE {{endpoint}}/projet/1
 
+
+###Crée un consumer
+POST {{endpoint}}/consumer
+content-type: application/json
+
+{
+	"email": "a@a.gmail",
+    "first_name":"toto",
+    "last_name":"dupont",
+    "password":"123456",
+    "role":"consumer",
+    "date_of_birth":"01/01/2000"
+}
+
 ###Crée un projet
-POST {{endpoint}}/projet/
+POST {{endpoint}}/projet
 content-type: application/json
 
 {
