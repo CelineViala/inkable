@@ -5,7 +5,7 @@ module.exports = {
     async getAllPro(_, res) {
         try {
             const pros = await Pro.findAll({
-                include: ['styles', 'tattoos', 'city'],
+                include: ['styles', 'tattoos'],
             });
             return res.json(pros);
         } catch (error) {

@@ -11,6 +11,10 @@ GET {{endpoint}}/
 ###test2
 GET {{endpoint}}/ping
 
+
+###test2
+GET {{endpoint}}/pro
+
 ###récupère un projet avec son id
 GET {{endpoint}}/projet/5
 
