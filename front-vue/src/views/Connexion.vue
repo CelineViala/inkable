@@ -51,21 +51,23 @@ export default {
                     //this.$router.push('/');
                     localStorage.setItem("token",response.data.accessToken);
                     this.axios.defaults.headers.common['Authorization']=`Bearer ${response.data.accessToken}`;
-                    this.axios
-      .get('http://localhost:3000/checkRole')
-      .then((response) => {
-        console.log("afterConnect");
-        console.log(response.data);
-      })
-      .catch(err=>{
-        console.log("error after connect")
-        console.log(err)
-      })
+                    this.$store.dispatch('check');
+
+      //               this.axios
+      // .get('http://localhost:3000/checkRole')
+      // .then((response) => {
+      //   console.log("afterConnect");
+      //   console.log(response.data);
+      // })
+      // .catch(err=>{
+      //   console.log("error after connect")
+      //   console.log(err)
+      // })
                 })
                 .catch((err)=>{
                   
                     console.log(err);
-                    this.message=err.response.data.message;
+                    // this.message=err.response.data.message;
                     return
                 })
 

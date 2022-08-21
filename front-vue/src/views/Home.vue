@@ -41,6 +41,7 @@ export default {
         console.log(response.data);
         this.pro=response.data;
       })
+    this.$store.dispatch('check');
   }
     
 }

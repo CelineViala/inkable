@@ -4,12 +4,7 @@
     <router-link to="/">
       Accueil
     </router-link> |
-    <router-link to="/about" v-if="this.$store.state.user">
-      A propos
-    </router-link> |
-    <router-link :to="{name:'Product', params:{name:'Skate'}}" v-if="isPro">
-      Produit 1
-    </router-link> |
+    
     <router-link to="/inscriptionPro">
       Inscriptions Pro
     </router-link> |
@@ -18,6 +13,9 @@
     </router-link> |
     <router-link to="/connexion">
       Connexion
+    </router-link> |
+    <router-link to="/dashbord-pro" v-if="this.user==='pro'">
+      DashboardPro
     </router-link>
   </nav>
   <router-view />
@@ -32,7 +30,12 @@ export default {
   data(){
         return {
           isPro:false,
-          user:this.$store.state.user
+      
+        }
+  },
+  computed:{
+    user() {
+          return this.$store.state.user
         }
   },
   methods:{

@@ -1,12 +1,12 @@
 import {createRouter,createWebHistory} from 'vue-router';
 import Home from '@/views/Home.vue';
-import About from '@/views/About.vue';
+import dashboardPro from '@/views/DashboardPro.vue';
 import Product from '@/views/Product.vue';
 import Pro from '@/views/Pro.vue';
 import InscriptionPro from '@/views/InscriptionPro.vue';
 import InscriptionConsumer from '@/views/InscriptionConsumer.vue';
 import Connexion from '@/views/Connexion.vue';
-import DashboardPro from '@/views/DashboardPro.vue';
+
 
 const routes=[
     {
@@ -19,24 +19,15 @@ const routes=[
 
     },
     {
-        name:'About',
-        path:'/about',
-        component: About,
+        name:'DashboardPro',
+        path:'/dashbord-pro',
+        component: dashboardPro,
         meta:{
             allowAnonymous:true,
             hide:true
         }
     },
-    {
-        name:'Product',
-        path:'/product/:name',
-        component:Product,
-        props:true,
-        meta:{
-            allowAnonymous:true
-        
-        }
-    },
+    
     {
         name:'Pro_detail',
         path:'/proDetail/:id',
@@ -70,14 +61,7 @@ const routes=[
             allowAnonymous:true
         }
     },
-    {
-        name:'DashboardPro',
-        path:'/dashboardPro',
-        component:DashboardPro,
-        meta:{
-            allowAnonymous:false
-        }
-    }
+    
 ];
 
 const router=createRouter({

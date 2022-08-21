@@ -6,7 +6,7 @@ import VueAxios from 'vue-axios';
 import createStore from './store'
 
 createApp(App)
-.use(createStore)
 .use(VueAxios,axios)
+.use(createStore)
 .use(router)
 .mount('#app');
