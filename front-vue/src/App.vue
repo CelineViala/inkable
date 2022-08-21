@@ -1,0 +1,75 @@
+<template>
+<h1>{{this.user}}</h1>
+  <nav>
+    <router-link to="/">
+      Accueil
+    </router-link> |
+    <router-link to="/about" v-if="this.$store.state.user">
+      A propos
+    </router-link> |
+    <router-link :to="{name:'Product', params:{name:'Skate'}}" v-if="isPro">
+      Produit 1
+    </router-link> |
+    <router-link to="/inscriptionPro">
+      Inscriptions Pro
+    </router-link> |
+    <router-link to="/inscriptionConsumer">
+      Inscriptions Consumer
+    </router-link> |
+    <router-link to="/connexion">
+      Connexion
+    </router-link>
+  </nav>
+  <router-view />
+</template>
+
+<script>
+
+import Home from './views/Home.vue'
+export default {
+  name: 'App',
+  components:{Home},
+  data(){
+        return {
+          isPro:false,
+          user:this.$store.state.user
+        }
+  },
+  methods:{
+     checkRole: async function(){
+      console.log(localStorage.token)
+      let role;
+      try {
+        const response=await this.axios.get('http://localhost:3000/checkRole');
+        role= await response.data;
+        
+        
+      } catch (error) {
+        console.log(err)
+      }
+      if(role==='pro') this.isPro=true;
+      
+  }
+  },
+  updated(){
+    console.log("updated");
+  },
+  created(){
+    
+    this.axios.defaults.headers.common['Authorization']=`Bearer ${localStorage.token}`;
+    this.checkRole();
+  }
+  
+}
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>
