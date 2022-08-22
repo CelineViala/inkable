@@ -1,7 +1,8 @@
 const jwt=require('jsonwebtoken');
 const authenticateJWTPro = (req, res, next) => {
     const authHeader = req.headers.authorization;
-    const accessTokenSecretPro = 'accessPro';
+    const accessTokenSecretPro = 'phraseSuperSecrete';
+    console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",authHeader)
     if (authHeader) {
         const token = authHeader.split(' ')[1];
 
@@ -13,6 +14,7 @@ const authenticateJWTPro = (req, res, next) => {
             next();
         });
     } else {
+        console.log("crash",req.headers);
         res.sendStatus(401);
     }
 }

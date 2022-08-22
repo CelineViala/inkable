@@ -2,7 +2,8 @@
 const { Pro, Tattoo } = require('../models');
 
 module.exports = {
-    async getAllPro(_, res) {
+    async getAllPro(req, res) {
+        console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<', req.headers);
         try {
             const pros = await Pro.findAll({
                 include: ['styles', 'tattoos'],
@@ -17,7 +18,9 @@ module.exports = {
     },
 
     async AddPro(req, res) {
+        
         try {
+            console.log(req.body);
             const {
                 studio_name,
                 email,
@@ -27,8 +30,7 @@ module.exports = {
                 instagram,
                 color,
                 black_and_white,
-                role,
-                city_id,
+                city,
             } = req.body;
 
             if (
@@ -37,7 +39,7 @@ module.exports = {
                 !password,
                 !color,
                 !black_and_white,
-                !city_id
+                !city
             ) {
                 res.status(400).json({
                     message: 'Le champ est obligatoire',
@@ -52,8 +54,8 @@ module.exports = {
                     instagram: instagram,
                     color: color,
                     black_and_white: black_and_white,
-                    role: role,
-                    city_id: city_id,
+                    role: 'pro',
+                    city: city,
                 });
                 res.json(newPro);
             }

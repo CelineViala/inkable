@@ -3,7 +3,7 @@ const emailValidator = require('email-validator');
 const bcrypt = require('bcrypt');
 const consumerController = require('./consumerController');
 const proController = require('./proController');
-const { Pro } = require('../models');
+const { Pro, Consumer } = require('../models');
 const InputError = require('../errors/inputError');
 const ApiError = require('../errors/apiError');
 // const City = require('../models/city');
@@ -79,41 +79,50 @@ const authController = {
         // return res.status(200).json('Compte Consumer créé'); //! ou renvoyer le pro !?
     },
     testConsumer(req, res) {
-        res.json('Page autorisée seulement aux consumers');
+        console.log(req.user);
+        res.json(req.user.role);
     },
-
+    verifyToken(req, res) {
+        res.json(req.user.role);
+    },
     testPro(req, res) {
         res.json('Page autorisée seulement aux pros');
     },
 
     async login(req, res, next) {
         // Verifier si c'est un pro
-        const pro = await proController.getOnePro({
+        const pro = await Pro.findOne({
             where: {
                 email: req.body.email,
             },
         });
         // Vérifier si c'est un utilisateur
-        let consumer = await consumerController.getOneConsumer({
+        const consumer = await Consumer.findOne({
             where: {
                 email: req.body.email,
             },
         });
 
-        // ---------------!juste pour tester
-        consumer = { email: 'a@a.com', password: '$2b$10$qYoUnMxLe07FG/2X/m2.MeSWC.Gzqaz2T/vuQvYJ4VC89pEKV2HPa' };
-        //----------------
+        console.log(pro);
+        console.log(consumer);
 
         if (!pro && !consumer) return next(new ApiError('Compte non existant', { statusCode: 500 }));
-        const isGood = await bcrypt.compare(req.body.password, consumer.password);
+        let isGood;
+        let user;
+        if (pro) {
+            isGood = await bcrypt.compare(req.body.password, pro.password);
+            user = pro;
+        } else if (consumer) {
+            isGood = await bcrypt.compare(req.body.password, consumer.password);
+            user = consumer;
+        }
         if (!isGood) return next(new InputError('Mot de passe erroné', { statusCode: 400 }));
 
-        let accessToken;
-        if (pro) {
-            accessToken = jwt.sign({ email: pro.email, role: 'pro' }, process.env.JWT_PRO_SECRET);
-        } else if (consumer) {
-            accessToken = jwt.sign({ email: consumer.email, role: 'consumer' }, process.env.JWT_CONSUMER_SECRET);
-        }
+        const accessToken = jwt.sign(
+            { email: user.email, role: user.role },
+            process.env.JWT_SECRET,
+        );
+
         return res.json({ accessToken }); // le token devra être stocké côté front pour connaitre
         // le role de l'utilisateur
     },

@@ -75,7 +75,7 @@ CREATE TABLE
         "note" TEXT,
         "beginning_hour" TIMESTAMPTZ NOT NULL,
         "ending_hour" TIMESTAMPTZ NOT NULL,
-        "pro_id" INT NOT NULL REFERENCES "pro" ("id"),
+        "pro_id" INT NOT NULL REFERENCES "pro" ("id") ON DELETE CASCADE,
         "project_id" INT NOT NULL REFERENCES "project" ("id") ON DELETE CASCADE,
         "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
         "updated_at" TIMESTAMPTZ
