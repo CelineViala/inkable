@@ -23,8 +23,8 @@ const validate = require('../validation/validator');
 
 const router = express.Router();
 
-const authenticateJWTConsumer = require('../middlewares/authenticateJWTConsumer');
-const authenticateJWTPro = require('../middlewares/authenticateJWTPro');
+const authenticateJWT = require('../middlewares/authenticateJWT');
+
 
 // Routes de test
 router.get('/api', (req, res) => {
@@ -70,14 +70,15 @@ router.delete('/api/projet/:id', projectController.deleteProject);
 
 router.get('/api/pro/:id/projet', projectController.getAllProjectsByPro);
 router.get('/api/consumer/:id/projet', projectController.getAllProjectsByConsumer);
-router.post('/signupPro', authController.signupPro);
+router.post('/signupPro', validate('body', proCreateSchema), authController.signupPro);
+router.post('/signupConsumer', validate('body', consumerCreateSchema), authController.signupConsumer);
 router.post('/login', authController.login);
-// route de test JWT
-router.get('/testConsumer', authenticateJWTConsumer, authController.testConsumer);
 
 // route de test JWT
-router.get('/testPro', authenticateJWTPro, authController.testPro);
-router.get('/checkRole', authenticateJWTPro, authController.verifyToken);
+// router.get('/testConsumer', authenticateJWT, authController.testConsumer);
+// route de test JWT
+// router.get('/testPro', authenticateJWT, authController.testPro);
+router.get('/checkRole', authenticateJWT, authController.verifyToken);
 
 router.use(errorHandler);
 module.exports = router;

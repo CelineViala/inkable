@@ -18,47 +18,20 @@ module.exports = {
     },
 
     async AddPro(req, res) {
-        
         try {
-            console.log(req.body);
-            const {
-                studio_name,
-                email,
-                password,
-                profile_picture_path_pro,
-                description,
-                instagram,
-                color,
-                black_and_white,
-                city,
-            } = req.body;
-
-            if (
-                !studio_name,
-                !email,
-                !password,
-                !color,
-                !black_and_white,
-                !city
-            ) {
-                res.status(400).json({
-                    message: 'Le champ est obligatoire',
-                });
-            } else {
-                const newPro = await Pro.create({
-                    studio_name: studio_name,
-                    email: email,
-                    password: password,
-                    profile_picture_path_pro: profile_picture_path_pro,
-                    description: description,
-                    instagram: instagram,
-                    color: color,
-                    black_and_white: black_and_white,
-                    role: 'pro',
-                    city: city,
-                });
-                res.json(newPro);
-            }
+            const newPro = await Pro.create({
+                studio_name: req.studio_name,
+                email: req.email,
+                password: req.password,
+                profile_picture_path_pro: req.profile_picture_path_pro,
+                description: req.description,
+                instagram: req.instagram,
+                color: req.color,
+                black_and_white: req.black_and_white,
+                role: 'pro',
+                city: req.city,
+            });
+            res.json(newPro);
         } catch (error) {
             console.log(error);
             res.status(500).json({

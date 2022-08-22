@@ -1,128 +1,72 @@
 const jwt = require('jsonwebtoken');
-const emailValidator = require('email-validator');
-const bcrypt = require('bcrypt');
-const consumerController = require('./consumerController');
-const proController = require('./proController');
 const { Pro, Consumer } = require('../models');
 const InputError = require('../errors/inputError');
 const ApiError = require('../errors/apiError');
+const serviceAuth = require('../services/checkForms');
 // const City = require('../models/city');
 
 const authController = {
 
     async signupPro(req, res, next) {
-        //! A reporter dans proController addPro
-        if (!req.body.studio_name
-             || !req.body.email
-             || !req.body.password
-             || !req.body.passwordConfirm
-             || req.body.color === undefined
-             || req.body.black_and_white === undefined) {
-            return next(new InputError('Tous les champs doivent être remplis', { statusCode: 400 }));
-        }
+        // les verifications du bon format email, password=passwordConfirm,
+        // champs obligatoires se font avec Joi
 
-        // Vérification si l'email n'est pas au bon format
-        if (!emailValidator.validate(req.body.email)) {
-            return next(new InputError('Email invalide', { statusCode: 400 }));
-        }
-
-        // Vérication que le mot de passe soit bon
-        if (req.body.password !== req.body.passwordConfirm) {
-            return next(new InputError('Les deux mots de passe ne correspondent pas', { statusCode: 400 }));
-        }
-
-        const pro = await Pro.findOne({
-            where: {
-                email: req.body.email,
-            },
-        });
-        if (pro) {
-            return next(new ApiError('Utilisateur dejà existant sur le site', { statusCode: 500 }));
+        // Verif qu'il n'existe pas déjà
+        const error = await serviceAuth.checkUnicity(Pro, req.body.email);
+        if (error) {
+            return next(new ApiError(error));
         }
         delete req.body.passwordConfirm;
         req.body.role = 'pro';
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        req.body.password = hashedPassword;
+        req.body.password = await serviceAuth.hashPassword(req.body.password);
 
         const newPro = Pro.build(req.body);
         newPro.save();
 
-        return res.status(200).json(newPro); //! renvoyer le pro !?
+        return res.status(200).json(newPro);
     },
     async signupConsumer(req, res, next) {
-        // if (!req.body.last_name
-        //     || !req.body.first_name
-        //     || !req.body.email
-        //     || !req.body.password
-        //     || !req.body.passwordConfirm
-        //     || !req.body.date_of_birth) {
-        //     return next(new InputError('Tous les champs doivent être remplis', { statusCode: 400 }));
-        // }
+        const error = await serviceAuth.checkUnicity(Consumer, req.body.email);
 
-        // if (!emailValidator.validate(req.body.email)) {
-        //     return next(new InputError('Email invalide', { statusCode: 400 }));
-        // }
+        if (error) {
+            return next(error);
+        }
 
-        // if (req.body.password !== req.body.passwordConfirm) {
-        //     return next(new InputError('Les deux mots de passe ne correspondent pas', { statusCode: 400 }));
-        // }
-        // //! TODO gerer ça
-        // // const consumer = await Consumer.findOne({
-        // //     where: {
-        // //         email: req.body.email,
-        // //     },
-        // // });
-        // // if (consumer) {
-        // //     return next(new ApiError('Utilisateur dejà existant
-        // // sur le site avec cet email', { statusCode: 500 }));
-        // // }
-        // return res.status(200).json('Compte Consumer créé'); //! ou renvoyer le pro !?
+        delete req.body.passwordConfirm;
+        req.body.role = 'consumer';
+        req.body.password = await serviceAuth.hashPassword(req.body.password);
+
+        const newConsumer = await Consumer.create(req.body);
+
+        return res.status(200).json(newConsumer);
     },
     testConsumer(req, res) {
-        console.log(req.user);
-        res.json(req.user.role);
+        if (req.user.role === 'consumer') { res.json('Vous pouvez accéder à votre dashboard Consumer'); } else { res.sendStatus(403); }
     },
     verifyToken(req, res) {
         res.json(req.user.role);
     },
     testPro(req, res) {
-        res.json('Page autorisée seulement aux pros');
+        if (req.user.role === 'pro') { res.json('Vous pouvez accéder à votre dashboard Pro'); } else { res.sendStatus(403); }
     },
 
     async login(req, res, next) {
-        // Verifier si c'est un pro
-        const pro = await Pro.findOne({
-            where: {
-                email: req.body.email,
-            },
-        });
-        // Vérifier si c'est un utilisateur
-        const consumer = await Consumer.findOne({
-            where: {
-                email: req.body.email,
-            },
-        });
+        const pro = await serviceAuth.findUser(Pro, req.body.email);
 
-        console.log(pro);
-        console.log(consumer);
+        const consumer = await serviceAuth.findUser(Consumer, req.body.email);
 
         if (!pro && !consumer) return next(new ApiError('Compte non existant', { statusCode: 500 }));
-        let isGood;
         let user;
         if (pro) {
-            isGood = await bcrypt.compare(req.body.password, pro.password);
             user = pro;
         } else if (consumer) {
-            isGood = await bcrypt.compare(req.body.password, consumer.password);
             user = consumer;
         }
-        if (!isGood) return next(new InputError('Mot de passe erroné', { statusCode: 400 }));
-
+        if (!await serviceAuth.checkPassword(req.body.password, user.password)) return next(new InputError('Mot de passe erroné', { statusCode: 400 }));
         const accessToken = jwt.sign(
             { email: user.email, role: user.role },
             process.env.JWT_SECRET,
         );
-
         return res.json({ accessToken }); // le token devra être stocké côté front pour connaitre
         // le role de l'utilisateur
     },
