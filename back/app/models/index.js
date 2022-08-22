@@ -1,5 +1,5 @@
 const Appointment = require('./appointment');
-const City = require('./city');
+
 const Consumer = require('./consumer');
 const Message = require('./message');
 const Pro = require('./pro');
@@ -85,7 +85,6 @@ Pro.belongsToMany(Style, {
 
 module.exports = {
     Appointment,
-    City,
     Consumer,
     Message,
     Pro,

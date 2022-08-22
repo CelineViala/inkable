@@ -6,7 +6,7 @@ const proController = require('./proController');
 const { Pro } = require('../models');
 const InputError = require('../errors/inputError');
 const ApiError = require('../errors/apiError');
-const City = require('../models/city');
+// const City = require('../models/city');
 
 const authController = {
 
