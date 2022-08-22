@@ -1,4 +1,5 @@
 const express = require('express');
+const ApiError = require('../errors/apiError');
 const {
     consumerController,
     proController,
@@ -24,7 +25,6 @@ const validate = require('../validation/validator');
 const router = express.Router();
 
 const authenticateJWT = require('../middlewares/authenticateJWT');
-
 
 // Routes de test
 router.get('/api', (req, res) => {
@@ -80,5 +80,8 @@ router.post('/login', authController.login);
 // router.get('/testPro', authenticateJWT, authController.testPro);
 router.get('/checkRole', authenticateJWT, authController.verifyToken);
 
+router.use(() => {
+    throw new ApiError('API Route not found', { statusCode: 404 });
+});
 router.use(errorHandler);
 module.exports = router;
