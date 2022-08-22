@@ -46,12 +46,6 @@
       type="date"
       name="birth"
     > <br>
-   
-    
-   
-
-
-     
     <input
       type="button"
       value="S'inscrire"

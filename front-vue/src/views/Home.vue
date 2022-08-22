@@ -6,6 +6,7 @@
       v-for="p in pro"
       class="pro"
     >
+       
        <img
       src="{{p.profile_picture_path_pro}}"
       alt="PHOTO PROFIL"
@@ -13,7 +14,7 @@
       <p>Nom studio:{{ p.studio_name }}</p>
       <p>Ville:{{ p.city }}</p>
       <div>
-      <h2>Styles:</h2>
+        <h2>Styles:</h2>
       <p v-for="style in p.styles">{{style.name}}</p>
       <router-link :to="{name:'Pro_detail', params:{id:p.id}}">
         En savoir +
@@ -45,8 +46,8 @@ export default {
     
 }
 </script>
-
 <style>
+
 .pros{
   width:1000px;
   margin:20px auto;
