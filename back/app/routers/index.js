@@ -17,6 +17,7 @@ const {
     proUpdateSchema,
     appointmentCreateSchema,
     appointmentUpdateSchema,
+    loginCreateSchema,
 
 } = require('../validation/schemas');
 
@@ -72,7 +73,7 @@ router.get('/api/pro/:id/projet', projectController.getAllProjectsByPro);
 router.get('/api/consumer/:id/projet', projectController.getAllProjectsByConsumer);
 router.post('/signupPro', validate('body', proCreateSchema), authController.signupPro);
 router.post('/signupConsumer', validate('body', consumerCreateSchema), authController.signupConsumer);
-router.post('/login', authController.login);
+router.post('/login', validate('body', loginCreateSchema), authController.login);
 
 // route de test JWT
 // router.get('/testConsumer', authenticateJWT, authController.testConsumer);
