@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 const { Project } = require('../models');
 
 module.exports = {
@@ -20,36 +21,38 @@ module.exports = {
     async createProject(req, res) {
         try {
             req.body.status = 'en attente';
-            const project = await Project.create(req.body);
-            return res.json(project);
+            const newProject = await Project.create(req.body);
+            return res.json(newProject);
         } catch (error) {
             console.log(error);
             return res.status(500).json({
-                message: 'Erreur serveur',
+                message: 'Erreur lors de la création du projet',
             });
         }
     },
 
-    async modifyProject(req, res) { //!A tester
+    async modifyProject(req, res) {
         try {
             const { id } = req.params;
-            const project = await Project.findOneByPk(id);
+            const project = await Project.findByPk(id);
             if (!project) return res.status(404).json("Ce projet n'existe pas");
             if (req.body.title) project.title = req.body.title;
-            if (req.body.description) project.title = req.body.description;
-            if (req.body.status) project.title = req.body.status;
-            if (req.body.color) project.title = req.body.color;
-            if (req.body.area) project.title = req.body.area;
+            if (req.body.description) project.description = req.body.description;
+            if (req.body.status) project.status = req.body.status;
+            if (req.body.color) project.color = req.body.color;
+            if (req.body.area) project.area = req.body.area;
             await project.save();
             return res.json(project);
         } catch (error) {
             console.log(error);
             return res.status(500).json({
-                message: 'Erreur serveur',
+                message: 'Impossible de modifier le projet',
             });
         }
     },
 
+    // eslint-disable-next-line max-len
+    // necessite un delete on cascade : foreign key constraint "appointment_project_id_fkey" on table "appointment"
     async deleteProject(req, res) {
         try {
             const { id } = req.params;
@@ -63,7 +66,7 @@ module.exports = {
         } catch (error) {
             console.log(error);
             res.status(500).json({
-                message: 'Erreur serveur',
+                message: 'Erreur lors de la suppression du projet',
             });
         }
     },
