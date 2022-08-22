@@ -1,5 +1,51 @@
 <template>
-  <h1>Inscriptions Utilisateur</h1>
+
+<form>
+
+<div class="container">
+  <h2>Informations du profil</h2>
+  <div class="mb-3">
+    <label for="inputFirstName" class="form-label">Prénom</label>
+    <input type="firstName" class="form-control" id="inputFirstName">
+  </div>
+  <div class="mb-3">
+    <label for="inputLastName" class="form-label">Nom</label>
+    <input type="lastName" class="form-control" id="inputLastName">
+  </div>
+  <div class="mb-3">
+    <label for="inputDateOfBirth" class="form-label">Date de naissance</label>
+    <input type="dateOfBirth" class="form-control" id="inputDateOfBirth">
+    <div id="datOfBirthHelpBlock" class="form-text"> une date sous format jj/mm/aaaa </div>
+  </div>
+  <div class="mb-3">
+  <label for="formFile" class="form-label">Selectioner une photo de profil</label>
+  <input class="form-control" type="file" id="formFile">
+  </div>
+  
+</div>
+
+<div class="container">
+  <h2>Informations de connexion</h2>
+  <label for="inputEmail" class="form-label">Votre email</label>
+<input type="email" id="inputEmail" class="form-control">
+<label for="inputPassword" class="form-label">Votre mot de passe</label>
+<input type="password" id="inputPassword" class="form-control" aria-describedby="passwordHelpBlock">
+<div id="passwordHelpBlock" class="form-text"> Voici les contraintes du mdp </div>
+</div>
+
+<div class="container">
+  <div class="mb-3 form-check-inline">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">J'accepte les CGU</label>
+  </div>
+  <div class="mb-3">
+    <button type="submit" class="btn btn-primary">Inscription</button>
+  </div>
+</div>
+
+</form>
+
+  <!-- <h1>Inscriptions Utilisateur</h1>
   <form
     action=" "
     method="post"
@@ -53,7 +99,7 @@
     >
     <p>{{ message }}</p>
     
-  </form>
+  </form> -->
 </template>
 <script>
 
@@ -96,8 +142,7 @@ export default {
 </script>
 
 <style>
-input{
-    height: 3em;
-    margin:1em;
+.container {
+  padding-top: 5em;
 }
 </style>
