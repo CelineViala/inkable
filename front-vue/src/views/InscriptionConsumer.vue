@@ -1,5 +1,5 @@
 <template>
-  <h1>Inscriptions Pro</h1>
+  <h1>Inscriptions Utilisateur</h1>
   <form
     action=" "
     method="post"
@@ -58,12 +58,7 @@
       @click="addConsumer"
     >
     <p>{{ message }}</p>
-    <!-- !studio_name,
-                !email,
-                !password,
-                !color,
-                !black_and_white,
-                !city_id -->
+    
   </form>
 </template>
 <script>

@@ -26,8 +26,8 @@
     <p>{{ message}}</p>
   </form>
 </template>
-<script>
 
+<script>
 export default {
     name:'Connexion',
     data(){

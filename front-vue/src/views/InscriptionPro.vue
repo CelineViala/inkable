@@ -1,5 +1,5 @@
 <template>
-  <h1>Inscriptions Consumer</h1>
+  <h1>Inscriptions Pro</h1>
   <form
     action=""
     method="post"
