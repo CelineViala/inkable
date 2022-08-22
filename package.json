@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "bootstrap": "^5.2.0",
     "joi": "^17.6.0"
   }
 }
