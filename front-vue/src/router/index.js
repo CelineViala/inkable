@@ -6,6 +6,7 @@ import Pro from '@/views/Pro.vue';
 import InscriptionPro from '@/views/InscriptionPro.vue';
 import InscriptionConsumer from '@/views/InscriptionConsumer.vue';
 import Connexion from '@/views/Connexion.vue';
+import Project from '@/views/Project.vue'
 
 
 const routes=[
@@ -57,6 +58,14 @@ const routes=[
         name:'InscriptionConsumer',
         path:'/inscriptionConsumer',
         component:InscriptionConsumer,
+        meta:{
+            allowAnonymous:true
+        }
+    },
+    {
+        name:'Project',
+        path:'/project',
+        component:Project,
         meta:{
             allowAnonymous:true
         }

@@ -1,5 +1,37 @@
 <template>
-  <h1>CONNEXION</h1>
+
+<body class="text-center">
+    
+<main class="form-signin w-100 m-auto">
+
+  <div class="container">
+  <form>
+    <img class="mb-4" src="https://picsum.photos/100" alt="" width="72" height="57">
+    <h1 class="h3 mb-3 fw-normal">Connexion</h1>
+
+    <div class="form-floating">
+      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <label for="floatingInput">Email</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+      <label for="floatingPassword">Mot de passe</label>
+    </div>
+
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Se connecter</button>
+  </form>
+<br>
+    <div class="d-grid gap-3">
+    <a href="#">Mot de passe oublié</a>
+    <a href="#">S'inscrire</a>
+    <a href="#">Vous êtes tatoueur ?</a>
+  </div>
+
+</div>
+</main>
+</body>
+
+  <!-- <h1>CONNEXION</h1>
   <form
     action=" "
     method="post"
@@ -24,7 +56,7 @@
       @click="connect"
     >
     <p>{{ message}}</p>
-  </form>
+  </form> -->
 </template>
 
 <script>
@@ -85,5 +117,18 @@ export default {
 input{
     height: 3em;
     margin:1em;
+};
+
+container-max-widths{
+   xs: 0;
+  sm: 540px;
+  md: 720px;
+  lg: 960px;
+  xl: 1140px;
+  xxl: 1320px
+};
+
+form{
+
 }
 </style>
