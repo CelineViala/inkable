@@ -16,7 +16,7 @@ GET {{endpoint}}/ping
 GET {{endpoint}}/pro
 
 ###récupère un projet avec son id
-GET {{endpoint}}/projet/5
+GET {{endpoint}}/projet/2
 
 ###Supprime un projet d'après son id
 DELETE {{endpoint}}/projet/1

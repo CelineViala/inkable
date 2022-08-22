@@ -10,11 +10,7 @@ const router = express.Router();
 // à compléter
 router.post('/login', authController.login);
 
-// route de test JWT
-router.get('/testConsumer', authenticateJWTConsumer, authController.testConsumer);
 
-// route de test JWT
-router.get('/testPro', authenticateJWTPro, authController.testPro);
 
 // traitement formulaire inscription
 router.post('/signupPro', authController.signupPro);

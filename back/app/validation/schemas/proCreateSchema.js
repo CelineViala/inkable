@@ -11,5 +11,5 @@ module.exports = Joi.object({
     color: Joi.boolean().required(),
     black_and_white: Joi.boolean().required(),
     role: Joi.string(),
-    city_id: Joi.number().integer().min(1).required(), //! modif à faire
+    city: Joi.string().required(),
 });

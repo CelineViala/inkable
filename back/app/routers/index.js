@@ -4,6 +4,7 @@ const {
     proController,
     appointmentController,
     projectController,
+    authController,
 } = require('../controllers');
 const { errorHandler } = require('../helpers/errorHandler');
 const {
@@ -21,6 +22,9 @@ const {
 const validate = require('../validation/validator');
 
 const router = express.Router();
+
+const authenticateJWTConsumer = require('../middlewares/authenticateJWTConsumer');
+const authenticateJWTPro = require('../middlewares/authenticateJWTPro');
 
 // Routes de test
 router.get('/api', (req, res) => {
@@ -66,6 +70,14 @@ router.delete('/api/projet/:id', projectController.deleteProject);
 
 router.get('/api/pro/:id/projet', projectController.getAllProjectsByPro);
 router.get('/api/consumer/:id/projet', projectController.getAllProjectsByConsumer);
+router.post('/signupPro', authController.signupPro);
+router.post('/login', authController.login);
+// route de test JWT
+router.get('/testConsumer', authenticateJWTConsumer, authController.testConsumer);
+
+// route de test JWT
+router.get('/testPro', authenticateJWTPro, authController.testPro);
+router.get('/checkRole', authenticateJWTPro, authController.verifyToken);
 
 router.use(errorHandler);
 module.exports = router;
