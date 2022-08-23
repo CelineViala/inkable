@@ -16,12 +16,12 @@
             <form>
               <div class="form-outline form-white mb-4">
                 <input  v-model="user.email" type="email" id="email" class="form-control form-control-lg" />
-                <label class="form-label" for="typeEmailX">Email</label>
+                <label class="form-label" for="email">Email</label><span class="text-danger"> * </span>
               </div>
 
               <div class="form-outline form-white mb-4">
                 <input v-model="user.password" type="password" id="password" class="form-control form-control-lg" />
-                <label class="form-label" for="password">Mot de passe</label>
+                <label class="form-label" for="password">Mot de passe</label><span class="text-danger"> * </span>
               </div>
 
               <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Mot de passe oublié</a></p>
@@ -39,12 +39,12 @@
             </div>
             
             <div>
-              <p class="mb-0">Pas de compte ? <a href="#!" class="text-white-50 fw-bold">S'incrire</a>
+              <p class="mb-0">Pas de compte ? <router-link :to="{name:'InscriptionConsumer'}" class="text-white-50 fw-bold">S'inscrire</router-link>
               </p>
             </div>
 
             <div>
-              <p class="mb-0">Vous êtes tatoueur ? <a href="#!" class="text-white-50 fw-bold">S'incrire en tant que tatoueur</a>
+              <p class="mb-0">Vous êtes tatoueur ? <router-link :to="{name:'InscriptionPro'}" class="text-white-50 fw-bold">S'inscrire en tant que tatoueur</router-link>
               </p>
             </div>
             

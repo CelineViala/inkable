@@ -39,7 +39,7 @@
       <div class="card-body">
         <h5 class="card-title">{{p.studio_name}}</h5>
     <p class="card-text">{{p.city}}</p>
-    <router-link :to="{name:'ProfilPro'}" class="btn btn-primary">Voir plus</router-link>
+    <router-link :to="{name:'ProfilPro',params:{id:p.id}}" class="btn btn-primary">Voir plus</router-link>
       </div>
     </div>
   </div>
