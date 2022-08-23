@@ -3,11 +3,19 @@ const cors = require('cors');
 
 const app = express();
 const router = require('./routers');
-const routerAuth = require('./routers/routerAuth');
+
+// process.on('unhandledRejection', (err) => {
+//     throw err;
+// });
+
+// process.on('uncaughtException', (err) => {
+//     console.log(err);
+//     process.exit(0);
+// });
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-//! penser aux CORS
+
 app.use(cors('*'));
 app.use(router);
 module.exports = app;

@@ -1,4 +1,5 @@
 const express = require('express');
+const ApiError = require('../errors/apiError');
 const {
     consumerController,
     proController,
@@ -12,19 +13,22 @@ const {
     projectUpdateSchema,
     consumerCreateSchema,
     consumerUpdateSchema,
+    tattooCreateSchema,
+    tattooUpdateSchema,
     proCreateSchema,
     proUpdateSchema,
     appointmentCreateSchema,
     appointmentUpdateSchema,
+    loginCreateSchema,
 
 } = require('../validation/schemas');
 
+const controllerHandler = require('../helpers/controllerHandler');
 const validate = require('../validation/validator');
 
 const router = express.Router();
 
 const authenticateJWT = require('../middlewares/authenticateJWT');
-
 
 // Routes de test
 router.get('/api', (req, res) => {
@@ -34,45 +38,50 @@ router.get('/api/ping', (req, res) => {
     res.send('pong');
 });
 
-//! Première route pas encore fonctionnelle !
 // Routes pour la partie Pro
-router.get('/api/pro', proController.getAllPro);
-router.post('/api/pro', proController.AddPro);
 
-router.post('/api/pro/search', validate('body', proCreateSchema), proController.CreateSearch);
+router.get('/api/pro', controllerHandler(proController.getAllPro));
 
-router.get('/api/pro/:id', proController.getOnePro);
-router.patch('/api/pro/:id', validate('body', proUpdateSchema), proController.modifyPro);
-router.delete('/api/pro/:id', proController.deletePro);
+router.post('/api/pro/search', controllerHandler(proController.CreateSearch));
 
-router.get('/api/pro/:id/tatouages', proController.getAllTattoosByPro);
-router.post('/api/pro/:id/tatouages', proController.addTattoo);
-router.delete('/api/pro/:id/tatouages/:id', proController.deleteTattoo);
+router.route('/api/pro/:id')
+    .get(controllerHandler(proController.getOnePro))
+    .patch(validate('body', proUpdateSchema), controllerHandler(proController.modifyPro))
+    .delete(controllerHandler(proController.deletePro));
+
+router.route('/api/pro/:id/tatouages')
+    .get(controllerHandler(proController.getAllTattoosByPro))
+    .post(validate('body', tattooCreateSchema), controllerHandler(proController.addTattoo));
+
+router.delete('/api/pro/:idPro/tatouages/:idTattoo', controllerHandler(proController.deleteTattoo));
 
 // Routes pour la partie RDV
-router.get('/api/pro/:id/rdv', appointmentController.getAllApointmentsByPro);
-router.post('/api/pro/:id/rdv', validate('body', appointmentCreateSchema), appointmentController.addAppointement);
-router.patch('/api/pro/:id/rdv', validate('body', appointmentUpdateSchema), appointmentController.modifyAppointement);
-router.delete('/api/pro/:id/rdv', appointmentController.deleteAppointement);
+router.route('/api/pro/:id/rdv')
+    .get(controllerHandler(appointmentController.getAllApointmentsByPro))
+    .post(validate('body', appointmentCreateSchema), controllerHandler(appointmentController.addAppointement));
 
-// Routes pour la partie particulier
-router.post('/api/consumer', validate('body', consumerCreateSchema), consumerController.addConsumer);
+router.route('/api/pro/:idPro/rdv/:idRdv')
+    .patch(validate('body', appointmentUpdateSchema), controllerHandler(appointmentController.modifyAppointement))
+    .delete(controllerHandler(appointmentController.deleteAppointement));
 
-router.get('/api/consumer/:id', consumerController.getOneConsumer);
-router.patch('/api/consumer/:id', validate('body', consumerUpdateSchema), consumerController.modifyConsumer);
-router.delete('/api/consumer/:id', consumerController.deleteConsumer);
+router.route('/api/consumer/:id')
+    .get(controllerHandler(consumerController.getOneConsumer))
+    .patch(validate('body', consumerUpdateSchema), controllerHandler(consumerController.modifyConsumer))
+    .delete(controllerHandler(consumerController.deleteConsumer));
 
 // Routes pour la partie projet
-router.get('/api/projet/:id', projectController.getOneProject);
-router.post('/api/projet', validate('body', projectCreateSchema), projectController.createProject);
-router.patch('/api/projet/:id', validate('body', projectUpdateSchema), projectController.modifyProject);
-router.delete('/api/projet/:id', projectController.deleteProject);
+router.route('/api/projet/:id')
+    .get(controllerHandler(projectController.getOneProject))
+    .patch(validate('body', projectUpdateSchema), controllerHandler(projectController.modifyProject))
+    .delete(controllerHandler(projectController.deleteProject));
+router.post('/api/projet', validate('body', projectCreateSchema), controllerHandler(projectController.createProject));
+router.get('/api/pro/:id/projet', controllerHandler(projectController.getAllProjectsByPro));
+router.get('/api/consumer/:id/projet', controllerHandler(projectController.getAllProjectsByConsumer));
 
-router.get('/api/pro/:id/projet', projectController.getAllProjectsByPro);
-router.get('/api/consumer/:id/projet', projectController.getAllProjectsByConsumer);
-router.post('/signupPro', validate('body', proCreateSchema), authController.signupPro);
-router.post('/signupConsumer', validate('body', consumerCreateSchema), authController.signupConsumer);
-router.post('/login', authController.login);
+// Route pour l'authentification
+router.post('/signupPro', validate('body', proCreateSchema), controllerHandler(authController.signupPro));
+router.post('/signupConsumer', validate('body', consumerCreateSchema), controllerHandler(authController.signupConsumer));
+router.post('/login', validate('body', loginCreateSchema), controllerHandler(authController.login));
 
 // route de test JWT
 // router.get('/testConsumer', authenticateJWT, authController.testConsumer);
@@ -80,5 +89,8 @@ router.post('/login', authController.login);
 // router.get('/testPro', authenticateJWT, authController.testPro);
 router.get('/checkRole', authenticateJWT, authController.verifyToken);
 
+router.use(() => {
+    throw new ApiError('API Route not found', { statusCode: 404 });
+});
 router.use(errorHandler);
 module.exports = router;

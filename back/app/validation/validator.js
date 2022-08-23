@@ -12,6 +12,8 @@ module.exports = (prop, schema) => async (request, _, next) => {
         // Je dois afficher l'erreur à l'utilisateur
         // STATUS HTTP pour une erreur de saise : 400
         // On réabille l'erreur en suivant notre propre normalisation
-        next(new ApiError(error.details[0].message, { statusCode: 400 }));
+
+        const errorMessage = error.details ? error.message : error;
+        next(new ApiError(errorMessage, { statusCode: 400 }));
     }
 };
