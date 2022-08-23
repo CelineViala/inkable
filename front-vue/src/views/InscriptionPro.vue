@@ -1,8 +1,95 @@
+
 <template>
 
-<form>
+<body class="bg-light">
+  <div class="container">
+  <main>
 
-<div class="container">
+    <div class="row g-5">
+      <div class="d-flex">
+        <form class="needs-validation" novalidate>
+          
+          <div class="row g-3">
+
+            <h4 class="mb-3">Les informations de votre studio</h4>
+
+            <div class="col-sm-6">
+              <label for="studioNmae" class="form-label">Nom du studio</label>
+              <input type="text" class="form-control" id="studioName" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Nom de studio requis.
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="city" class="form-label">Ville</label>
+              <input type="text" class="form-control" id="city" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Ville requise.
+              </div>
+            </div>
+
+            <div class="form-check-inline">
+            <input type="checkbox" class="form-check-input" id="color">
+            <label class="form-check-label" for="color">Tatouages couleur</label>
+          </div>
+
+          <div class="form-check-inline">
+            <input type="checkbox" class="form-check-input" id="blackAndWhite">
+            <label class="form-check-label" for="blackAndWhite">Tatouages noir et blanc</label>
+          </div>
+
+          <h4 class="mb-3">Vos informations de connexion</h4>
+
+            <div class="col-12">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="studio@example.com" required>
+              <div class="invalid-feedback">
+                Email valide requis
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="username" class="form-label">Password</label>
+              <input type="text" class="form-control" id="password" required>
+              <div class="invalid-feedback">
+                  Mot de passe requis.
+              </div>
+              
+            </div>
+
+          <h4 class="mb-3">Vos informations complémentaires</h4>
+
+            <div class="mb-3">
+              <label for="file" class="form-label">Selectioner une photo de profil</label>
+              <input class="form-control" type="file" id="formFile">
+            </div>
+
+            
+            <div class="mb-3">
+              <label for="address" class="form-label">Instagram</label>
+              <input type="text" class="form-control" id="instagram">
+            </div>
+
+            <div class="mb-3">
+              <label for="desciption" class="form-label">Une courte description de votre salon</label>
+              <input  type="text" class="form-control" id="description">
+            </div>
+
+          </div>
+
+          <button class="btn btn-primary btn-lg" type="submit">Valider l'inscription</button>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+
+<!-- 1er formulaire inscription pro -->
+
+<!-- <div class="container">
+  <form>
   <h2>Informations sur votre studio</h2>
   <div class="mb-3">
     <label for="inputStudioName" class="form-label">Nom du studio</label>
@@ -58,8 +145,9 @@
     <button type="submit" class="btn btn-primary">Inscription</button>
   </div>
 </div>
+</form> -->
 
-</form>
+
 
 
   <!-- <h1>Inscriptions Pro</h1>
@@ -179,6 +267,51 @@ export default {
 </script>
 
 <style>
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+      }
+
+      .form-signin {
+        max-width: 330px;
+        padding: 15px;
+      }
+
+      .form-signin .form-floating:focus-within {
+        z-index: 2;
+      }
+
+      .container {
+        align-items: center;
+      }
+
+    </style>
+
+<!-- 1er style de fait -->
+
+<!-- <style>
 .container {
   padding-top: 5em;
 }
@@ -186,4 +319,8 @@ export default {
 h4 {
   padding-top: 1em;
 }
-</style>
+
+@media (min-width: 768px) {
+
+}
+</style> -->

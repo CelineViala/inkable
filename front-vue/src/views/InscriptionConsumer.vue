@@ -1,6 +1,80 @@
 <template>
 
-<form>
+<body class="bg-light">
+  <div class="container">
+  <main>
+
+    <div class="row g-5">
+      <div class="d-flex">
+        <form class="needs-validation" novalidate>
+          
+          <div class="row g-3">
+
+            <h4 class="mb-3">Les informations de votre profil</h4>
+
+            <div class="col-sm-6">
+              <label for="firstName" class="form-label">Prénom</label>
+              <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Prénom requis.
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="lastName" class="form-label">Nom</label>
+              <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Nom requise.
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="dateOfBirth" class="form-label">Date de naissance </label>
+              <input type="text" class="form-control" id="dateOfBirth" placeholder="jj/mm/aaaa" value="" required>
+              <div class="invalid-feedback">
+                Date de naissance requise
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="file" class="form-label">Selectioner une photo de profil</label>
+              <input class="form-control" type="file" id="formFile">
+            </div>
+
+            
+
+          <h4 class="mb-3">Vos informations de connexion</h4>
+
+            <div class="col-12">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="prebom@example.com" required>
+              <div class="invalid-feedback">
+                Email valide requis
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="username" class="form-label">Password</label>
+              <input type="text" class="form-control" id="password" required>
+              <div class="invalid-feedback">
+                  Mot de passe requis.
+              </div>
+              
+            </div>
+
+
+          </div>
+
+          <button class="btn btn-primary btn-lg" type="submit">Valider l'inscription</button>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+
+<!-- 1er formulaire -->
+<!-- <form>
 
 <div class="container">
   <h2>Informations du profil</h2>
@@ -43,7 +117,7 @@
   </div>
 </div>
 
-</form>
+</form> -->
 
   <!-- <h1>Inscriptions Utilisateur</h1>
   <form
