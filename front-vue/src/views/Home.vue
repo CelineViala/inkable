@@ -33,76 +33,17 @@
 
 <div class="container">
   <div class="row row-cols-2 row-cols-md-5 g-4">
-  <div class="col">
+  <div class="col" v-for="p in pro">
     <div class="card">
-      <img src="https://picsum.photos/200/300" class="card-img-top" alt="...">
+      <img src="https://picsum.photos/200/300" class="card-img-top" alt="image tatoueur">
       <div class="card-body">
-        <h5 class="card-title">studio nom</h5>
-    <p class="card-text">tatoueur description</p>
-    <a href="#" class="btn btn-primary">Entrer dans le studio</a>
+        <h5 class="card-title">{{p.studio_name}}</h5>
+    <p class="card-text">{{p.city}}</p>
+    <router-link :to="{name:'ProfilPro'}" class="btn btn-primary">Voir plus</router-link>
       </div>
     </div>
   </div>
-  <div class="col">
-    <div class="card">
-      <img src="https://picsum.photos/200/300" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">studio nom</h5>
-    <p class="card-text">tatoueur description</p>
-    <a href="#" class="btn btn-primary">Entrer dans le studio</a>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <img src="https://picsum.photos/200/300" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">studio nom</h5>
-    <p class="card-text">tatoueur description</p>
-    <a href="#" class="btn btn-primary">Entrer dans le studio</a>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <img src="https://picsum.photos/200/300" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">studio nom</h5>
-    <p class="card-text">tatoueur description</p>
-    <a href="#" class="btn btn-primary">Entrer dans le studio</a>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <img src="https://picsum.photos/200/300" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">studio nom</h5>
-    <p class="card-text">tatoueur description</p>
-    <a href="#" class="btn btn-primary">Entrer dans le studio</a>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <img src="https://picsum.photos/200/300" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">studio nom</h5>
-    <p class="card-text">tatoueur description</p>
-    <a href="#" class="btn btn-primary">Entrer dans le studio</a>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <img src="https://picsum.photos/200/300" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">studio nom</h5>
-    <p class="card-text">tatoueur description</p>
-    <a href="#" class="btn btn-primary">Entrer dans le studio</a>
-      </div>
-    </div>
-  </div>
+  
 </div>
 </div>
 
