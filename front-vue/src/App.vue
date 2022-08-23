@@ -19,7 +19,7 @@
       DashboardPro
     </router-link> -->
 
-    <router-link to="/profil-pro">
+    <router-link to="/profil-pro/1">
        ProfilPro
     </router-link> |
 

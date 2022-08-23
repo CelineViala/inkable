@@ -73,7 +73,7 @@ const routes=[
     },
     {
         name:'ProfilPro',
-        path:'/profil-pro',
+        path:'/profil-pro/:id',
         component:ProfilPro,
         meta:{
             allowAnonymous:true
