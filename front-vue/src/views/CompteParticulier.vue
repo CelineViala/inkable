@@ -23,16 +23,16 @@
                 <form>
 
                     <div class="mb-3">
-                      <label for="exampleInputEmail1" class="form-label">Nouvel Email</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                      <label for="email" class="form-label">Nouvel Email</label>
+                      <input type="email" class="form-control" id="email">
                     </div>
                     <div class="mb-3">
-                      <label for="exampleInputPassword1" class="form-label">Nouveau mot de passe</label>
-                      <input type="password" class="form-control" id="exampleInputPassword1">
+                      <label for="password" class="form-label">Nouveau mot de passe</label>
+                      <input type="password" class="form-control" id="password">
                     </div>
                     <div class="mb-3">
-                      <label for="exampleInputPassword1" class="form-label">Confirmer le nouveau mot de passe</label>
-                      <input type="password" class="form-control" id="exampleInputPassword1">
+                      <label for="confirmPassword" class="form-label">Confirmer le nouveau mot de passe</label>
+                      <input type="password" class="form-control" id="confirmPassword">
                     </div>
                     <div class="mb-3">
                       <label for="file" class="form-label">Selectioner une nouvelle photo de profil</label>

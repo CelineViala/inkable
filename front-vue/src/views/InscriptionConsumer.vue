@@ -53,12 +53,18 @@
             </div>
 
             <div class="col-12">
-              <label for="username" class="form-label">Password</label>
+              <label for="username" class="form-label">Mot de passe</label>
               <input type="text" class="form-control" id="password" required>
               <div class="invalid-feedback">
                   Mot de passe requis.
-              </div>
-              
+              </div> 
+            </div>
+            <div class="col-12">
+              <label for="confirmedPassword" class="form-label">Confirmer le mot de passe</label>
+              <input type="text" class="form-control" id="confirmedPassword" required>
+              <div class="invalid-feedback">
+                  Mot de passe requis.
+              </div> 
             </div>
 
 
