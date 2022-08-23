@@ -1,4 +1,3 @@
-
 <template>
 
 <body class="bg-light">
