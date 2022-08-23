@@ -47,8 +47,8 @@
                       <input class="form-control" type="file" id="formFile">
                     </div>
                     <div class="mb-3">
-                      <label for="description" class="form-label">Nouvelle description</label>
-                      <input type="text" class="form-control" id="description">
+                      <label for="desciption" class="form-label">Une courte description de votre salon</label>
+                      <textarea class="form-control" id="description"></textarea>
                     </div>
                     <div class="mb-3">
                       <label for="instagram" class="form-label">Nouveau compte Instagram</label>
