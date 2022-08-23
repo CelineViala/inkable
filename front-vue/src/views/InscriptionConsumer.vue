@@ -201,9 +201,7 @@ export default {
                     console.log(response.data);
                     this.newconsumer={};
                     this.message="Vous êtes bien inscrit!";
-                    this.$router.push('/connexion');
-            
-                    
+                    this.$router.push('/connexion');   
                 })
                 .catch((err)=>{
                     console.log(err);
