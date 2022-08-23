@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { Pro, Consumer } = require('../models');
+const { required } = require('joi');
+const { Pro, Consumer, Style } = require('../models');
 const InputError = require('../errors/inputError');
 const ApiError = require('../errors/apiError');
 const serviceAuth = require('../services/checkForms');
@@ -7,37 +8,36 @@ const serviceAuth = require('../services/checkForms');
 
 const authController = {
 
-    async signupPro(req, res, next) {
+    async signupPro(req, res) {
         // les verifications du bon format email, password=passwordConfirm,
         // champs obligatoires se font avec Joi
 
         // Verif qu'il n'existe pas déjà
         const error = await serviceAuth.checkUnicity(Pro, req.body.email);
         if (error) {
-            return next(new ApiError(error));
+            throw new ApiError(error);
         }
         delete req.body.passwordConfirm;
         req.body.role = 'pro';
         req.body.password = await serviceAuth.hashPassword(req.body.password);
 
-        const newPro = Pro.build(req.body);
-        newPro.save();
+        // transformation du tableau req.body.styles pour pouvoir faire l'insertion du pro dans la
+        // bdd tout en remplissant la table "Style" (association manyTomany)
 
+        const styles = req.body.styles.map((style) => ({ name: style }));
+        req.body.styles = styles;
+        const newPro = await Pro.create(req.body, { include: [{ model: Style, as: 'styles' }] });
         return res.status(200).json(newPro);
     },
-    async signupConsumer(req, res, next) {
+    async signupConsumer(req, res) {
         const error = await serviceAuth.checkUnicity(Consumer, req.body.email);
-
         if (error) {
-            return next(error);
+            throw error;
         }
-
         delete req.body.passwordConfirm;
         req.body.role = 'consumer';
         req.body.password = await serviceAuth.hashPassword(req.body.password);
-
         const newConsumer = await Consumer.create(req.body);
-
         return res.status(200).json(newConsumer);
     },
     testConsumer(req, res) {
@@ -52,19 +52,18 @@ const authController = {
 
     async login(req, res, next) {
         const pro = await serviceAuth.findUser(Pro, req.body.email);
-
         const consumer = await serviceAuth.findUser(Consumer, req.body.email);
+        if (!pro && !consumer) throw new ApiError('Compte non existant', { statusCode: 500 });
 
-        if (!pro && !consumer) return next(new ApiError('Compte non existant', { statusCode: 500 }));
         let user;
         if (pro) {
             user = pro;
         } else if (consumer) {
             user = consumer;
         }
-        if (!await serviceAuth.checkPassword(req.body.password, user.password)) return next(new InputError('Mot de passe erroné', { statusCode: 400 }));
+        if (!await serviceAuth.checkPassword(req.body.password, user.password)) throw new InputError('Mot de passe erroné', { statusCode: 400 });
         const accessToken = jwt.sign(
-            { email: user.email, role: user.role },
+            { role: user.role },
             process.env.JWT_SECRET,
         );
         return res.json({ accessToken }); // le token devra être stocké côté front pour connaitre

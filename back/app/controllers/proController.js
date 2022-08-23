@@ -1,43 +1,17 @@
 /* eslint-disable object-shorthand */
-const { Pro, Tattoo } = require('../models');
+const {
+    Pro, Tattoo, Project, Style,
+} = require('../models');
+const authService = require('../services/checkForms');
+const sequelize = require('../config/db');
 
 module.exports = {
+    // suppression addPro car géré dans AuthController (cf route /signupPro)
     async getAllPro(req, res) {
-        console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<', req.headers);
-        try {
-            const pros = await Pro.findAll({
-                include: ['styles', 'tattoos'],
-            });
-            return res.json(pros);
-        } catch (error) {
-            console.trace(error);
-            res.status(500).json({
-                message: 'Impossible de récupérer les pros',
-            });
-        }
-    },
-
-    async AddPro(req, res) {
-        try {
-            const newPro = await Pro.create({
-                studio_name: req.studio_name,
-                email: req.email,
-                password: req.password,
-                profile_picture_path_pro: req.profile_picture_path_pro,
-                description: req.description,
-                instagram: req.instagram,
-                color: req.color,
-                black_and_white: req.black_and_white,
-                role: 'pro',
-                city: req.city,
-            });
-            res.json(newPro);
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({
-                message: 'Erreur lors de la création du pro',
-            });
-        }
+        const pros = await Pro.findAll({
+            include: ['styles', 'tattoos', 'appointments', 'projects'],
+        });
+        return res.json(pros);
     },
 
     async CreateSearch(req, res) {
@@ -57,141 +31,126 @@ module.exports = {
         //         message: 'Erreur lors de la récupération des filtres',
         //     });
         // }
+        const filter = {
+        };
+        const styles = {};
+
+        if (req.body.city !== undefined) {
+            filter.city = req.body.city;
+        }
+        if (req.body.color !== undefined) {
+            filter.color = req.body.color;
+        }
+        if (req.body.black_and_white !== undefined) {
+            filter.color = req.body.black_and_white;
+        }
+        if (req.body.styles !== undefined) { styles.name = req.body.styles; }
+
+        // filteredPros=await sequelize.query(`SELECT DISTINCT pro.*,style.name FROM pro 
+        //     JOIN categorise ON pro_id=pro.id
+        //     JOIN style on categorise.style_id=style_id
+        //     WHERE style.name IN ('floral','tribal') AND city IN ('Lyon','Paris') AND color IN (true,false) AND black_and_white IN (true,false)`);
+
+        // res.json(filteredPros[0]);
     },
 
     async getOnePro(req, res) {
-        try {
-            const { id } = req.params;
-            const findOnePro = await Pro.findByPk(id);
-            if (findOnePro) {
-                res.json(findOnePro);
-            } else {
-                res.status(400).json({
-                    message: 'Tatoueur non trouvé',
-                });
-            }
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({
-                message: 'Erreur lors de la récupération du pro',
-            });
+        const { id } = req.params;
+        const findOnePro = await Pro.findByPk(id);
+        if (findOnePro) {
+            res.json(findOnePro);
+        } else {
+            throw new Error(`Aucun pro à l'id ${id}`, { statusCode: 404 });
         }
     },
 
-    async modifyPro(req, res) {
-        try {
-            const { id } = req.params;
-            const pro = await Pro.findByPk(id);
-            if (pro) {
-                if (req.body.studio_name) {
-                    pro.studio_name = req.body.studio_name;
-                }
-                if (req.body.email) {
-                    pro.email = req.body.email;
-                }
-                //! Attention à encoder à nouveau le password pour la sécurité
-                if (req.body.password) {
-                    pro.password = req.body.password;
-                }
-                if (req.body.profile_picture_path_pro) {
-                    pro.profile_picture_path_pro = req.body.profile_picture_path_pro;
-                }
-                if (req.body.description) {
-                    pro.description = req.body.description;
-                }
-                if (req.body.instagram) {
-                    pro.instagram = req.body.instagram;
-                }
-                if (req.body.color) {
-                    pro.color = req.body.color;
-                }
-                if (req.body.black_and_white) {
-                    pro.black_and_white = req.body.black_and_white;
-                }
-                // on sauvegarde dans le BDD
-                const proSaved = await pro.save();
-                res.json(proSaved);
-            } else {
-                res.status(404).json(`Aucune pro à l'id ${id}`);
+    async modifyPro(req, res, next) {
+        const { id } = req.params;
+        const pro = await Pro.findByPk(id);
+        if (pro) {
+            if (req.body.studio_name) {
+                pro.studio_name = req.body.studio_name;
             }
-        } catch (error) {
-            console.trace(error);
-            res.status(500).json({
-                message: 'Erreur lors de la modification du pro',
-            });
+            if (req.body.email) {
+                const error = await authService.checkUnicity(Pro, req.body.email);
+                if (error) throw error;
+                else pro.email = req.body.email;
+            }
+            if (req.body.password) {
+                pro.password = await authService.hashPassword(req.body.password);
+            }
+            if (req.body.profile_picture_path_pro) {
+                pro.profile_picture_path_pro = req.body.profile_picture_path_pro;
+            }
+            if (req.body.description) {
+                pro.description = req.body.description;
+            }
+            if (req.body.instagram) {
+                pro.instagram = req.body.instagram;
+            }
+            if (req.body.color) {
+                pro.color = req.body.color;
+            }
+            if (req.body.black_and_white) {
+                pro.black_and_white = req.body.black_and_white;
+            }
+            // on sauvegarde dans le BDD
+            const proSaved = await pro.save();
+            res.json(proSaved);
+        } else {
+            throw new Error(`Aucun pro à l'id ${id}`, { statusCode: 404 });
         }
     },
 
     async deletePro(req, res) {
-        try {
-            const { id } = req.params;
-            const pro = await Pro.findByPk(id);
-            if (pro) {
-                await pro.destroy();
-                res.json('Pro supprimé');
-            } else {
-                res.status(404).json(`Aucun pro à l'id ${id}`);
-            }
-        } catch (error) {
-            console.trace(error);
-            res.status(500).json({
-                message: 'Erreur lors de la suppression du pro',
-            });
+        const { id } = req.params;
+
+        const pro = await Pro.findByPk(id);
+        if (pro) {
+            await pro.destroy();
+            res.json('Pro supprimé');
+        } else {
+            throw new Error(`Aucun pro à l'id ${id}`, { statusCode: 404 });
         }
     },
 
     async getAllTattoosByPro(req, res) {
-        try {
-            const { id } = req.params;
-            const tattoos = await Tattoo.findAll({
-                where: {
-                    pro_id: id,
-                },
-                include: 'pro',
-            });
-            res.json(tattoos);
-        } catch (error) {
-            console.trace(error);
-            res.status(500).json(error);
-        }
+        const { id } = req.params;
+        const pro = await Pro.findByPk(id);
+        if (!pro) { throw new Error(`Aucun pro à l'id ${id}`, { statusCode: 404 }); }
+
+        const tattoos = await Tattoo.findAll({
+            where: {
+                pro_id: id,
+            },
+        });
+        res.json(tattoos);
     },
 
     async addTattoo(req, res) {
-        try {
-            const { id } = req.params;
-            const findOnePro = await Pro.findByPk(id);
-            if (findOnePro) {
-                const newTattoo = await Tattoo.create({
-                    tattoo_picture_path: req.body.tattoo_picture_path,
-                    pro_id: id,
-                });
-                res.json(newTattoo);
-            } else {
-                res.status(404).json(`Aucun pro à l'id ${id}`);
-            }
-        } catch (error) {
-            console.trace(error);
-            res.status(500).json({
-                message: 'Impossible de rajouter le tatouage',
+        const { id } = req.params;
+        const findOnePro = await Pro.findByPk(id);
+        if (findOnePro) {
+            const newTattoo = await Tattoo.create({
+                tattoo_picture_path: req.body.tattoo_picture_path,
+                pro_id: id,
             });
+            res.json(newTattoo);
+        } else {
+            throw new Error(`Aucun pro à l'id ${id}`, { statusCode: 404 });
         }
     },
 
     async deleteTattoo(req, res) {
-        try {
-            const { id } = req.params;
-            const tattoo = await Tattoo.findByPk(id);
-            if (tattoo) {
-                await tattoo.destroy();
-                res.json('Tatouage supprimé');
-            } else {
-                res.status(404).json(`Aucun tatouage à l'id ${id}`);
-            }
-        } catch (error) {
-            console.trace(error);
-            res.status(500).json({
-                message: 'Erreur lors de la suppression du tatouage',
-            });
+        const { idPro, idTattoo } = req.params;
+        const pro = await Pro.findByPk(idPro);
+        if (!pro) throw new Error(`Aucun pro à l'id ${idPro}`, { statusCode: 404 });
+        const tattoo = await Tattoo.findByPk(idTattoo);
+        if (tattoo) {
+            await tattoo.destroy();
+            res.json('Tatouage supprimé');
+        } else {
+            throw new Error(`Aucun tattoo à l'id ${idTattoo}`, { statusCode: 404 });
         }
     },
 

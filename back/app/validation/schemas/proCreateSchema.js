@@ -11,7 +11,11 @@ module.exports = Joi.object({
         }),
     password: Joi.string().min(8)
         .required()
-        .error(() => new ApiError('Le mot de passe doit faire 8 caractères minimum')),
+        .messages({
+            'string.empty': 'Le nom de passe est obligatoire',
+            'string.min': 'Le mot de passe doit comprendre 8 caractères',
+            'any.required': 'Le nom de passe est obligatoire',
+        }),
 
     passwordConfirm: Joi.string()
         .valid(Joi.ref('password'))
@@ -26,11 +30,22 @@ module.exports = Joi.object({
             'string.empty': 'Le champ email doit être rempli',
             'any.required': 'Le champ email est un champ obligatoire',
         }),
-
-    description: Joi.string(),
-    instagram: Joi.string(),
+    styles: Joi.array(),
+    description: Joi.string()
+        .messages({
+            'string.base': 'Le champ description est de type texte',
+        }),
+    instagram: Joi.string()
+        .messages({
+            'string.base': 'Le champ "instagram" est de type texte',
+        }),
     color: Joi.boolean().required(),
     black_and_white: Joi.boolean().required(),
     role: Joi.string(),
-    city: Joi.string().required(),
+    city: Joi.string().required()
+        .messages({
+            'string.base': 'La ville doit être de type texte',
+            'string.empty': 'La ville doit être remplie',
+            'any.required': 'Le nom de ville est un champ obligatoire',
+        }),
 });
