@@ -29,17 +29,40 @@
               </div>
             </div>
 
+            <div class="container">
+              <h5>Les couleurs de tatouage</h5>
+              <div class="form-check-inline">
+              <input type="checkbox" class="form-check-input" id="color">
+              <label class="form-check-label" for="color">Tatouages couleur</label>
+            </div>
             <div class="form-check-inline">
-            <input type="checkbox" class="form-check-input" id="color">
-            <label class="form-check-label" for="color">Tatouages couleur</label>
+              <input type="checkbox" class="form-check-input" id="blackAndWhite">
+              <label class="form-check-label" for="blackAndWhite">Tatouages noir et blanc</label>
+            </div>
+
+            <div class="container">
+              <h5>Les styles de tatouage</h5>
+              <div class="form-check-inline">
+                <input type="checkbox" class="form-check-input" id="floral">
+                <label class="form-check-label" for="floral">Floral</label>
+              </div>
+              <div class="form-check-inline">
+                <input type="checkbox" class="form-check-input" id="tribal">
+                <label class="form-check-label" for="tribal">Tribal</label>
+              </div>
+              <div class="form-check-inline">
+                <input type="checkbox" class="form-check-input" id="aquarelle">
+                <label class="form-check-label" for="aquarelle">Aquarelle</label>
+              </div>
+            </div>
+
           </div>
 
-          <div class="form-check-inline">
-            <input type="checkbox" class="form-check-input" id="blackAndWhite">
-            <label class="form-check-label" for="blackAndWhite">Tatouages noir et blanc</label>
-          </div>
+            
 
-          <h4 class="mb-3">Vos informations de connexion</h4>
+            
+
+            <h4 class="mb-3">Vos informations de connexion</h4>
 
             <div class="col-12">
               <label for="email" class="form-label">Email</label>
