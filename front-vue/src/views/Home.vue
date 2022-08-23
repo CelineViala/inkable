@@ -1,7 +1,39 @@
 
 <template>
 
-<div class="row row-cols-2 row-cols-md-5 g-4">
+<div class="container">
+  <form>
+  <select class="form-select" aria-label="Default select example">
+  <option selected>Choisissez une ville</option>
+  <option value="1">Toulouse</option>
+  <option value="2">Paris</option>
+</select>
+  <select class="form-select" aria-label="Default select example">
+  <option selected>Choisissez un style</option>
+  <option value="1">Tribal</option>
+  <option value="2">Floral</option>
+</select>
+  <div class="form-check-inline">
+  <input class="form-check-input" type="checkbox" value="" id="colorTatoo" checked>
+  <label class="form-check-label" for="flexCheckDefault">
+    Couleur
+  </label>
+</div>
+<div class="form-check-inline">
+  <input class="form-check-input" type="checkbox" value="" id="bAndWTatto" checked>
+  <label class="form-check-label" for="flexCheckChecked">
+    Noir et Blanc
+  </label>
+</div>
+<div>
+  <button type="submit" class="btn btn-primary">Filtrer</button>
+</div>
+
+</form>
+</div>
+
+<div class="container">
+  <div class="row row-cols-2 row-cols-md-5 g-4">
   <div class="col">
     <div class="card">
       <img src="https://picsum.photos/200/300" class="card-img-top" alt="...">
@@ -73,6 +105,9 @@
     </div>
   </div>
 </div>
+</div>
+
+
 
 
   <!-- <div class="pros">
