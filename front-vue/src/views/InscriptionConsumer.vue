@@ -1,8 +1,7 @@
 <template>
 
-<body class="bg-light">
+
   <div class="container">
-  <main>
 
     <div class="row g-5">
       <div class="d-flex">
@@ -69,9 +68,7 @@
         </form>
       </div>
     </div>
-  </main>
-</div>
-</body>
+  </div>
 
 <!-- 1er formulaire -->
 <!-- <form>
