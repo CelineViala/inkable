@@ -1,4 +1,3 @@
-
 <template>
 <h1>Pro</h1>
   <main class="my-5">
