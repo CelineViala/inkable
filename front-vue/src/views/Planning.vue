@@ -1,5 +1,5 @@
 <template>
-  <h1>Project</h1>
+  <h1>Planning</h1>
  
  
 
