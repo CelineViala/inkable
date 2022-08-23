@@ -1,7 +1,7 @@
 
 <template>
 
-<body class="bg-light">
+
   <div class="container">
   <main>
 
@@ -107,7 +107,6 @@
     </div>
   </main>
 </div>
-</body>
 
 <!-- 1er formulaire inscription pro -->
 
