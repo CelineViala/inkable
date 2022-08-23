@@ -1,11 +1,16 @@
 import {createRouter,createWebHistory} from 'vue-router';
 import Home from '@/views/Home.vue';
-import dashboardPro from '@/views/DashboardPro.vue';
-import Product from '@/views/Product.vue';
-import Pro from '@/views/Pro.vue';
 import InscriptionPro from '@/views/InscriptionPro.vue';
 import InscriptionConsumer from '@/views/InscriptionConsumer.vue';
 import Connexion from '@/views/Connexion.vue';
+import DashboardPro from '@/views/DashboardPro.vue';
+import DashboardParticulier from '@/views/DashboardParticulier.vue';
+import ProfilPro from '@/views/ProfilPro.vue';
+import FormulaireProject from '@/views/FormulaireProject.vue';
+import Project from '@/views/Project.vue';
+import CompteParticulier from '@/views/CompteParticulier.vue';
+import ComptePro from '@/views/ComptePro.vue';
+import Planning from '@/views/Planning.vue';
 
 
 const routes=[
@@ -16,25 +21,14 @@ const routes=[
         meta:{
             allowAnonymous:true
         }
-
     },
     {
         name:'DashboardPro',
         path:'/dashbord-pro',
-        component: dashboardPro,
+        component: DashboardPro,
         meta:{
             allowAnonymous:true,
             hide:true
-        }
-    },
-    
-    {
-        name:'Pro_detail',
-        path:'/proDetail/:id',
-        component:Pro,
-        props:true,
-        meta:{
-            allowAnonymous:true
         }
     },
     {
@@ -61,6 +55,65 @@ const routes=[
             allowAnonymous:true
         }
     },
+    {
+        name:'FormulaireProject',
+        path:'/formulaire-project',
+        component:FormulaireProject,
+        meta:{
+            allowAnonymous:true
+        }
+    },
+    {
+        name:'Project',
+        path:'/project',
+        component:Project,
+        meta:{
+            allowAnonymous:true
+        }
+    },
+    {
+        name:'ProfilPro',
+        path:'/profil-pro',
+        component:ProfilPro,
+        meta:{
+            allowAnonymous:true
+        }
+    },
+    {
+        name:'DashboardParticulier',
+        path:'/dashbord-particulier',
+        component:DashboardParticulier,
+        meta:{
+            allowAnonymous:true
+        }
+    },
+    {
+        name:'CompteParticulier',
+        path:'/compte-particulier',
+        component:CompteParticulier,
+        meta:{
+            allowAnonymous:true
+        }
+    },
+    {
+        name:'ComptePro',
+        path:'/compte-pro',
+        component:ComptePro,
+        meta:{
+            allowAnonymous:true
+        }
+    },
+
+    {
+        name:'Planning',
+        path:'/planning',
+        component:Planning,
+        meta:{
+            allowAnonymous:true
+        }
+    },
+
+
     
 ];
 

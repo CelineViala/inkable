@@ -2,6 +2,8 @@
 <template>
   <h1>Dashboard Pro</h1>
  
+ 
+
 </template>
 <script>
 

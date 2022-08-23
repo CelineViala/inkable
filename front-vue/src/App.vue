@@ -14,9 +14,43 @@
     <router-link to="/connexion">
       Connexion
     </router-link> |
-    <router-link to="/dashbord-pro" v-if="this.user==='pro'">
+
+    <!-- <router-link to="/dashbord-pro" v-if="this.user==='pro'">
       DashboardPro
+    </router-link> -->
+
+    <router-link to="/profil-pro">
+       ProfilPro
+    </router-link> |
+
+    <router-link to="/dashbord-pro">
+      DashboardPro
+    </router-link> |
+  
+    <router-link to="/dashbord-particulier">
+      DashboardParticulier
+    </router-link> |
+
+    <router-link to="/compte-pro">
+      ComptePro
+    </router-link> |  
+
+    <router-link to="/compte-particulier">
+      CompteParticulier
+    </router-link> |
+
+    <router-link to="/formulaire-project">
+      FormulaireProject
+    </router-link> |
+
+    <router-link to="/project">
+      Project
+    </router-link> |
+
+    <router-link to="/planning">
+      Planning
     </router-link>
+
   </nav>
   <router-view />
 </template>
