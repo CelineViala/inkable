@@ -215,8 +215,8 @@ export default {
 
 </script>
 
-<style>
+<!-- <style>
 .container {
   padding-top: 5em;
 }
-</style>
+</style> -->

@@ -155,9 +155,3 @@ export default {
     
 }
 </script>
-<style>
-
-.card {
-  
-}
-</style>
