@@ -289,7 +289,7 @@ export default {
 
 </script>
 
-<style>
+<!-- <style>
 
       .nav-scroller {
         position: relative;
@@ -330,7 +330,7 @@ export default {
         align-items: center;
       }
 
-    </style>
+    </style> -->
 
 <!-- 1er style de fait -->
 
