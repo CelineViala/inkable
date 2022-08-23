@@ -15,18 +15,18 @@
               
             <form>
               <div class="form-outline form-white mb-4">
-                <input type="email" id="typeEmailX" class="form-control form-control-lg" />
+                <input  v-model="user.email" type="email" id="email" class="form-control form-control-lg" />
                 <label class="form-label" for="typeEmailX">Email</label>
               </div>
 
               <div class="form-outline form-white mb-4">
-                <input type="password" id="typePasswordX" class="form-control form-control-lg" />
-                <label class="form-label" for="typePasswordX">Mot de passe</label>
+                <input v-model="user.password" type="password" id="password" class="form-control form-control-lg" />
+                <label class="form-label" for="password">Mot de passe</label>
               </div>
 
               <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Mot de passe oublié</a></p>
-
-              <button class="btn btn-outline-light btn-lg px-5" type="submit">Se connecter</button>
+              <p class="text-danger">{{this.message}}</p>
+              <input type="button" class="btn btn-outline-light btn-lg px-5" @click="connect" value="Se connecter">
 
             </form>
 
@@ -37,7 +37,7 @@
               </div>
 
             </div>
-
+            
             <div>
               <p class="mb-0">Pas de compte ? <a href="#!" class="text-white-50 fw-bold">S'incrire</a>
               </p>
@@ -47,7 +47,7 @@
               <p class="mb-0">Vous êtes tatoueur ? <a href="#!" class="text-white-50 fw-bold">S'incrire en tant que tatoueur</a>
               </p>
             </div>
-
+            
           </div>
         </div>
       </div>
@@ -55,33 +55,6 @@
   </div>
 </section>
 
-
-  <!-- <h1>CONNEXION</h1>
-  <form
-    action=" "
-    method="post"
-  >
-    <label for="studio_name">email:</label><br>
-    <input
-      id="email"
-      v-model="user.email"
-      type="text"
-      name="email"
-    ><br>
-    <label for="password">Password :</label><br>
-    <input
-      id="password"
-      v-model="user.password"
-      type="password"
-      name="password"
-    > <br>
-        <input
-      type="button"
-      value="Se connecter"
-      @click="connect"
-    >
-    <p>{{ message}}</p>
-  </form> -->
 </template>
 
 <script>
@@ -90,42 +63,28 @@ export default {
     data(){
         return {
           message:null,
-            user:{
-                
+            user:{ 
             }
         }
     },
     methods:{
         connect:function(){
-            
-            console.log(this.user)
+           
                 this.axios
                 .post('http://localhost:3000/login',this.user)
                 .then((response) => {
                     console.log(response.data);
                     this.user={};
                     this.message="Connexion réussie!";
-                    //this.$router.push('/');
+                    this.$router.push('/');
                     localStorage.setItem("token",response.data.accessToken);
                     this.axios.defaults.headers.common['Authorization']=`Bearer ${response.data.accessToken}`;
                     this.$store.dispatch('check');
-
-      //               this.axios
-      // .get('http://localhost:3000/checkRole')
-      // .then((response) => {
-      //   console.log("afterConnect");
-      //   console.log(response.data);
-      // })
-      // .catch(err=>{
-      //   console.log("error after connect")
-      //   console.log(err)
-      // })
                 })
                 .catch((err)=>{
                   
-                    console.log(err);
-                    // this.message=err.response.data.message;
-                    return
+                    console.log(err.response.data.message);
+                    this.message=err.response.data.message;
                 })
 
       
