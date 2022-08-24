@@ -23,7 +23,7 @@
        ProfilPro
     </router-link> |
 
-    <router-link to="/dashbord-pro">
+    <router-link to="/dashbord-pro" v-if="this.user==='pro'">
       DashboardPro
     </router-link> |
   
