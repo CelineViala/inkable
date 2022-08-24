@@ -83,18 +83,18 @@ export default {
             del.classList.add("btn-del");
             del.id = event.id;
             del.textContent = "❌";
-            let projet = document.createElement('a')
-            projet.href = "https://www.google.fr"
+            // let projet = document.createElement('a')
+            // projet.href = "https://www.google.fr"
             edit.textContent = "✎";
             edit.classList.add("btn-edit");
-            projet.innerHTML = arg.event.extendedProps.projet
+            // projet.innerHTML = arg.event.extendedProps.projet
             title.innerHTML = arg.event.title;
             description.innerHTML = arg.event.extendedProps.description;
             del.addEventListener("click", e => {
                 console.log(e.target.id);
                 this.$refs.fullCalendar.getApi().getEventById(e.target.id).remove();
             })
-            let arrayOfDomNodes = [title, description, projet, del, edit]
+            let arrayOfDomNodes = [title, description, del, edit]
             return {
                 domNodes: arrayOfDomNodes
             }
@@ -157,7 +157,6 @@ export default {
         let calendarApi = this.$refs.fullCalendar.getApi()
         const response=await this.axios.get('http://localhost:3000/api/pro/1/rdv',this.rdv);
         const rdvs = response.data;
-        console.log("<<<<<<<<<<<<<<<<<<",calendarApi);
         rdvs.forEach(rdv => {
                 console.log(rdv)
                 calendarApi.addEvent({
