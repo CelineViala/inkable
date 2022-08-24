@@ -93,7 +93,15 @@
                 </form>
     </div> -->
 </template>
-
+<script>
+export default {
+    name:'FormulaireProject',
+    created(){
+    this.$store.dispatch('check');
+   },
+    
+}
+</script>
 <style>
 
 .gradient-custom {

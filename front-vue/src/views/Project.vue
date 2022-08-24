@@ -151,7 +151,15 @@
 
 
 </template>
-
+<script>
+export default {
+    name:'Project',
+    created(){
+    this.$store.dispatch('check');
+   },
+    
+}
+</script>
 <style>
 
 .gradient-custom {

@@ -258,6 +258,9 @@
 
 export default {
     name:'Inscriptions',
+    created(){
+    this.$store.dispatch('check');
+   },
     data(){
         return {
             newPro:{

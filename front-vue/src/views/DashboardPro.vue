@@ -15,6 +15,9 @@ export default {
     }
   },
   created(){
+    
+    this.$store.dispatch('check');
+  
     // this.role="pro"
     // console.log("test",this.role)
     // this.axios
