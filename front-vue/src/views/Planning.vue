@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-  <FullCalendar :options="calendarOptions" />
+  <FullCalendar ref="fullCalendar" :options="calendarOptions" />
   <form ref="formElm" class="form-rdv">
             <p ref="dataElm" class="data-rdv"></p>
             <label  for="titre">Titre du rdv</label>
@@ -29,6 +29,9 @@ export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
   },
+  mounted(){
+    this.getListRdv();
+  },
   data() {
 
     
@@ -47,17 +50,56 @@ export default {
             hour: '2-digit',
             minute: '2-digit'
         },
+        //  events: [{
+        //     id: 'a',
+        //     title: 'my event',
+        //     extendedProps: {
+        //         description: "test"
+        //     },
+        //     start: '2022-08-24 12:00',
+        //     end: '2022-08-24 15:00',
+
+
+        // }],
         locale: 'fr-FR',
         selectable: true,
         timeZone: 'locale',
         slotMinTime: "07:00:00",
         slotMaxTime: "20:00:00",
         expandRows: true,
-        select: this.handleSelect
+        select: this.handleSelect,
+        eventContent:this.formateEvent,
       }
     }
   },
   methods:{
+    formateEvent:function(arg){
+      var event = arg.event;
+      console.log(arg.event.extendedProps);
+      let title = document.createElement('div')
+            let description = document.createElement('div')
+            let del = document.createElement('div')
+            let edit = document.createElement('div')
+            del.classList.add("btn-del");
+            del.id = event.id;
+            del.textContent = "❌";
+            let projet = document.createElement('a')
+            projet.href = "https://www.google.fr"
+            edit.textContent = "✎";
+            edit.classList.add("btn-edit");
+            projet.innerHTML = arg.event.extendedProps.projet
+            title.innerHTML = arg.event.title;
+            description.innerHTML = arg.event.extendedProps.description;
+            del.addEventListener("click", e => {
+                console.log(e.target.id);
+                this.$refs.fullCalendar.getApi().getEventById(e.target.id).remove();
+            })
+            let arrayOfDomNodes = [title, description, projet, del, edit]
+            return {
+                domNodes: arrayOfDomNodes
+            }
+
+    },
     handleSelect(info){
       this.calendar.apiCalendar=info.view.calendar;
       this.$refs.formElm.style.display="block"
@@ -82,18 +124,58 @@ export default {
       this.$refs.formElm.style.display = 'none';
       console.log("test")
     },
+
     async valid(e){
       this.$refs.formElm.style.display = 'none';
       //!penser à dynamiser
       this.rdv.pro_id=1;
+      let idRdv;
+      //enregistrement bdd
       try {
         const response=await this.axios.post('http://localhost:3000/api/pro/1/rdv',this.rdv);
-        console.log("rdv enregistré");
-        this.rdv={};
+        console.log("rdv enregistré",response);
+        this.rdv.id=response.data.id;
+        
       } catch (error) {
         alert(error)
       }
-     
+      //ajout sur le calendrier
+      this.calendar.apiCalendar.addEvent({
+            id: idRdv,
+            title: this.rdv.title,
+            extendedProps: {
+                description: this.rdv.note,
+            },
+
+            start: this.rdv.beginning_hour,
+            end: this.rdv.ending_hour,
+        })
+      this.rdv={};
+    },
+    async getListRdv() {
+      try {
+        let calendarApi = this.$refs.fullCalendar.getApi()
+        const response=await this.axios.get('http://localhost:3000/api/pro/1/rdv',this.rdv);
+        const rdvs = response.data;
+        console.log("<<<<<<<<<<<<<<<<<<",calendarApi);
+        rdvs.forEach(rdv => {
+                console.log(rdv)
+                calendarApi.addEvent({
+                    id: rdv.id,
+                    title: rdv.title,
+                    extendedProps: {
+                        description: rdv.note,
+                        
+
+                    },
+                    start: new Date(rdv.beginning_hour),
+                    end: new Date(rdv.ending_hour)
+                });
+            });
+      
+      } catch (error) {
+        alert(error)
+      }
     }
   }
 }
