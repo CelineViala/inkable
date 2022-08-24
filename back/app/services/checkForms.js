@@ -20,11 +20,13 @@ module.exports = {
         return false;
     },
     async findUser(model, userEmail) {
+        console.log(model,userEmail)
         const user = await model.findOne({
             where: {
                 email: userEmail,
             },
         });
+        console.log(user);
         return user;
     },
 };
