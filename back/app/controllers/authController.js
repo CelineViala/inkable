@@ -23,9 +23,10 @@ const authController = {
 
         // transformation du tableau req.body.styles pour pouvoir faire l'insertion du pro dans la
         // bdd tout en remplissant la table "Style" (association manyTomany)
-
-        const styles = req.body.styles.map((style) => ({ name: style }));
-        req.body.styles = styles;
+        if (req.body.styles) {
+            const styles = req.body.styles.map((style) => ({ name: style }));
+            req.body.styles = styles;
+        }
         const newPro = await Pro.create(req.body, { include: [{ model: Style, as: 'styles' }] });
         return res.status(200).json(newPro);
     },
@@ -53,6 +54,7 @@ const authController = {
     async login(req, res, next) {
         const pro = await serviceAuth.findUser(Pro, req.body.email);
         const consumer = await serviceAuth.findUser(Consumer, req.body.email);
+        console.log(consumer);
         if (!pro && !consumer) throw new ApiError('Compte non existant', { statusCode: 500 });
 
         let user;
