@@ -49,6 +49,10 @@
 
     <router-link to="/planning">
       Planning
+    </router-link> |
+
+    <router-link to="/page404">
+      Page404
     </router-link>
 
   </nav>
