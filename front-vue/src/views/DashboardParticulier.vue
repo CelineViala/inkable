@@ -3,6 +3,39 @@
   <div class="container">
     <FullCalendar ref="fullCalendar" :options="calendarOptions" />
   </div>
+
+  <div class="container">
+    <h3>Projets en cours</h3>
+    <div class="container py-4">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-8">
+          <div class="card" style="border-radius: 15px;">
+            <h4>Titre du projet</h4>
+            <div class="card-body p-4">
+              <p>Zone du tatouage</p>
+              <button type="button" class="btn btn-primary">Détails du projet</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container py-4">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-8">
+          <div class="card" style="border-radius: 15px;">
+            <h4>Titre du projet</h4>
+            <div class="card-body p-4">
+              <p>Zone du tatouage</p>
+              <button type="button" class="btn btn-primary">Détails du projet</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
  
 
 </template>
@@ -26,6 +59,7 @@ export default {
       calendarOptions: {
         plugins: [ listDayPlugin, interactionPlugin],
         initialView: 'listDay',
+        height: 300,
         titleFormat: // will produce something like "Tuesday, September 18, 2018"
         {
             weekday: 'long',
