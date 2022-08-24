@@ -15,15 +15,12 @@
 
             <div class="col-sm-6">
               <label for="studioNmae" class="form-label">Nom du studio</label>
-              <input type="text" class="form-control" id="studioName" placeholder="" value="" required>
-              <div class="invalid-feedback">
-                Nom de studio requis.
-              </div>
+              <input type="text" class="form-control" id="studioName" placeholder=""  v-model="newPro.studio_name" required>
             </div>
 
             <div class="col-sm-6">
               <label for="city" class="form-label">Ville</label>
-              <input type="text" class="form-control" id="city" placeholder="" value="" required>
+              <input type="text" class="form-control" id="city" placeholder=""  v-model="newPro.city" required>
               <div class="invalid-feedback">
                 Ville requise.
               </div>
@@ -32,26 +29,26 @@
             <div class="container">
               <h5>Les couleurs de tatouage</h5>
               <div class="form-check-inline">
-              <input type="checkbox" class="form-check-input" id="color">
+              <input type="checkbox" class="form-check-input" id="color"  v-model="newPro.color">
               <label class="form-check-label" for="color">Tatouages couleur</label>
             </div>
             <div class="form-check-inline">
-              <input type="checkbox" class="form-check-input" id="blackAndWhite">
+              <input type="checkbox" class="form-check-input" id="blackAndWhite" v-model="newPro.black_and_white">
               <label class="form-check-label" for="blackAndWhite">Tatouages noir et blanc</label>
             </div>
 
             <div class="container">
               <h5>Les styles de tatouage</h5>
               <div class="form-check-inline">
-                <input type="checkbox" class="form-check-input" id="floral">
+                <input v-model="newPro.styles" type="checkbox" class="form-check-input" value="floral" id="floral">
                 <label class="form-check-label" for="floral">Floral</label>
               </div>
               <div class="form-check-inline">
-                <input type="checkbox" class="form-check-input" id="tribal">
+                <input v-model="newPro.styles" type="checkbox" class="form-check-input" id="tribal" value="tribal">
                 <label class="form-check-label" for="tribal">Tribal</label>
               </div>
               <div class="form-check-inline">
-                <input type="checkbox" class="form-check-input" id="aquarelle">
+                <input v-model="newPro.styles" type="checkbox" class="form-check-input" value="aquarelle" id="aquarelle">
                 <label class="form-check-label" for="aquarelle">Aquarelle</label>
               </div>
             </div>
@@ -65,8 +62,8 @@
             <h4 class="mb-3">Vos informations de connexion</h4>
 
             <div class="col-12">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="studio@example.com" required>
+              <label for="email" class="form-label" >Email</label>
+              <input v-model="newPro.email" type="email" class="form-control" id="email" placeholder="studio@example.com" required>
               <div class="invalid-feedback">
                 Email valide requis
               </div>
@@ -74,15 +71,15 @@
 
             <div class="col-12">
               <label for="username" class="form-label">Mot de passe</label>
-              <input type="text" class="form-control" id="password" required>
+              <input v-model="newPro.password" type="text" class="form-control" id="password" required>
               <div class="invalid-feedback">
                   Mot de passe requis.
               </div> 
             </div>
 
             <div class="col-12">
-              <label for="username" class="form-label">Confirmer le mot de passe</label>
-              <input type="text" class="form-control" id="confirmedPassword" required>
+              <label  for="username" class="form-label">Confirmer le mot de passe</label>
+              <input v-model="newPro.passwordConfirm" type="text" class="form-control" id="confirmedPassword" required>
               <div class="invalid-feedback">
                   Mot de passe requis.
               </div> 
@@ -98,17 +95,17 @@
             
             <div class="mb-3">
               <label for="address" class="form-label">Instagram</label>
-              <input type="text" class="form-control" id="instagram">
+              <input v-model="newPro.instagram" type="text" class="form-control" id="instagram">
             </div>
 
             <div class="mb-3">
               <label for="desciption" class="form-label">Une courte description de votre salon</label>
-              <textarea class="form-control" id="description"></textarea>
+              <textarea v-model="newPro.description" class="form-control" id="description"></textarea>
             </div>
 
           </div>
 
-          <button class="btn btn-primary btn-lg" type="submit">Valider l'inscription</button>
+          <button @click="addPro" class="btn btn-primary btn-lg" type="submit">Valider l'inscription</button>
         </form>
       </div>
     </div>
@@ -265,7 +262,8 @@ export default {
         return {
             newPro:{
                   color:false,
-                  black_and_white:false
+                  black_and_white:false,
+                  styles:[]
             },
             message:null
         }
@@ -274,9 +272,9 @@ export default {
         test:function(){
 
         },
-        addPro:function(){
-            
-            console.log(this.newPro)
+        addPro:function(e){
+            e.preventDefault()
+            console.log(this.newPro);
                 this.axios
                 .post('http://localhost:3000/signupPro',this.newPro)
                 .then((response) => {
