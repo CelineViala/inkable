@@ -29,6 +29,9 @@ export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
   },
+  created(){
+    this.$store.dispatch('check');
+  },
   mounted(){
     this.getListRdv();
   },

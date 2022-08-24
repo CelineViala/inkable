@@ -2,7 +2,8 @@ import {createStore, createstore} from 'vuex';
 import axios from 'axios';
 export default createStore({
     state:{
-        user:'Anonyme'
+        user:'Anonyme',
+        // message:null
     },
     mutations:{
         check(state,user){

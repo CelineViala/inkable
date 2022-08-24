@@ -13,7 +13,7 @@
 
             <div class="col-sm-6">
               <label for="firstName" class="form-label">Prénom</label>
-              <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+              <input v-model="newConsumer.first_name" type="text" class="form-control" id="firstName" placeholder="" required>
               <div class="invalid-feedback">
                 Prénom requis.
               </div>
@@ -21,7 +21,7 @@
 
             <div class="col-sm-6">
               <label for="lastName" class="form-label">Nom</label>
-              <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+              <input v-model="newConsumer.last_name" type="text" class="form-control" id="lastName" placeholder="" required>
               <div class="invalid-feedback">
                 Nom requise.
               </div>
@@ -29,10 +29,7 @@
 
             <div class="col-sm-6">
               <label for="dateOfBirth" class="form-label">Date de naissance </label>
-              <input type="text" class="form-control" id="dateOfBirth" placeholder="jj/mm/aaaa" value="" required>
-              <div class="invalid-feedback">
-                Date de naissance requise
-              </div>
+              <input v-model="newConsumer.date_of_birth" type="date" class="form-control" id="dateOfBirth" placeholder="jj/mm/aaaa" required>
             </div>
 
             <div class="col-sm-6">
@@ -46,22 +43,16 @@
 
             <div class="col-12">
               <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="prebom@example.com" required>
-              <div class="invalid-feedback">
-                Email valide requis
-              </div>
+              <input v-model="newConsumer.email" type="email" class="form-control" id="email" placeholder="prenom@example.com" required>
             </div>
 
             <div class="col-12">
-              <label for="username" class="form-label">Mot de passe</label>
-              <input type="text" class="form-control" id="password" required>
-              <div class="invalid-feedback">
-                  Mot de passe requis.
-              </div> 
+              <label for="password" class="form-label">Mot de passe</label>
+              <input v-model="newConsumer.password" type="password" class="form-control" id="password" required>
             </div>
             <div class="col-12">
               <label for="confirmedPassword" class="form-label">Confirmer le mot de passe</label>
-              <input type="text" class="form-control" id="confirmedPassword" required>
+              <input v-model="newConsumer.passwordConfirm" type="password" class="form-control" id="confirmedPassword" required>
               <div class="invalid-feedback">
                   Mot de passe requis.
               </div> 
@@ -70,7 +61,8 @@
 
           </div>
 
-          <button class="btn btn-primary btn-lg" type="submit">Valider l'inscription</button>
+          <input @click="addConsumer"
+          class="btn btn-primary btn-lg" value="Valider l'inscription" type="button"/>
         </form>
       </div>
     </div>
@@ -183,6 +175,9 @@
 
 export default {
     name:'Inscriptions',
+    created(){
+    this.$store.dispatch('check');
+   },
     data(){
         return {
             newConsumer:{
@@ -201,7 +196,9 @@ export default {
                     console.log(response.data);
                     this.newconsumer={};
                     this.message="Vous êtes bien inscrit!";
-                    this.$router.push('/connexion');   
+                    
+                    this.$router.push('/connexion');
+                      
                 })
                 .catch((err)=>{
                     console.log(err);

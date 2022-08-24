@@ -117,3 +117,13 @@
  
 
 </template>
+
+<script>
+export default {
+    name:'ComptePro',
+    created(){
+    this.$store.dispatch('check');
+   },
+    
+}
+</script>

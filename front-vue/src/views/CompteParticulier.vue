@@ -58,10 +58,13 @@
     <p>Pour signaler tout problèmes de comportement, images inappropriées ou bug technique, merci de nous contacter à : superequipe@onestcool.com</p>
   </div>
 </section>
-
-
-
- 
- 
-
 </template>
+<script>
+export default {
+    name:'CompteParticulier',
+    created(){
+    this.$store.dispatch('check');
+   },
+    
+}
+</script>

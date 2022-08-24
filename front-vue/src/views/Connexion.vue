@@ -60,6 +60,9 @@
 <script>
 export default {
     name:'Connexion',
+    created(){
+    this.$store.dispatch('check');
+   },
     data(){
         return {
           message:null,
