@@ -172,6 +172,13 @@
 </template>
 
 <script>
+// all Cloudinary components:
+// import Cloudinary from "cloudinary-vue";
+// Vue.use(Cloudinary, {
+//   configuration: { 
+//     cloudName: "dmoacy4yl",
+//     secure: true }
+// });
 
 export default {
     name:'Inscriptions',
@@ -190,6 +197,8 @@ export default {
       handleFile:function(e){
         console.log(e.target.files);
         //!code cloudinary
+
+        
 
         
       },
