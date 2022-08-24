@@ -254,8 +254,8 @@
   
    </form> -->
 </template>
-<script>
 
+<script>
 export default {
     name:'Inscriptions',
     created(){
@@ -271,6 +271,9 @@ export default {
         }
     },
     methods:{
+        test:function(){
+
+        },
         addPro:function(){
             
             console.log(this.newPro)

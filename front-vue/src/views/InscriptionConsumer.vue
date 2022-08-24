@@ -34,7 +34,7 @@
 
             <div class="col-sm-6">
               <label for="file" class="form-label">Selectioner une photo de profil</label>
-              <input class="form-control" type="file" id="formFile">
+              <input @change="handleFile" class="form-control" type="file" id="formFile">
             </div>
 
             
@@ -187,6 +187,12 @@ export default {
         }
     },
     methods:{
+      handleFile:function(e){
+        console.log(e.target.files);
+        //!code cloudinary
+
+        
+      },
         addConsumer:function(){
             
             console.log(this.newPro)
