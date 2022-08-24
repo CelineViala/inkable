@@ -3,6 +3,7 @@ const proController = require('./proController');
 const appointmentController = require('./appointmentController');
 const projectController = require('./projectController');
 const testController = require('./testController');
+const searchController = require('./searchController');
 const authController = require('./authController');
 
 // eslint-disable-next-line max-len
@@ -12,5 +13,6 @@ module.exports = {
     appointmentController,
     projectController,
     testController,
+    searchController,
     authController,
 };

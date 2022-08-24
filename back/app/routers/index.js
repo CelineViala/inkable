@@ -5,6 +5,7 @@ const {
     proController,
     appointmentController,
     projectController,
+    searchController,
     authController,
 } = require('../controllers');
 const { errorHandler } = require('../helpers/errorHandler');
@@ -77,6 +78,13 @@ router.route('/api/projet/:id')
 router.post('/api/projet', validate('body', projectCreateSchema), controllerHandler(projectController.createProject));
 router.get('/api/pro/:id/projet', controllerHandler(projectController.getAllProjectsByPro));
 router.get('/api/consumer/:id/projet', controllerHandler(projectController.getAllProjectsByConsumer));
+
+// Routes pour la partie search
+router.route('/api/styles')
+    .get(controllerHandler(searchController.getAllStyles));
+
+router.route('/api/cities')
+    .get(controllerHandler(searchController.getAllCities));
 
 // Route pour l'authentification
 router.post('/signupPro', validate('body', proCreateSchema), controllerHandler(authController.signupPro));
