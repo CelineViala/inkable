@@ -48,6 +48,10 @@
       Project
     </router-link> |
 
+        <router-link to="/project-particulier">
+      ProjectParticulier
+    </router-link> |
+
     <router-link to="/planning">
       Planning
     </router-link> |

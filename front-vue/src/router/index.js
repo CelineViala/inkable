@@ -12,6 +12,7 @@ import CompteParticulier from '@/views/CompteParticulier.vue';
 import ComptePro from '@/views/ComptePro.vue';
 import Planning from '@/views/Planning.vue';
 import Page404 from '@/views/Page404.vue';
+import ProjectParticulier from '@/views/ProjectParticulier';
 
 const routes=[
     {
@@ -67,6 +68,14 @@ const routes=[
         name:'Project',
         path:'/project',
         component:Project,
+        meta:{
+            allowAnonymous:true
+        }
+    },
+    {
+        name:'ProjectParticulier',
+        path:'/project-particulier',
+        component:ProjectParticulier,
         meta:{
             allowAnonymous:true
         }
