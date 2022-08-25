@@ -73,7 +73,7 @@
   <!-- Copyright -->
   <div class="text-center p-4" style="background-color:white;">
     © 2022 Copyright:
-    <a class="text-reset fw-bold" href="https://mdbootstrap.com/">Créateurs du projet Inkable</a>
+    <a class="text-reset fw-bold" href="/createurs">Créateurs du projet Inkable</a>
   </div>
   <!-- Copyright -->
 </footer>
