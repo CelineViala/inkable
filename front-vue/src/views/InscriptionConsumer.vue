@@ -1,14 +1,18 @@
 <template>
 
 
-  <div class="container">
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-10">
 
     <div class="row g-5">
       <div class="d-flex">
+        <!-- Carte noire -->
+        <div class="card bg-dark text-white" style="border-radius: 1rem;">
         <form class="needs-validation" novalidate>
-          
+          <!-- Alignement des informations -->
+          <div class="card-body p-5 text-center">
           <div class="row g-3">
-
+         
             <h4 class="mb-3">Les informations de votre profil</h4>
 
             <div class="col-sm-6">
@@ -36,10 +40,14 @@
               <label for="file" class="form-label">Selectioner une photo de profil</label>
               <input @change="handleFile" class="form-control" type="file" id="formFile">
             </div>
+          
+          </div>
 
-            
+          <div class="card-body p-5 text-center">
 
           <h4 class="mb-3">Vos informations de connexion</h4>
+
+
 
             <div class="col-12">
               <label for="email" class="form-label">Email</label>
@@ -58,16 +66,22 @@
               </div> 
             </div>
 
-
           </div>
 
           <input @click="addConsumer"
           class="btn btn-primary btn-lg" value="Valider l'inscription" type="button"/>
+
+          </div>
+        
+
+          
+        
         </form>
+        </div>
       </div>
     </div>
   </div>
-
+  
 <!-- 1er formulaire -->
 <!-- <form>
 
@@ -169,6 +183,8 @@
     <p>{{ message }}</p>
     
   </form> -->
+  
+  </section>
 </template>
 
 <script>
