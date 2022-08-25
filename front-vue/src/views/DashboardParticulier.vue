@@ -1,43 +1,52 @@
 <template>
   <h1>Dashboard Particulier</h1>
-  <div class="container">
-    <FullCalendar ref="fullCalendar" :options="calendarOptions" />
-  </div>
+  <section class=" gradient-custom">
+    <div class="container py-5 h-10">
 
-  <div class="container">
-    <h3>Projets en cours</h3>
-    <div class="container py-4">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-8">
-          <div class="card" style="border-radius: 15px;">
-            <h4>Titre du projet</h4>
-            <div class="card-body p-4">
-              <p>Zone du tatouage</p>
-              <button type="button" class="btn btn-primary">Détails du projet</button>
+      <div class="container py-5 h-10">
+        <div class="card" style="border-radius: 1rem;">
+          <FullCalendar ref="fullCalendar" :options="calendarOptions"/>
+          <p> Si vous souaitez modifier ou annuler un rendez-vous, contactez votre tatoueur</p>
+        </div>
+      </div>
+
+<!-- Première carte projet -->
+      <div class="container py-5 h-10">
+        <h4 class="text-white">Projets en cours</h4>
+        <div class="container py-4">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-8">
+              <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div class="card-body p-4">
+                  <h5>Titre du projet</h5>
+                  <p>Zone du tatouage</p>
+                  <button type="button" class="btn btn-primary">Détails du projet</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!-- Seconde carte projet -->
+       <div class="container py-5 h-10">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-8">
+              <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div class="card-body p-4">
+                  <h5>Titre du projet</h5>
+                  <p>Zone du tatouage</p>
+                  <button type="button" class="btn btn-primary">Détails du projet</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="container py-4">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-8">
-          <div class="card" style="border-radius: 15px;">
-            <h4>Titre du projet</h4>
-            <div class="card-body p-4">
-              <p>Zone du tatouage</p>
-              <button type="button" class="btn btn-primary">Détails du projet</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   
  
-
+    </div>
+  </section>
 </template>
 <script>
 import '@fullcalendar/core/vdom' // solves problem with Vite

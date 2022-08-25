@@ -1,116 +1,133 @@
 
 <template>
-
-
-  <div class="container">
-  <main>
-
+<!-- Section avec background -->
+<section class=" gradient-custom">
+  <div class="container py-5 h-10">
     <div class="row g-5">
       <div class="d-flex">
-        <form class="needs-validation" novalidate>
-          
-          <div class="row g-3">
 
-            <h4 class="mb-3">Les informations de votre studio</h4>
+          <!-- Carte noire -->
+          <div class="card bg-dark text-white" style="border-radius: 1rem;">
+            <form class="needs-validation" novalidate>
+              
+              <!-- Alignement des informations -->
+              <div class="card-body p-5 text-center">
+                <div class="row g-3">
 
-            <div class="col-sm-6">
-              <label for="studioNmae" class="form-label">Nom du studio</label>
-              <input type="text" class="form-control" id="studioName" placeholder=""  v-model="newPro.studio_name" required>
-            </div>
+                  <h4 class="mb-3">Les informations de votre studio</h4>
 
-            <div class="col-sm-6">
-              <label for="city" class="form-label">Ville</label>
-              <input type="text" class="form-control" id="city" placeholder=""  v-model="newPro.city" required>
-              <div class="invalid-feedback">
-                Ville requise.
+                  <div class="col-sm-6">
+                    <label for="studioNmae" class="form-label">Nom du studio</label>
+                    <input type="text" class="form-control" id="studioName" placeholder=""  v-model="newPro.studio_name" required>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label for="city" class="form-label">Ville</label>
+                    <input type="text" class="form-control" id="city" placeholder=""  v-model="newPro.city" required>
+                    <div class="invalid-feedback">
+                      Ville requise.
+                    </div>
+                  </div>
+
+                  <div class="container py-5 h-10">
+                    <h4>Les couleurs de tatouage</h4>
+                    <div class="form-check-inline">
+                    <input type="checkbox" class="form-check-input" id="color"  v-model="newPro.color">
+                    <label class="form-check-label" for="color">Tatouages couleur</label>
+                  </div>
+
+                  <div class="form-check-inline">
+                    <input type="checkbox" class="form-check-input" id="blackAndWhite" v-model="newPro.black_and_white">
+                    <label class="form-check-label" for="blackAndWhite">Tatouages noir et blanc</label>
+                  </div>
+
+                  <div class="container pt-5 h-10">
+
+                    <h4>Les styles de tatouage</h4>
+
+                    <div class="form-check-inline">
+                      <input v-model="newPro.styles" type="checkbox" class="form-check-input" value="floral" id="floral">
+                      <label class="form-check-label" for="floral">Floral</label>
+                    </div>
+
+                    <div class="form-check-inline">
+                      <input v-model="newPro.styles" type="checkbox" class="form-check-input" id="tribal" value="tribal">
+                      <label class="form-check-label" for="tribal">Tribal</label>
+                    </div>
+
+                    <div class="form-check-inline">
+                      <input v-model="newPro.styles" type="checkbox" class="form-check-input" value="aquarelle" id="aquarelle">
+                      <label class="form-check-label" for="aquarelle">Aquarelle</label>
+                    </div>
+
+                  </div>
+
+                  </div>
+                </div>
+                  
+
+                <div class="card-body p-2 text-center">           
+
+                  <h4 class="mb-3">Vos informations de connexion</h4>
+
+                  <div class="col-12">
+                    <label for="email" class="form-label" >Email</label>
+                    <input v-model="newPro.email" type="email" class="form-control" id="email" placeholder="studio@example.com" required>
+                    <div class="invalid-feedback">
+                      Email valide requis
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="username" class="form-label">Mot de passe</label>
+                    <input v-model="newPro.password" type="text" class="form-control" id="password" required>
+                    <div class="invalid-feedback">
+                      Mot de passe requis.
+                    </div> 
+                  </div>
+
+                  <div class="col-12">
+                    <label  for="username" class="form-label">Confirmer le mot de passe</label>
+                    <input v-model="newPro.passwordConfirm" type="text" class="form-control" id="confirmedPassword" required>
+                    <div class="invalid-feedback">
+                      Mot de passe requis.
+                    </div> 
+                  </div>
+
+                </div> 
+
+                <div class="card-body p-5 text-center">
+
+                  <h4 class="mb-3">Vos informations complémentaires</h4>
+
+                  <div class="mb-3">
+                    <label for="file" class="form-label">Selectioner une photo de profil</label>
+                    <input class="form-control" type="file" id="formFile">
+                  </div>
+                    
+                  <div class="mb-3">
+                    <label for="address" class="form-label">Instagram</label>
+                    <input v-model="newPro.instagram" type="text" class="form-control" id="instagram">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="desciption" class="form-label">Une courte description de votre salon</label>
+                    <textarea v-model="newPro.description" class="form-control" id="description"></textarea>
+                  </div>
+
+                </div> 
+
+                <button @click="addPro" class="btn btn-primary btn-lg" type="submit">Valider l'inscription</button>
+                
               </div>
-            </div>
-
-            <div class="container">
-              <h5>Les couleurs de tatouage</h5>
-              <div class="form-check-inline">
-              <input type="checkbox" class="form-check-input" id="color"  v-model="newPro.color">
-              <label class="form-check-label" for="color">Tatouages couleur</label>
-            </div>
-            <div class="form-check-inline">
-              <input type="checkbox" class="form-check-input" id="blackAndWhite" v-model="newPro.black_and_white">
-              <label class="form-check-label" for="blackAndWhite">Tatouages noir et blanc</label>
-            </div>
-
-            <div class="container">
-              <h5>Les styles de tatouage</h5>
-              <div class="form-check-inline">
-                <input v-model="newPro.styles" type="checkbox" class="form-check-input" value="floral" id="floral">
-                <label class="form-check-label" for="floral">Floral</label>
-              </div>
-              <div class="form-check-inline">
-                <input v-model="newPro.styles" type="checkbox" class="form-check-input" id="tribal" value="tribal">
-                <label class="form-check-label" for="tribal">Tribal</label>
-              </div>
-              <div class="form-check-inline">
-                <input v-model="newPro.styles" type="checkbox" class="form-check-input" value="aquarelle" id="aquarelle">
-                <label class="form-check-label" for="aquarelle">Aquarelle</label>
-              </div>
-            </div>
-
+            
+            </form>
           </div>
 
-            
-
-            
-
-            <h4 class="mb-3">Vos informations de connexion</h4>
-
-            <div class="col-12">
-              <label for="email" class="form-label" >Email</label>
-              <input v-model="newPro.email" type="email" class="form-control" id="email" placeholder="studio@example.com" required>
-              <div class="invalid-feedback">
-                Email valide requis
-              </div>
-            </div>
-
-            <div class="col-12">
-              <label for="username" class="form-label">Mot de passe</label>
-              <input v-model="newPro.password" type="text" class="form-control" id="password" required>
-              <div class="invalid-feedback">
-                  Mot de passe requis.
-              </div> 
-            </div>
-
-            <div class="col-12">
-              <label  for="username" class="form-label">Confirmer le mot de passe</label>
-              <input v-model="newPro.passwordConfirm" type="text" class="form-control" id="confirmedPassword" required>
-              <div class="invalid-feedback">
-                  Mot de passe requis.
-              </div> 
-            </div>
-
-          <h4 class="mb-3">Vos informations complémentaires</h4>
-
-            <div class="mb-3">
-              <label for="file" class="form-label">Selectioner une photo de profil</label>
-              <input class="form-control" type="file" id="formFile">
-            </div>
-
-            
-            <div class="mb-3">
-              <label for="address" class="form-label">Instagram</label>
-              <input v-model="newPro.instagram" type="text" class="form-control" id="instagram">
-            </div>
-
-            <div class="mb-3">
-              <label for="desciption" class="form-label">Une courte description de votre salon</label>
-              <textarea v-model="newPro.description" class="form-control" id="description"></textarea>
-            </div>
-
-          </div>
-
-          <button @click="addPro" class="btn btn-primary btn-lg" type="submit">Valider l'inscription</button>
-        </form>
+        </div>
       </div>
     </div>
-  </main>
-</div>
+  </section>
 
 <!-- 1er formulaire inscription pro -->
 
@@ -250,6 +267,7 @@
     <p>{{ message }}</p>
   
    </form> -->
+
 </template>
 
 <script>
