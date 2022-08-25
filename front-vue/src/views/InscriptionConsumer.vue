@@ -2,7 +2,11 @@
 
 
   <div class="container">
-
+    <button 
+      id="upload_widget" 
+      class="cloudinary-button">
+        Upload files
+    </button>
     <div class="row g-5">
       <div class="d-flex">
         <form class="needs-validation" novalidate>
@@ -172,21 +176,21 @@
 </template>
 
 <script>
-// all Cloudinary components:
-// import Cloudinary from "cloudinary-vue";
-// Vue.use(Cloudinary, {
-//   configuration: { 
-//     cloudName: "dmoacy4yl",
-//     secure: true }
-// });
+
 
 export default {
     name:'Inscriptions',
     created(){
-    this.$store.dispatch('check');
+      
+    
+      this.$store.dispatch('check'); 
+
    },
     data(){
         return {
+            requestObj:{
+              
+            },
             newConsumer:{
                   
             },
@@ -196,30 +200,67 @@ export default {
     methods:{
       handleFile:function(e){
         console.log(e.target.files);
+        let reader=new FileReader();
+        let files;
+        reader.addEventListener("load", ()=>{
+          console.log(reader.result)
+          files=reader.result;
+          console.log(files)
+          let requestObj={
+            url:'https://api.cloudinary.com/v1_1/dmoacy4yl/image/upload',
+            method:"POST",
+            data:{upload_preset:"preset",file:files}
+          }
+          this.requestObj.url='https://api.cloudinary.com/v1_1/dmoacy4yl/image/upload';
+          this.requestObj.method='POST';
+          this.requestObj.data={upload_preset:"preset",file:files}
+
+          
+        
+          
+        })
+
+        reader.readAsDataURL(e.target.files[0]);
+        
+  
+        
         //!code cloudinary
 
         
 
         
       },
-        addConsumer:function(){
-            
-            console.log(this.newPro)
-                this.axios
-                .post('http://localhost:3000/signupConsumer',this.newConsumer)
+        addConsumer:async function(){
+            //requete pour enregistrer la photo sur cloudinary
+
+            let instance = this.axios.create();
+            delete instance.defaults.headers.common['Authorization'];
+
+            instance(this.requestObj)
                 .then((response) => {
-                    console.log(response.data);
-                    this.newconsumer={};
-                    this.message="Vous êtes bien inscrit!";
-                    
-                    this.$router.push('/connexion');
-                      
+                    this.newConsumer.profile_picture_path_consumer=response.data.url; 
+
+                    //requete pour enregistrer le consumer
+                    this.axios
+                      .post('http://localhost:3000/signupConsumer',this.newConsumer)
+                      .then((response) => {
+                          console.log(response.data);
+                          this.newConsumer={};
+                          this.message="Vous êtes bien inscrit!";
+                          this.$router.push('/connexion');       
+                      })
+                      .catch((err)=>{
+                          console.log(err);
+                          this.message=err.response.data.message;
+                          return
+                      })                                  
                 })
                 .catch((err)=>{
                     console.log(err);
-                    this.message=err.response.data.message;
                     return
                 })
+            
+                
             
             
         }
