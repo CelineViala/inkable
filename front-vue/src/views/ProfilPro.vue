@@ -1,20 +1,18 @@
 <template>
 <h1>Pro</h1>
-  <main class="my-5">
-    <div class="container">
-
+    
 
  <!-- Premier système de rows et colonnes pour l'image de prfils , le nom et la ville du tatoueur -->
 
      
       
-<section class="border-bottom pb-3 mb-3">
+<section class="gradient-custom">
   <div class="container py-4">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-8">
-        <div class="card" style="border-radius: 15px;">
+        <div class="card bg-dark text-white" style="border-radius: 1rem;">
           <div class="card-body p-4">
-            <div class="d-flex text-black">
+            <div class="d-flex">
               <div class="flex-shrink-0">
                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
                   alt="Generic placeholder image" class="img-fluid"
@@ -25,8 +23,8 @@
                 <h5 class="mb-1">Nom du tatoueur</h5>
                 </div>
 
-                <div class="d-flex justify-content-start rounded-3 p-1 mb-1">
-                <p class="mb-2 pb-1" style="color: #2b2a2a;">
+                <div class="d-flex justify-content-start rounded-3 p-1 mb-1 ">
+                <p class="mb-2 pb-1 text-white" style="color: #2b2a2a;">
                   Ville du tatoueur
                 </p>
                 </div>
@@ -34,32 +32,32 @@
 
                 <div class="d-flex justify-content-start rounded-3 p-2 mb-2">
                   <div>
-                    <span class="badge text-bg-dark">Spécialité 1</span>
+                    <span class="badge text-bg-light">Spécialité 1</span>
                   </div>
                   <div class="px-3">
-                    <span class="badge text-bg-dark">Spécialité 2</span>
+                    <span class="badge text-bg-light">Spécialité 2</span>
                   </div>
                   <div>
-                    <span class="badge text-bg-dark">Spécialité 3</span>
+                    <span class="badge text-bg-light">Spécialité 3</span>
                   </div>
                 </div>
                 <div class="d-flex justify-content-start rounded-3 p-2 mb-2">
                   <div>
-                    <span class="badge text-bg-dark">Couleur</span>
+                    <span class="badge text-bg-secondary">Couleur</span>
                   </div>
                   <div class="px-3">
-                    <span class="badge text-bg-dark">Noir et blanc</span>
+                    <span class="badge text-bg-secondary">Noir et blanc</span>
                   </div>
                 </div>
 
 
 
                 <div class="d-flex pt-1">
-                     <button type="button" class="btn btn-outline-primary me-1 flex-grow-1">
+                     <button type="button" class="btn btn-outline-light me-1 flex-grow-1">
                       Instagram
                     </button>
 
-                  <button type="button" class="btn btn-primary flex-grow-1" style="background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));">
+                  <button type="button" class="btn btn-outline-dark text-light flex-grow-1" style="background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));">
                     Prendre rendez-vous
                   </button>
                 </div>
@@ -71,25 +69,10 @@
     </div>
   </div>
 </section>
-<!-- <div class="container text-center">
 
-  <div class="row row-cols-2">
-    
-    <div class="col-3">
-      <img src="https://picsum.photos/200" class="img-fluid" alt="image">
-    </div>
-
-    <div class="col">
-      <div class="row">Nom tatoueur</div>
-      <div class="row">Ville</div>
-    </div>
-
-  </div>
-
-</div>
-<br> -->
+<div class="container py-5">
 <div class="row">
-<h5 class="mb-3 h5 ">Description</h5>
+    <h3>Description</h3>
     <p class=" ">
       Lorem, ipsum dolor sit amet consectetur adipisicing
       elit. A nemo commodi odio veniam nisi? Cupiditate
@@ -106,7 +89,7 @@
   </div>
 
 <!-- Second système de rows et colonnes pour la galerie -->
-<div class="row">
+<div class="row ">
   <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
     <img
       src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(73).webp"
@@ -149,10 +132,9 @@
     />
   </div>
 </div>
+</div>
 
 
-    </div>
-  </main>
 </template>
 
 

@@ -1,21 +1,47 @@
 <template>
-  <div class="container">
-  <FullCalendar ref="fullCalendar" :options="calendarOptions" />
-  <form ref="formElm" class="form-rdv">
-    <p ref="dataElm" class="data-rdv"></p>
-    <label  for="titre">Titre du rdv</label>
-    <input v-model="rdv.title" id="titre" name="titre" type="text">
-    <label for="description">Description du rdv</label>
-    <input v-model="rdv.note" id="description" name="description" type="text">
-    <!-- <label for="linkProject">Lien vers le projet</label>
-    <input  id="linkProject" name="linkProject" type="text"> -->
-    <input v-model="rdv.beginning_hour" id="startInput" name="start" type="hidden">
-    <input v-model="rdv.ending_hour" id="endInput" name="end" type="hidden">
-    <input @click="cancel" type="button" class="cancel" value="ANNULER">
-    <input @click="valid" type="button" class="cancel" value="VALIDER">
-            
-  </form>
-  </div>
+  <section class=" gradient-custom">
+    <div class="container py-5 h-10">
+
+
+      <div class="container py-5 h-10">
+        <div class="card" style="border-radius: 1rem;">
+          <FullCalendar ref="fullCalendar" :options="calendarOptions" />
+
+
+            <form ref="formElm" class="form-rdv">
+
+              <p ref="dataElm" class="data-rdv">
+                  TEST
+              </p>
+
+              <label  for="titre">
+                Titre du rdv
+              </label>
+
+              <input v-model="rdv.title" id="titre" name="titre" type="text">
+
+              <label for="description">
+                Description du rdv
+              </label>
+
+              <input v-model="rdv.note" id="description" name="description" type="text">
+              <!-- <label for="linkProject">Lien vers le projet</label>
+              <input  id="linkProject" name="linkProject" type="text"> -->
+
+              <input v-model="rdv.beginning_hour" id="startInput" name="start" type="hidden">
+              
+              <input v-model="rdv.ending_hour" id="endInput" name="end" type="hidden">
+              
+              <input @click="cancel" type="button" class="cancel" value="ANNULER">
+              
+              <input @click="valid" type="button" class="cancel" value="VALIDER">
+                      
+            </form>
+        </div>
+      </div>
+
+    </div>
+  </section>
 </template>
 
 <script>
