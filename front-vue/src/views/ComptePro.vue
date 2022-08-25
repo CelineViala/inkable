@@ -76,14 +76,14 @@
 
                     <div class="form-outline form-white mb-4 form-check-inline">
                       <input class="form-check-input" type="checkbox" value="color" id="color">
-                      <label class="form-check-label-inline" for="flexCheckDefault">
+                      <label class="form-check-label-inline" for="color">
                         Tatouages couleur
                       </label>
                     </div>
 
                     <div class="form-outline form-white mb-4 form-check-inline">
                       <input class="form-check-input" type="checkbox" value="bAndW" id="bAndW">
-                      <label class="form-check-label-inline" for="flexCheckChecked">
+                      <label class="form-check-label-inline" for="bAndW">
                         Tatouages noir et blanc
                       </label>
                     </div>
