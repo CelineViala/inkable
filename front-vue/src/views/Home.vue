@@ -4,13 +4,11 @@
   <form>
   <select class="form-select" aria-label="Default select example">
   <option selected>Choisissez une ville</option>
-  <option value="1">Toulouse</option>
-  <option value="2">Paris</option>
+  <option v-for="city in cities" :value="city">{{city}}</option>
 </select>
   <select class="form-select" aria-label="Default select example">
   <option selected>Choisissez un style</option>
-  <option value="1">Tribal</option>
-  <option value="2">Floral</option>
+  <option v-for="style in styles" :value="style">{{style}}</option>
 </select>
   <div class="form-check-inline">
   <input class="form-check-input" type="checkbox" value="" id="colorTatoo" checked>
@@ -78,19 +76,37 @@ export default {
   name:'Home',
   data(){
     return{
+        cities:[],
+        styles:[],
         pro:undefined
     }
   },
   created(){
-    this.role="pro"
-    console.log("test",this.role)
+    this.role="pro";
+    console.log("test",this.role);
     this.axios
       .get('http://localhost:3000/api/pro')
       .then((response) => {
         console.log(response.data);
         this.pro=response.data;
       })
-    this.$store.dispatch('check');
+      .catch((err)=> console.log(err));
+    //récupération des styles a afficher dans les balises select
+    this.axios
+      .get('http://localhost:3000/api/styles')
+      .then((response)=>{ 
+        this.styles=response.data.map((item)=> item.name).sort();
+      })
+      .catch((err)=> console.log(err));
+      this.$store.dispatch('check');
+     //récupération des villes a afficher dans les balises select
+    this.axios
+      .get('http://localhost:3000/api/cities')
+      .then((response)=>{
+        this.cities=response.data[0].map((item)=> item.city).sort();
+      })
+      .catch((err)=> console.log(err));
+      this.$store.dispatch('check');
   }
     
 }
