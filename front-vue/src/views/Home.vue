@@ -11,7 +11,7 @@
             <div class="mb-3">
               <select class="form-select" aria-label="Default select example">
                 <option selected>Choisissez une ville</option>
-                <option v-for="city in cities" :value="city">{{city}}</option>
+                <option v-for="city in this.$store.state.cities" :value="city">{{city}}</option>
               </select>
             </div>
 
@@ -19,7 +19,7 @@
             <div class="mb-3">
               <select class="form-select" aria-label="Default select example">
                 <option selected>Choisissez un style</option>
-                <option v-for="style in styles" :value="style">{{style}}</option>
+                <option v-for="style in this.$store.state.styles" :value="style">{{style}}</option>
               </select>
             </div>
 
@@ -75,31 +75,6 @@
       
       </div>
     </div>
-
-
-
-
-  <!-- <div class="pros">
-    <div
-      v-for="p in pro"
-      class="pro"
-    >
-       
-       <img
-      src="{{p.profile_picture_path_pro}}"
-      alt="PHOTO PROFIL"
-    >
-      <p>Nom studio:{{ p.studio_name }}</p>
-      <p>Ville:{{ p.city }}</p>
-      <div>
-        <h2>Styles:</h2>
-      <p v-for="style in p.styles">{{style.name}}</p>
-      <router-link :to="{name:'Pro_detail', params:{id:p.id}}">
-        En savoir +
-      </router-link>
-      </div>
-    </div>
-  </div> -->
   </section>
 </template>
 <script>
@@ -123,22 +98,6 @@ export default {
         this.pro=response.data;
       })
       .catch((err)=> console.log(err));
-    //récupération des styles a afficher dans les balises select
-    this.axios
-      .get('http://localhost:3000/api/styles')
-      .then((response)=>{ 
-        this.styles=response.data.map((item)=> item.name).sort();
-      })
-      .catch((err)=> console.log(err));
-      this.$store.dispatch('check');
-     //récupération des villes a afficher dans les balises select
-    this.axios
-      .get('http://localhost:3000/api/cities')
-      .then((response)=>{
-        this.cities=response.data[0].map((item)=> item.city).sort();
-      })
-      .catch((err)=> console.log(err));
-      this.$store.dispatch('check');
   }
     
 }

@@ -125,7 +125,10 @@ export default {
   computed:{
     user() {
           return this.$store.state.user
-        }
+        },
+    cities(){
+        return this.$store.state.cities
+    }
   },
   methods:{
      checkRole: async function(){
@@ -146,10 +149,15 @@ export default {
   updated(){
     console.log("updated");
   },
-  created(){
+  async created(){  
     
     this.axios.defaults.headers.common['Authorization']=`Bearer ${localStorage.token}`;
     this.checkRole();
+    this.$store.dispatch('getAllStyles');
+    this.$store.dispatch('getAllCities');
+    const test=await this.$store.dispatch('handleUploadToCloudinary')
+    console.log(test);
+
   }
   
 }
