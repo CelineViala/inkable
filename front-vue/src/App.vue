@@ -76,6 +76,23 @@
 <!-- 3eme partie -->
     <div class="px-3 py-2 border-bottom mb-3">
 
+
+        <router-link to="/project-particulier">
+      ProjectParticulier
+    </router-link> |
+
+    <router-link to="/planning">
+      Planning
+    </router-link> |
+
+    <router-link to="/page404">
+      Page404
+    </router-link> |
+
+    <router-link to="/createurs">
+      Createurs
+    </router-link>
+
         <div class="text-end">
           <router-link to="/page404">
             <button type="button" class="btn btn-light text-dark me-2">404</button>
@@ -90,7 +107,24 @@
         
     </div>
 
+
   <router-view />
+
+<footer class="text-center text-lg-start bg-light text-muted">
+  
+
+  <!-- Copyright -->
+  <div class="text-center p-4" style="background-color:white;">
+    © 2022 Copyright:
+    <a class="text-reset fw-bold" href="https://mdbootstrap.com/">Créateurs du projet Inkable</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+
+
+
+
+
 </template>
 
 <script>

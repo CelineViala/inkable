@@ -13,6 +13,7 @@ import ComptePro from '@/views/ComptePro.vue';
 import Planning from '@/views/Planning.vue';
 import Page404 from '@/views/Page404.vue';
 import ProjectParticulier from '@/views/ProjectParticulier';
+import Createurs from '@/views/Createurs.vue';
 
 const routes=[
     {
@@ -129,7 +130,14 @@ const routes=[
             allowAnonymous:true
         }
     },
-
+    {
+        name:'createurs',
+        path:'/createurs',
+        component:Createurs,
+        meta:{
+            allowAnonymous:true
+        }
+    },
 
     
 ];
