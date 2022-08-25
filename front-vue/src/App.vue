@@ -58,10 +58,30 @@
 
     <router-link to="/page404">
       Page404
+    </router-link> |
+
+    <router-link to="/createurs">
+      Createurs
     </router-link>
 
   </nav>
   <router-view />
+
+<footer class="text-center text-lg-start bg-light text-muted">
+  
+
+  <!-- Copyright -->
+  <div class="text-center p-4" style="background-color:white;">
+    © 2022 Copyright:
+    <a class="text-reset fw-bold" href="https://mdbootstrap.com/">Créateurs du projet Inkable</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+
+
+
+
+
 </template>
 
 <script>
