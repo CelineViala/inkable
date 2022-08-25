@@ -75,24 +75,7 @@
 
 <!-- 3eme partie -->
     <div class="px-3 py-2 border-bottom mb-3">
-
-
-        <router-link to="/project-particulier">
-      ProjectParticulier
-    </router-link> |
-
-    <router-link to="/planning">
-      Planning
-    </router-link> |
-
-    <router-link to="/page404">
-      Page404
-    </router-link> |
-
-    <router-link to="/createurs">
-      Createurs
-    </router-link>
-
+      
         <div class="text-end">
           <router-link to="/page404">
             <button type="button" class="btn btn-light text-dark me-2">404</button>
