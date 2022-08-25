@@ -1,7 +1,6 @@
 <template>
 
 
-  <div class="container">
 
 <section class="vh-100 gradient-custom">
   <div class="container py-5 h-10">
@@ -83,7 +82,7 @@
       </div>
     </div>
   </div>
-  
+
 <!-- 1er formulaire -->
 <!-- <form>
 
