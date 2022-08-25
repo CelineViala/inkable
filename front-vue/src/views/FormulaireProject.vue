@@ -13,36 +13,38 @@
 
             <form>
               <div class="form-outline form-white mb-4">
-                <input type="text" id="typeText" class="form-control form-control-lg" />
+                <input v-model="newProject.title" type="text" id="typeText" class="form-control form-control-lg" />
                 <label class="form-label" for="typeText">Titre du projet</label>
               </div>
 
               <div class="form-outline form-white mb-4">
-                <input type="text" id="typeText" class="form-control form-control-lg" />
-                <label class="form-label" for="typeText">Description</label>
+                <!-- <input v-model="newProject.description" type="text" id="typeText" class="form-control form-control-lg" />-->
+                <textarea v-model="newProject.description" type="text" id="typeText" class="form-control form-control-lg"></textarea>
+                <label class="form-label" for="typeText">Description</label> 
               </div>
 
               <div class="form-outline form-white mb-4">
-                <input type="text" id="typeText" class="form-control form-control-lg" />
+                <input v-model="newProject.area" type="text" id="typeText" class="form-control form-control-lg" />
                 <label class="form-label" for="typeText">Zone à tatouer</label>
               </div>
            
-
+            
              <div class="form-outline form-white mb-4 form-check-inline">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                <label class="form-check-label" for="flexRadioDefault1">
-                    Couleur
-                </label>
-             </div>
-
-             <div class="form-outline form-white mb-4 form-check-inline">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                <label class="form-check-label" for="flexRadioDefault2">
+                <input v-model="newProject.color" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="black_and_white">
+                <label class="form-check-label" for="flexRadioDefault">
                     Noir et blanc
                 </label>
              </div>
 
-             <button class="btn btn-outline-light btn-lg px-5" type="submit">Prendrez rendez-vous</button>
+             <div class="form-outline form-white mb-4 form-check-inline">
+                <input v-model="newProject.color" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="color">
+                <label class="form-check-label" for="flexRadioDefault">
+                    Couleur
+                </label>
+             </div>
+             <p class="text-success">{{this.messageSuccess}}</p>
+             <p class="text-danger">{{this.messageError}}</p>
+             <input @click="validForm" class="btn btn-outline-light btn-lg px-5" value="Prendre rendez-vous" type="button"/>
             </form>
         
             </div>
@@ -96,9 +98,41 @@
 <script>
 export default {
     name:'FormulaireProject',
+    data(){
+      return {
+            
+            newProject:{
+              
+            },
+            messageSuccess:null,
+            messageError:null,
+        }
+    },
     created(){
     this.$store.dispatch('check');
    },
+   methods:{
+    validForm:function(){ 
+      if(this.newProject.color!==undefined)   
+        this.newProject.color=this.newProject.color==='color'?true:false;
+      this.newProject.pro_id=1; //ATTENTION rendre dynamique
+      this.newProject.consumer_id=1; //ATTENTION rendre dynamique
+      
+      this.axios
+      .post('http://localhost:3000/api/projet',this.newProject) 
+      .then((response) => {
+        
+        this.newProject={};
+        this.messageSuccess="Votre projet a bien été enregistré";
+        this.messageError=null;
+      })
+      .catch((err)=>{
+        console.log(err)
+        this.messageError=err.response.data.message;
+      })
+    }
+   }
+
     
 }
 </script>
