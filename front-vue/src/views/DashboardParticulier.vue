@@ -20,6 +20,7 @@
                 <div class="card-body p-4">
                   <h5>Titre du projet</h5>
                   <p>Zone du tatouage</p>
+                  <!-- Ce bouton amène sur la page de projet non modifiable, seul le pro peut le faire -->
                   <button type="button" class="btn btn-primary">Détails du projet</button>
                 </div>
               </div>
