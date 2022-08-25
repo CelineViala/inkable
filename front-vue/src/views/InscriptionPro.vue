@@ -80,7 +80,7 @@
 
                   <div class="col-12">
                     <label for="username" class="form-label">Mot de passe</label>
-                    <input v-model="newPro.password" type="text" class="form-control" id="password" required>
+                    <input v-model="newPro.password" type="password" class="form-control" id="password" required>
                     <div class="invalid-feedback">
                       Mot de passe requis.
                     </div> 
@@ -88,7 +88,7 @@
 
                   <div class="col-12">
                     <label  for="username" class="form-label">Confirmer le mot de passe</label>
-                    <input v-model="newPro.passwordConfirm" type="text" class="form-control" id="confirmedPassword" required>
+                    <input v-model="newPro.passwordConfirm" type="password" class="form-control" id="confirmedPassword" required>
                     <div class="invalid-feedback">
                       Mot de passe requis.
                     </div> 
@@ -111,7 +111,7 @@
                   </div>
 
                   <div class="mb-3">
-                    <label for="desciption" class="form-label">Une courte description de votre salon</label>
+                    <label for="description" class="form-label">Une courte description de votre salon</label>
                     <textarea v-model="newPro.description" class="form-control" id="description"></textarea>
                   </div>
 
