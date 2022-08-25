@@ -45,21 +45,10 @@
 
                     <h4>Les styles de tatouage</h4>
 
-                    <div class="form-check-inline">
-                      <input v-model="newPro.styles" type="checkbox" class="form-check-input" value="floral" id="floral">
-                      <label class="form-check-label" for="floral">Floral</label>
+                    <div v-for="style in this.$store.state.styles" class="form-check-inline">
+                      <input v-model="newPro.styles" type="checkbox" class="form-check-input" :value="style" :id="style">
+                      <label class="form-check-label" :for="style">{{style}}</label>
                     </div>
-
-                    <div class="form-check-inline">
-                      <input v-model="newPro.styles" type="checkbox" class="form-check-input" id="tribal" value="tribal">
-                      <label class="form-check-label" for="tribal">Tribal</label>
-                    </div>
-
-                    <div class="form-check-inline">
-                      <input v-model="newPro.styles" type="checkbox" class="form-check-input" value="aquarelle" id="aquarelle">
-                      <label class="form-check-label" for="aquarelle">Aquarelle</label>
-                    </div>
-
                   </div>
 
                   </div>

@@ -94,28 +94,12 @@
                 <div class="mb-3">
 
                   <h4>Styles de tatouages</h4>
-
-                    <div class="form-outline form-white mb-4 form-check-inline">
-                      <input v-model="editPro.styles" class="form-check-input" type="checkbox" value="floral" id="floral">
-                      <label class="form-check-label-inline" for="floral">
-                        Tatouages floraux
+                    <div v-for="style in this.$store.state.styles" class="form-outline form-white mb-4 form-check-inline">
+                      <input v-model="editPro.styles" class="form-check-input" type="checkbox" :value="style" :id="style">
+                      <label class="form-check-label-inline" :for="style">
+                        {{style}} 
                       </label>
                     </div>
-
-                    <div class="form-outline form-white mb-4 form-check-inline">
-                      <input v-model="editPro.styles" class="form-check-input" type="checkbox" value="tribal" id="tribal">
-                      <label class="form-check-label-inline" for="tribal">
-                        Tatouages tribaux
-                      </label>
-                    </div>
-
-                    <div class="form-outline form-white mb-4 form-check-inline">
-                      <input v-model="editPro.styles" class="form-check-input" type="checkbox" value="aquarelle" id="aquarelle">
-                      <label class="form-check-label-inline" for="aquarelle">
-                        Tatouages aquarelles
-                      </label>
-                    </div>
-
                 </div>
 
                 <button @click="editProfile" type="submit" class="btn btn-primary">Modifier mes informations</button>
@@ -152,8 +136,7 @@ export default {
     name:'ComptePro',
     created(){
       
-      //récupération des styles 
-      //récupération du pro en bdd
+     
       this.axios
         .get('http://localhost:3000/api/pro/3')
         .then((response) => {
