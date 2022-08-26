@@ -1,75 +1,59 @@
 <template>
-  <h1>Project</h1>
+  <h1>Project Pro</h1>
 
 <section class=" gradient-custom">
     <div class="container py-5 h-100">
 
-      <div class="card bg-dark text-white ">
+      <div class="card bg-dark text-white" style="border-radius: 1rem;">
+        
+          <form>
+              <div class="form-outline form-white mb-4">
+                <input v-model="newProject.title" type="text" id="typeText" class="form-control form-control-lg" />
+                <label class="form-label" for="typeText">Titre du projet</label>
+              </div>
 
-        <div class="card-body">
-          <h1 class="card-title">Titre du projet</h1>
-          <h3 class="card-subtitle mb-2 text-muted">
-            Description du projet
-          </h3>
-          <p class="card-text">
-          Lorem, ipsum dolor sit amet consectetur adipisicing
-          elit. A nemo commodi odio veniam nisi? Cupiditate
-          nobis doloremque unde in ut, consequatur reprehenderit
-          saepe iure perspiciatis, veniam facilis asperiores
-          deleniti at?
+              <div class="form-outline form-white mb-4">
+                <!-- <input v-model="newProject.description" type="text" id="typeText" class="form-control form-control-lg" />-->
+                <textarea v-model="newProject.description" type="text" id="typeText" class="form-control form-control-lg"></textarea>
+                <label class="form-label" for="typeText">Description</label> 
+              </div>       
 
-          Lorem, ipsum dolor sit amet consectetur adipisicing
-          elit. A nemo commodi odio veniam nisi? Cupiditate
-          nobis doloremque unde in ut, consequatur reprehenderit
-          saepe iure perspiciatis, veniam facilis asperiores
-          deleniti at?
-          </p>
-        </div>
-
-        <div class="card-body">
-<!-- Division en 2 colonnes -->
-          <div class="d-flex ">
-          <!-- Côté gauche -->
-            <div class="flex-grow-1 ms-3">
               <!-- Titre --> 
-              <h3 class="card-subtitle mb-2 text-muted">
-                Zone à tatouer
-              </h3>
-              <!-- Zone où doit apparaitre le text écrit dans le formulaire -->
-              <p class="card-text">
-                Exemple de zone à tatouer
-              </p>
+              <div class="form-outline form-white mb-4">
+                <input v-model="newProject.area" type="text" id="typeText" class="form-control form-control-lg" />
+                <label class="form-label" for="typeText">Zone à tatouer</label>
+              </div>
+
+              <!-- Coloration -->
+              <div class="form-outline form-white mb-4 form-check-inline">
+                <input v-model="newProject.color" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="black_and_white">
+                <label class="form-check-label" for="flexRadioDefault">
+                    Noir et blanc
+                </label>
+             </div>
+
+             <div class="form-outline form-white mb-4 form-check-inline">
+                <input v-model="newProject.color" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="color">
+                <label class="form-check-label" for="flexRadioDefault">
+                    Couleur
+                </label>
+             </div>
+
+            <div class="form-outline form-white mb-4">
+             <label class="mr-sm-2" for="inlineFormCustomSelect">Statut</label>
+              <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                <option selected>Choisir le statut</option>
+                <option value="1">Accepté</option>
+                <option value="2">En attente</option>
+                <option value="3">Refusé</option>
+              </select>
             </div>
 
-            <!-- Côté droit -->
-            <div class="flex-grow-1 ms-3">
-              <!-- Titre -->
-              <h3 class="card-subtitle mb-2 text-muted">
-                Coloration
-              </h3>
-              <p class="card-text">
-                Type de couleur choisie
-              </p>
-            </div>
-          </div>
-        </div>
-
-          <!-- Statut -->
-        <div class="card-body">
-          <!-- Titre -->
-          <h3 class="card-subtitle mb-2 text-muted">
-                Statut
-          </h3>
-          <!-- Label statut -->
-          <div>
-            <span class="badge text-bg-success">Accepté</span>
-          </div>
-        </div>
-
-        <!-- Bouton modifier -->
-        <div class="card-body">
-          <button type="button" class="btn btn-outline-secondary">Modifier</button>
-        </div>        
+              <!-- Bouton modifier -->
+              <div class="form-outline form-white mb-4">
+                <input @click="validForm" class="btn btn-outline-light btn-lg px-5" value="Modifier" type="button"/>
+              </div>
+          </form>
 
       </div>
     </div>
@@ -86,18 +70,10 @@
           <h1 class="card-title">RDV</h1>
         </div>
         <!-- Informations du RDV -->
+
         <div class="card-body">
-          <h4> Date : </h4>
-          <p> Intégration de la date ici au format JJ/MM/ANNEE</p>
-          <h4> Heure : </h4>
-          <p> Intégration de la date ici au format JJ/MM/ANNEE</p>
+          <FullCalendar ref="fullCalendar" :options="calendarOptions"/>
         </div>
-
-        <!-- Bouton modifier -->
-        <div class="card-body">
-          <button type="button" class="btn btn-outline-secondary">Modifier</button>
-        </div> 
-
       </div>
     </div>
 </section>
@@ -152,11 +128,19 @@
 
 </template>
 <script>
+import '@fullcalendar/core/vdom' // solves problem with Vite
+import FullCalendar from '@fullcalendar/vue3'
+import listDayPlugin from '@fullcalendar/list'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+
 export default {
     name:'Project',
     created(){
     this.$store.dispatch('check');
    },
+
+
     
 }
 </script>
