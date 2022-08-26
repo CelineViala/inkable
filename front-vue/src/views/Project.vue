@@ -1,67 +1,71 @@
 <template>
   <h1>Project Pro</h1>
 
-<section class=" gradient-custom">
+  <section class=" gradient-custom">
     <div class="container py-5 h-100">
 
       <div class="card bg-dark text-white" style="border-radius: 1rem;">
-        
-          <form>
-              <div class="form-outline form-white mb-4">
-                <input v-model="newProject.title" type="text" id="typeText" class="form-control form-control-lg" />
-                <label class="form-label" for="typeText">Titre du projet</label>
-              </div>
 
-              <div class="form-outline form-white mb-4">
-                <!-- <input v-model="newProject.description" type="text" id="typeText" class="form-control form-control-lg" />-->
-                <textarea v-model="newProject.description" type="text" id="typeText" class="form-control form-control-lg"></textarea>
-                <label class="form-label" for="typeText">Description</label> 
-              </div>       
+        <form>
+          <div class="form-outline form-white mb-4">
+            <input v-model="editProject.title" type="text" id="typeText" class="form-control form-control-lg" />
+            <label class="form-label" for="typeText">Titre du projet</label>
+          </div>
 
-              <!-- Titre --> 
-              <div class="form-outline form-white mb-4">
-                <input v-model="newProject.area" type="text" id="typeText" class="form-control form-control-lg" />
-                <label class="form-label" for="typeText">Zone à tatouer</label>
-              </div>
+          <div class="form-outline form-white mb-4">
+            <!-- <input v-model="editProject.description" type="text" id="typeText" class="form-control form-control-lg" />-->
+            <textarea v-model="editProject.description" type="text" id="typeText"
+              class="form-control form-control-lg"></textarea>
+            <label class="form-label" for="typeText">Description</label>
+          </div>
 
-              <!-- Coloration -->
-              <div class="form-outline form-white mb-4 form-check-inline">
-                <input v-model="newProject.color" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="black_and_white">
-                <label class="form-check-label" for="flexRadioDefault">
-                    Noir et blanc
-                </label>
-             </div>
+          <!-- Titre -->
+          <div class="form-outline form-white mb-4">
+            <input v-model="editProject.area" type="text" id="typeText" class="form-control form-control-lg" />
+            <label class="form-label" for="typeText">Zone à tatouer</label>
+          </div>
 
-             <div class="form-outline form-white mb-4 form-check-inline">
-                <input v-model="newProject.color" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="color">
-                <label class="form-check-label" for="flexRadioDefault">
-                    Couleur
-                </label>
-             </div>
+          <!-- Coloration -->
+          <div class="form-outline form-white mb-4 form-check-inline">
+            <input ref="inputTest" v-model="editProject.color" class="form-check-input" type="radio"
+              name="flexRadioDefault" id="flexRadioDefault1" value="black_and_white">
+            <label class="form-check-label" for="flexRadioDefault">
+              Noir et blanc
+            </label>
+          </div>
 
-            <div class="form-outline form-white mb-4">
-             <label class="mr-sm-2" for="inlineFormCustomSelect">Statut</label>
-              <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                <option selected>Choisir le statut</option>
-                <option value="1">Accepté</option>
-                <option value="2">En attente</option>
-                <option value="3">Refusé</option>
-              </select>
-            </div>
+          <div class="form-outline form-white mb-4 form-check-inline">
+            <input v-model="editProject.color" class="form-check-input" type="radio" name="flexRadioDefault"
+              id="flexRadioDefault2" value="color">
+            <label class="form-check-label" for="flexRadioDefault">
+              Couleur
+            </label>
+          </div>
 
-              <!-- Bouton modifier -->
-              <div class="form-outline form-white mb-4">
-                <input @click="validForm" class="btn btn-outline-light btn-lg px-5" value="Modifier" type="button"/>
-              </div>
-          </form>
+          <div class="form-outline form-white mb-4">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Statut : </label>
+            <select v-model="editProject.status" class="custom - select mr - sm - 2" id="inlineFormCustomSelect">
+              <option ref="accepted" value="accepté">Accepté</option>
+              <option ref="waiting" value="en attente">En attente</option>
+              <option ref="refused" value="refusé">Refusé</option>
+            </select>
+          </div>
+
+          <!-- Bouton modifier -->
+          <div class="form-outline form-white mb-4">
+            <input @click="editProjectForm" class="btn btn-outline-light btn-lg px-5" value="Modifier" type="button" />
+          </div>
+          <p class="text-success">{{ this.successMessage }}</p>
+          <p class="text-danger">{{ this.errorMessage }}</p>
+        </form>
 
       </div>
     </div>
-</section>
+  </section>
 
-<!-- Section des RDV -->
+  <!-- Section des RDV -->
 
-<section class="gradient-custom">
+  <section class="gradient-custom">
     <div class="container py-5 h-100">
 
       <div class="card bg-dark text-white ">
@@ -72,15 +76,15 @@
         <!-- Informations du RDV -->
 
         <div class="card-body">
-          <FullCalendar ref="fullCalendar" :options="calendarOptions"/>
+          <FullCalendar ref="list" :options="calendarOptions" />
         </div>
       </div>
     </div>
-</section>
+  </section>
 
-<!-- Section des Messages -->
+  <!-- Section des Messages -->
 
-<section class="gradient-custom">
+  <section class="gradient-custom">
     <div class="container py-5 h-100">
 
       <div class="card bg-dark text-white ">
@@ -88,67 +92,181 @@
           <!-- Titre -->
           <h1 class="card-title">Messages</h1>
         </div>
-      
+
 
         <!-- Conteneur des messages à dupplique en cas de nouveau message-->
-        <div class="container_messages py-3 h-100">
+        <div v-for="message in this.editProject.messages" lass="container_messages py-3 h-100">
           <div class="card-body">
 
-          <div class="d-flex justify-content-start rounded-3 text-black" style="background-color: #efefef;">
-            <!-- Côté gauche -->
-            <div class="flex-grow-1 ms-3">
-              <h4> Auteur : </h4>
-              <p> Nom de l'auteur</p>
-              
-              <h4> Date : </h4>
-              <p> Intégration de la date ici au format JJ/MM/ANNEE</p>
+            <div class="d-flex justify-content-start rounded-3 text-black" style="background-color: #efefef;">
+              <!-- Côté gauche -->
+              <div class="flex-grow-1 ms-3">
+                <h4> Auteur : </h4>
+                <p> Nom de l'auteur</p>
+
+                <h4> Date : </h4>
+                <p> {{ this.format(message.createdAt) }}</p>
               </div>
 
-            <!-- Côté droit -->
-            <div class="flex-grow-1 ms-3">
-              <h4> Message : </h4>
-              <p> 
-                Contenu du message
-                Lorem, ipsum dolor sit amet consectetur adipisicing
-                elit. A nemo commodi odio veniam nisi? Cupiditate
-                nobis doloremque unde in ut, consequatur reprehenderit
-                saepe iure perspiciatis, veniam facilis asperiores
-                deleniti at?
-              </p>
-            </div>
+              <!-- Côté droit -->
+              <div class="flex-grow-1 ms-3">
+                <h4> Message : </h4>
+                <p>{{ message.content }} </p>
+              </div>
             </div>
           </div>
         </div>
 
-  
+
       </div>
     </div>
-</section>
+  </section>
 
 
 </template>
 <script>
 import '@fullcalendar/core/vdom' // solves problem with Vite
 import FullCalendar from '@fullcalendar/vue3'
-import listDayPlugin from '@fullcalendar/list'
-import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
+import dayGridPlugin from '@fullcalendar/daygrid'
 
 export default {
-    name:'Project',
-    created(){
+  name: 'Project',
+  components: {
+    FullCalendar // make the <FullCalendar> tag available
+  },
+  data() {
+    return {
+      successMessage: null,
+      errorMessage: null,
+      calendarApi: null,
+      editProject: {},
+      calendarOptions: {
+        plugins: [listPlugin, dayGridPlugin, interactionPlugin],
+        initialView: 'listYear',
+        height: 300,
+        titleFormat: // will produce something like "Tuesday, September 18, 2018"
+        {
+          weekday: 'long',
+          month: 'long',
+          year: 'numeric',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        },
+        locale: 'fr-FR',
+        selectable: true,
+        timeZone: 'locale',
+        slotMinTime: "07:00:00",
+        slotMaxTime: "20:00:00",
+        expandRows: true,
+        select: this.handleSelect,
+        eventContent: this.formateEvent,
+      }
+    }
+  },
+  created() {
     this.$store.dispatch('check');
-   },
+    this.axios
+      .get('http://localhost:3000/api/projet/1')
+      .then((response) => {
+        console.log(response.data);
+        this.editProject = response.data;
+        if (response.data.color)
+          this.editProject.color = "color";
+        else
+          this.editProject.color = "black_and_white";
+
+        if (response.data.status === "accepté")
+          this.$refs.accepted.setAttribute("selected", true);
+        else if (response.data.status === "en attente")
+          this.$refs.waiting.setAttribute("selected", true);
+        if (response.data.status === "refusé")
+          this.$refs.refused.setAttribute("selected", true);
+
+        const rdvs = this.editProject.appointments;
+
+        this.calendarApi = this.$refs.list.getApi();
+        rdvs.forEach(rdv => {
+          this.calendarApi.addEvent({
+            id: rdv.id,
+            title: rdv.title,
+            extendedProps: {
+              description: rdv.note,
 
 
-    
+            },
+            start: new Date(rdv.beginning_hour),
+            end: new Date(rdv.ending_hour)
+          });
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        return
+      })
+
+  },
+  methods: {
+    format(date) {
+      return this.calendarApi.formatDate(date, {
+        weekday: 'short',
+        month: 'short',
+        year: 'numeric',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    },
+    editProjectForm() {
+
+      //       area: "dos"
+      // color: false
+      // consumer_id: 1
+      //description: "cover bras"
+      // pro_id: 1
+      // status: "accepté"
+      // title: "Projet cover"
+      console.log(this.editProject)
+      const reqProject = {
+        area: this.editProject.area,
+        description: this.editProject.description,
+        consumer_id: this.editProject.consumer_id,
+        pro_id: this.editProject.pro_id,
+        status: this.editProject.status,
+        title: this.editProject.title,
+      }
+      reqProject.color = this.editProject.color === "color" ? true : false;
+
+      this.axios
+        .patch('http://localhost:3000/api/projet/1', reqProject)
+        .then((response) => {
+          console.log(response.data);
+          this.errorMessage = null;
+          this.successMessage = "Vos informations ont bien été modifiées.";
+
+
+        })
+        .catch((err) => {
+          console.log(err);
+          this.successMessage = null;
+          this.errorMessage = err.response.data.message;
+          return
+        })
+    }
+  }
 }
+
+
+
+
 </script>
 <style>
-
 .gradient-custom {
-/* fallback for old browsers */
-background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
-};
+  /* fallback for old browsers */
+  background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
+}
 
+;
 </style>
