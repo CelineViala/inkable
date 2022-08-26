@@ -95,13 +95,13 @@ export default {
     name:'Inscriptions',
     created(){
       
-    
+      this.$store.state.requestObj={};
       this.$store.dispatch('check'); 
 
    },
     data(){
         return {
-            
+            picture:false,
             newConsumer:{
                   
             },
@@ -110,14 +110,17 @@ export default {
     },
     methods:{
       handleFile:function(e){
-        this.$store.dispatch('createRequestObjForCloudinary',e);  
+        this.$store.dispatch('createRequestObjForCloudinary',e); 
+        this.picture=true; 
       },
       addConsumer:async function(){
             //requete pour enregistrer la photo sur cloudinary
 
             let instance = this.axios.create();
             delete instance.defaults.headers.common['Authorization'];
-
+            
+            if(this.picture)
+            {
             instance(this.$store.state.requestObj)
                 .then((response) => {
                     this.newConsumer.profile_picture_path_consumer=response.data.url; 
@@ -128,6 +131,7 @@ export default {
                       .then((response) => {
                           console.log(response.data);
                           this.newConsumer={};
+                          this.$store.state.requestObj={};
                           this.message="Vous êtes bien inscrit!";
                           this.$router.push('/connexion');       
                       })
@@ -141,7 +145,24 @@ export default {
                     console.log(err);
                     return
                 })
-            
+            }
+            else{
+              this.axios
+                      .post('http://localhost:3000/signupConsumer',this.newConsumer)
+                      .then((response) => {
+                          console.log(response.data);
+                          this.newConsumer={};
+                          this.$store.state.requestObj={};
+                          this.message="Vous êtes bien inscrit!";
+                          this.$router.push('/connexion');       
+                      })
+                      .catch((err)=>{
+                          console.log(err);
+                          this.message=err.response.data.message;
+                          return
+                      })
+
+            }
                 
             
             

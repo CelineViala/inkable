@@ -155,8 +155,9 @@ export default {
     this.checkRole();
     this.$store.dispatch('getAllStyles');
     this.$store.dispatch('getAllCities');
-    const test=await this.$store.dispatch('handleUploadToCloudinary')
-    console.log(test);
+    
+    //const test=await this.$store.dispatch('handleUploadToCloudinary')
+    //console.log(test);
 
   }
   
