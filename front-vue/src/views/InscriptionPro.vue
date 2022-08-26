@@ -45,21 +45,10 @@
 
                     <h4>Les styles de tatouage</h4>
 
-                    <div class="form-check-inline">
-                      <input v-model="newPro.styles" type="checkbox" class="form-check-input" value="floral" id="floral">
-                      <label class="form-check-label" for="floral">Floral</label>
+                    <div v-for="style in this.$store.state.styles" class="form-check-inline">
+                      <input v-model="newPro.styles" type="checkbox" class="form-check-input" :value="style" :id="style">
+                      <label class="form-check-label" :for="style">{{style}}</label>
                     </div>
-
-                    <div class="form-check-inline">
-                      <input v-model="newPro.styles" type="checkbox" class="form-check-input" id="tribal" value="tribal">
-                      <label class="form-check-label" for="tribal">Tribal</label>
-                    </div>
-
-                    <div class="form-check-inline">
-                      <input v-model="newPro.styles" type="checkbox" class="form-check-input" value="aquarelle" id="aquarelle">
-                      <label class="form-check-label" for="aquarelle">Aquarelle</label>
-                    </div>
-
                   </div>
 
                   </div>
@@ -80,7 +69,7 @@
 
                   <div class="col-12">
                     <label for="username" class="form-label">Mot de passe</label>
-                    <input v-model="newPro.password" type="text" class="form-control" id="password" required>
+                    <input v-model="newPro.password" type="password" class="form-control" id="password" required>
                     <div class="invalid-feedback">
                       Mot de passe requis.
                     </div> 
@@ -88,7 +77,7 @@
 
                   <div class="col-12">
                     <label  for="username" class="form-label">Confirmer le mot de passe</label>
-                    <input v-model="newPro.passwordConfirm" type="text" class="form-control" id="confirmedPassword" required>
+                    <input v-model="newPro.passwordConfirm" type="password" class="form-control" id="confirmedPassword" required>
                     <div class="invalid-feedback">
                       Mot de passe requis.
                     </div> 
@@ -111,7 +100,7 @@
                   </div>
 
                   <div class="mb-3">
-                    <label for="desciption" class="form-label">Une courte description de votre salon</label>
+                    <label for="description" class="form-label">Une courte description de votre salon</label>
                     <textarea v-model="newPro.description" class="form-control" id="description"></textarea>
                   </div>
 
