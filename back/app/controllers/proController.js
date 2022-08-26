@@ -3,7 +3,7 @@ const {
     Pro, Tattoo, Project, Style,
 } = require('../models');
 const authService = require('../services/checkForms');
-const sequelize = require('../config/db');
+const client = require('../config/db');
 
 module.exports = {
     // suppression addPro car géré dans AuthController (cf route /signupPro)
@@ -16,21 +16,35 @@ module.exports = {
 
     async CreateSearch(req, res) {
         // ! a continuer plus tard et à tester !
-        // try {
-        //     const searchCity = req.body.city;
-        //     const searchColor = req.body.color;
-        //     const searchBw = req.body.black_and_white;
+        try {
+            const searchCity = req.body.city;
+            const searchColor = req.body.color;
+            const searchBw = req.body.black_and_white;
+            const searchStyle = req.body.styles;
 
-        //     if(searchCity) {
-        //         const sqlCity = 'SELECT city FROM "pro" WHERE city = searchCity'
-        //         const resultCity = await
-        //     }
-        // } catch (error) {
-        //     console.log(error);
-        //     res.status(500).json({
-        //         message: 'Erreur lors de la récupération des filtres',
-        //     });
-        // }
+            if (searchCity) {
+                const sqlCity = await client.query('SELECT city FROM "pro" WHERE city = searchCity');
+                return res.json(sqlCity);
+            }
+            if (searchColor) {
+                const sqlColor = await client.query('SELECT color FROM "pro" WHERE color = searchColor');
+                return res.json(sqlColor);
+            }
+            if (searchBw) {
+                const sqlBW = await client.query('SELECT black_and_white FROM "pro" WHERE black_and_white = searchBw');
+                return res.json(sqlBW);
+            }
+            if (searchStyle) {
+                const sqlStyle = await client.query('SELECT name FROM "style" WHERE name = searchStyle');
+                return res.json(sqlStyle);
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({
+                message: 'Erreur lors de la récupération des filtres',
+            });
+        }
+
         const filter = {
         };
         const styles = {};
