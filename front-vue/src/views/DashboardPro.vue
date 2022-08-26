@@ -1,8 +1,27 @@
 
 <template>
   <h1>Bienvenue sur votre dashboard {{this.pro.studio_name}}</h1>
- 
+
     <section class=" gradient-custom">
+    <div class="container py-5 h-10">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-8">
+
+                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                        <div class="card-body p-4 text-center">
+                            <div class="mb-3">
+                                <label for="file" class="form-label">Ajouter une photo dans ma galerie </label>
+                                <input @change="handleFile" ref="pictureInput" class="form-control" type="file">
+                                <input @click="sendPicture" type="button" class="btn btn-primary" value="Ajouter"/>
+                                <p class="text-success">{{this.successMessage}}</p>
+                                <p class="text-danger">{{this.errorMessage}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     <div class="container py-5 h-10">
 
       <div class="container py-5 h-10">
@@ -89,6 +108,9 @@ export default {
    },
   data() {
     return {
+      successMessage:null,
+      errorMessage:null,
+      picture:false,
       pro:{},
       calendar:{},
       rdv:{},
@@ -117,6 +139,48 @@ export default {
     }
   },
   methods:{
+    handleFile(e){
+      this.$store.state.requestObj={};
+      this.$store.dispatch('createRequestObjForCloudinary',e);
+      this.picture=true;
+    },
+    sendPicture(){
+      
+
+      //si une photo a été ajoutée
+      if(this.picture)
+            {
+              let instance = this.axios.create();
+              delete instance.defaults.headers.common['Authorization'];
+              //envoi photo cloudinary
+              instance(this.$store.state.requestObj)
+                .then((response) => {
+                  this.axios
+                    .post('http://localhost:3000/api/pro/1/tatouages',{pro_id:1,tattoo_picture_path:response.data.url})
+                    .then((res)=>{
+                       this.errorMessage=null;
+                       this.successMessage="Votre photo a bien été envoyée";
+                       this.$refs.pictureInput.value=null;
+                       this.picture=false;
+                    })
+                    .catch((err)=>{
+                      this.successMessage=null;
+                       this.errorMessage="Erreur serveur";
+                    })
+
+                })
+                .catch((err)=>{
+                    this.successMessage=null;
+                    this.errorMessage="Erreur envoi photo";
+                    return;
+                })
+
+            }else{
+              this.successMessage=null;
+              this.errorMessage="Vous n'avez pas ajouté de photo";
+            }
+
+    },
     async getListRdv() {
       try {
         console.log(this.$refs)
