@@ -5,12 +5,12 @@
 
       <div class="container py-5 h-10">
         <div class="card" style="border-radius: 1rem;">
-          <FullCalendar ref="fullCalendar" :options="calendarOptions"/>
+          <FullCalendar ref="fullCalendar" :options="calendarOptions" />
           <p> Si vous souaitez modifier ou annuler un rendez-vous, contactez votre tatoueur</p>
         </div>
       </div>
 
-<!-- Première carte projet -->
+      <!-- Première carte projet -->
       <div class="container py-5 h-10">
         <h4 class="text-white">Projets en cours</h4>
         <div class="container py-4">
@@ -28,8 +28,8 @@
           </div>
         </div>
 
-<!-- Seconde carte projet -->
-       <div class="container py-5 h-10">
+        <!-- Seconde carte projet -->
+        <div class="container py-5 h-10">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-8">
               <div class="card bg-dark text-white" style="border-radius: 1rem;">
@@ -45,8 +45,8 @@
         </div>
       </div>
 
-  
- 
+
+
     </div>
   </section>
 </template>
@@ -61,47 +61,47 @@ export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
   },
-  created(){
+  created() {
     this.$store.dispatch('check');
-   },
+  },
   data() {
 
-    
+
     return {
-      calendar:{},
-      rdv:{},
+      calendar: {},
+      rdv: {},
       calendarOptions: {
-        plugins: [ listDayPlugin, interactionPlugin],
-        initialView: 'listDay',
+        plugins: [listDayPlugin, interactionPlugin],
+        initialView: 'listYear',
         height: 300,
         titleFormat: // will produce something like "Tuesday, September 18, 2018"
         {
-            weekday: 'long',
-            month: 'long',
-            year: 'numeric',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit'
+          weekday: 'long',
+          month: 'long',
+          year: 'numeric',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
         },
-         events: [{
-            id: 'a',
-            title: 'my event',
-            extendedProps: {
-                description: "test"
-            },
-            start: '2022-08-24 12:00',
-            end: '2022-08-24 15:00',
+        events: [{
+          id: 'a',
+          title: 'my event',
+          extendedProps: {
+            description: "test"
+          },
+          start: '2022-08-24 12:00',
+          end: '2022-08-24 15:00',
 
 
         },
         {
-            id: 'b',
-            title: 'my event 2',
-            extendedProps: {
-                description: "test"
-            },
-            start: '2022-08-24 15:00',
-            end: '2022-08-24 16:00',
+          id: 'b',
+          title: 'my event 2',
+          extendedProps: {
+            description: "test"
+          },
+          start: '2022-08-24 15:00',
+          end: '2022-08-24 16:00',
 
 
         },
@@ -113,7 +113,7 @@ export default {
         slotMaxTime: "20:00:00",
         expandRows: true,
         select: this.handleSelect,
-        eventContent:this.formateEvent,
+        eventContent: this.formateEvent,
       }
     }
   },
