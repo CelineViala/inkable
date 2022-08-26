@@ -91,10 +91,10 @@ module.exports = {
             if (req.body.instagram) {
                 pro.instagram = req.body.instagram;
             }
-            if (req.body.color) {
+            if (req.body.color !== undefined) {
                 pro.color = req.body.color;
             }
-            if (req.body.black_and_white) {
+            if (req.body.black_and_white !== undefined) {
                 pro.black_and_white = req.body.black_and_white;
             }
 
