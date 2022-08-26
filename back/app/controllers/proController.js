@@ -60,12 +60,14 @@ module.exports = {
         }
         if (req.body.styles !== undefined) { styles.name = req.body.styles; }
 
-        // filteredPros=await sequelize.query(`SELECT DISTINCT pro.*,style.name FROM pro
-        //     JOIN categorise ON pro_id=pro.id
-        //     JOIN style on categorise.style_id=style_id
-        //     WHERE style.name IN ('floral','tribal') AND city IN ('Lyon','Paris') AND color IN (true,false) AND black_and_white IN (true,false)`);
+        const filteredPros = await client.query(`
+            SELECT DISTINCT pro.*,style.name FROM pro
+            JOIN categorise ON pro_id=pro.id
+            JOIN style on categorise.style_id=style_id
+            WHERE style.name IN ('floral','tribal') AND city IN ('Lyon','Paris') AND color IN (true,false) AND black_and_white IN (true,false)
+            `);
 
-        // res.json(filteredPros[0]);
+        res.json(filteredPros[0]);
     },
 
     async getOnePro(req, res) {
