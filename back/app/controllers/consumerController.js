@@ -1,4 +1,5 @@
 const { Consumer } = require('../models');
+const authService = require('../services/checkForms');
 
 module.exports = {
     // addConsumer est supprimé car géré par le authController (cf route /signupConsumer)
@@ -32,7 +33,7 @@ module.exports = {
                 consumer.last_name = req.body.last_name;
             }
             if (req.body.password) {
-                consumer.password = req.body.password;
+                consumer.password = await authService.hashPassword(req.body.password);
             }
             if (req.body.profile_picture_path_consumer) {
                 consumer.profile_picture_path_consumer = req.body.profile_picture_path_consumer;

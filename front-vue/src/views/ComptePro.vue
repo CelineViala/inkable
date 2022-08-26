@@ -188,6 +188,7 @@ export default {
             this.errorMessage=" Vous devez  confirmer votre mot de passe" 
           }
           else{
+            
             this.axios
                   .patch('http://localhost:3000/api/pro/3',this.editPro)
                   .then((response) => {
