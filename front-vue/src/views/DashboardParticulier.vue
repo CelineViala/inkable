@@ -21,7 +21,7 @@
                   <h5>Titre du projet</h5>
                   <p>Zone du tatouage</p>
                   <!-- Ce bouton amène sur la page de projet non modifiable, seul le pro peut le faire -->
-                  <button type="button" class="btn btn-primary">Détails du projet</button>
+                  <a class="btn btn-primary" href="#" role="button">Détails du projet</a>
                 </div>
               </div>
             </div>
@@ -36,7 +36,8 @@
                 <div class="card-body p-4">
                   <h5>Titre du projet</h5>
                   <p>Zone du tatouage</p>
-                  <button type="button" class="btn btn-primary">Détails du projet</button>
+                  <!-- Attention à bien changer le lien pour un route en /project-particulier/:id -->
+                  <a class="btn btn-primary" href="#" role="button">Détails du projet</a>
                 </div>
               </div>
             </div>

@@ -77,15 +77,23 @@
     <div class="px-3 py-2 border-bottom mb-3">
       
         <div class="text-end">
+
           <router-link to="/page404">
             <button type="button" class="btn btn-light text-dark me-2">404</button>
           </router-link>
+
           <router-link to="/project">
             <button type="button" class="btn btn-primary me-2">projet</button>
           </router-link>
+
           <router-link to="/formulaire-project">
             <button type="button" class="btn btn-primary me-2">formulaire projet</button>
           </router-link>
+
+          <router-link to="/project-particulier">
+            <button type="button" class="btn btn-primary me-2">projet particulier</button>
+          </router-link>
+
         </div>
         
     </div>

@@ -64,7 +64,13 @@
           <div>
             <span class="badge text-bg-success">Accepté</span>
           </div>
+        
         </div>    
+
+        <div class="card-body">
+          <p class="text-muted">Pour modifier votre projet, prenez contact avec votre tatoueur</p>
+
+        </div>
 
       </div>
     </div>
