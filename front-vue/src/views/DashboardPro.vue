@@ -1,32 +1,33 @@
 
 <template>
-  <h1>Dashboard Pro</h1>
+  <h1>Bienvenue sur votre dashboard {{this.pro.studio_name}}</h1>
  
     <section class=" gradient-custom">
     <div class="container py-5 h-10">
 
       <div class="container py-5 h-10">
         <div class="card" style="border-radius: 1rem;">
-          <FullCalendar ref="fullCalendar" :options="calendarOptions"/>
-          <p> Si vous souaitez modifier ou annuler un rendez-vous, rendez-vous sur la page du projet en question</p>
+          <FullCalendar ref="list" :options="calendarOptions"/>
+          <p> Si vous souhaitez modifier ou annuler un rendez-vous, rendez-vous sur la page du projet en question</p>
           <p> Pensez à prévenir votre client</p>
         </div>
       </div>
 <!-- Lien ves le planning du pro -->
-      <button type="button" class="btn btn-light btn-lg">Vue d'ensemble de votre planning</button>
+  
+      <router-link :to="{name:'Planning'}" class="btn btn-primary">Vue d'ensemble de votre planning</router-link>
 
 <!-- Première carte projet -->
       <div class="container py-5 h-10">
         <h4 class="text-white">Projets en cours</h4>
-        <div class="container py-4">
+        <div v-for="projet in this.pro.projects"  class="container py-4">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-8">
               <div class="card bg-dark text-white" style="border-radius: 1rem;">
                 <div class="card-body p-4">
-                  <h5>Titre du projet</h5>
-                  <p>Zone du tatouage</p>
-                  <!-- ce boutton amène sur la page de projet modifiable -->
-                  <button type="button" class="btn btn-primary">Détails du projet</button>
+                  <h5>{{projet.title}}</h5>
+                  <p>Zone de tatouage : {{projet.area}} </p>
+                  <!-- ce boutton amène sur la page de projet modifiable ATTENTION Penser à dynamyser avec un params id du projet-->
+                  <router-link :to="{name:'Project'}" class="btn btn-primary">Détail du projet</router-link>
                 </div>
               </div>
             </div>
@@ -69,11 +70,26 @@ export default {
   },
   created(){
     this.$store.dispatch('check');
+    
+    //récupération du pro en bdd;
+    this.axios
+        .get('http://localhost:3000/api/pro/1')
+        .then((response) => {
+          this.pro=response.data;   
+          console.log(response.data);
+        })
+        .catch((err)=>{
+          console.log(err);       
+          return
+        })
+
+   },
+   mounted(){
+    this.getListRdv();
    },
   data() {
-
-    
     return {
+      pro:{},
       calendar:{},
       rdv:{},
       calendarOptions: {
@@ -89,29 +105,6 @@ export default {
             hour: '2-digit',
             minute: '2-digit'
         },
-         events: [{
-            id: 'a',
-            title: 'my event',
-            extendedProps: {
-                description: "test"
-            },
-            start: '2022-08-24 12:00',
-            end: '2022-08-24 15:00',
-
-
-        },
-        {
-            id: 'b',
-            title: 'my event 2',
-            extendedProps: {
-                description: "test"
-            },
-            start: '2022-08-24 15:00',
-            end: '2022-08-24 16:00',
-
-
-        },
-        ],
         locale: 'fr-FR',
         selectable: true,
         timeZone: 'locale',
@@ -123,6 +116,31 @@ export default {
       }
     }
   },
+  methods:{
+    async getListRdv() {
+      try {
+        console.log(this.$refs)
+        let calendarApi = this.$refs.list.getApi()
+        const response=await this.axios.get('http://localhost:3000/api/pro/1/rdv',this.rdv);
+        const rdvs = response.data;
+        rdvs.forEach(rdv => {
+                console.log(rdv)
+                calendarApi.addEvent({
+                    id: rdv.id,
+                    title: rdv.title,
+                    extendedProps: {
+                        description: rdv.note,
+                    },
+                    start: new Date(rdv.beginning_hour),
+                    end: new Date(rdv.ending_hour)
+                });
+            });
+      
+      } catch (error) {
+        alert(error)
+      }
+  }
+}
 }
 
 // premier export qui été dans le fichier de base
