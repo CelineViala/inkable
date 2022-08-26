@@ -112,12 +112,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div ref="containerInputs" class="mb-3">
-                                    <label for="file" class="form-label">Ajouter des photos dans ma galerie </label>
-                                    <div @click="addInputPicture" class="btn btn-primary"> +</div>
-                                    <input @change="handleFile" class="form-control" type="file">
-
-                                </div>
+                                
 
                                 <button @click="editProfile" type="submit" class="btn btn-primary">Modifier mes
                                     informations</button>
