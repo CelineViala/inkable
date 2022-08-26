@@ -46,7 +46,7 @@ module.exports = {
         }
         if (req.body.styles !== undefined) { styles.name = req.body.styles; }
 
-        // filteredPros=await sequelize.query(`SELECT DISTINCT pro.*,style.name FROM pro 
+        // filteredPros=await sequelize.query(`SELECT DISTINCT pro.*,style.name FROM pro
         //     JOIN categorise ON pro_id=pro.id
         //     JOIN style on categorise.style_id=style_id
         //     WHERE style.name IN ('floral','tribal') AND city IN ('Lyon','Paris') AND color IN (true,false) AND black_and_white IN (true,false)`);
@@ -56,7 +56,9 @@ module.exports = {
 
     async getOnePro(req, res) {
         const { id } = req.params;
-        const findOnePro = await Pro.findByPk(id);
+        const findOnePro = await Pro.findByPk(id, {
+            include: ['styles', 'tattoos', 'appointments', 'projects'],
+        });
         if (findOnePro) {
             res.json(findOnePro);
         } else {
@@ -66,6 +68,7 @@ module.exports = {
 
     async modifyPro(req, res, next) {
         const { id } = req.params;
+        console.log('>>>>>>>>', id);
         const pro = await Pro.findByPk(id);
         if (pro) {
             if (req.body.studio_name) {
@@ -93,6 +96,22 @@ module.exports = {
             }
             if (req.body.black_and_white) {
                 pro.black_and_white = req.body.black_and_white;
+            }
+
+            if (req.body.city) {
+                pro.city = req.body.city;
+            }
+
+            if (req.body.styles) {
+                const styles = await Style.findAll();
+                styles.forEach(async (style) => {
+                    await pro.removeStyle(style);
+                    await style.removePro(pro);
+                });
+                req.body.styles.forEach(async (style) => {
+                    const oneStyle = await Style.findOne({ where: { name: style } });
+                    await pro.addStyle(oneStyle);
+                });
             }
             // on sauvegarde dans le BDD
             const proSaved = await pro.save();

@@ -32,6 +32,7 @@ const authController = {
         req.body.styles.forEach(async (style) => {
             const oneStyle = await Style.findOne({ where: { name: style } });
             await newPro.addStyle(oneStyle);
+            await oneStyle.addPro(newPro);
         });
 
         return res.status(200).json(newPro);
