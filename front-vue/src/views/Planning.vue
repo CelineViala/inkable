@@ -1,7 +1,7 @@
 <template>
     <section class=" gradient-custom">
         <div class="container py-5 h-10">
-            <div>{{this.user}}</div>
+            <div>{{"role"}}</div>
 
             <div class="container py-5 h-10">
                 <div class="card" style="border-radius: 1rem;">
@@ -68,13 +68,36 @@ export default {
         FullCalendar // make the <FullCalendar> tag available
     },
     async created() {
-        //await this.$store.dispatch('check')
+        try {
+          await this.$store.dispatch('getUser');
+          console.log(this.$store.state.user);
+          const rdvs = this.$store.state.user.appointments;
+                rdvs.forEach(rdv => {
+                    console.log(rdv)
+                    this.$refs.fullCalendar.getApi().addEvent({
+                        id: rdv.id,
+                        title: rdv.title,
+                        extendedProps: {
+                            description: rdv.note,
+
+
+                        },
+                        start: new Date(rdv.beginning_hour),
+                        end: new Date(rdv.ending_hour)
+                    });
+                });
           
-       
-        await this.getListRdv();
+        } catch (error) {
+          console.log(error)
+        }
+          
+        
+          
+        
         
     },
     mounted() {
+
       console.log(this.user)
     },
     computed:{
@@ -84,6 +107,7 @@ export default {
     },
     data() {
         return {
+            id:null,
             calendar: {},
             rdv: {},
             startRange: new Date(),
@@ -283,13 +307,13 @@ export default {
         async valid(e) {
             this.$refs.formElm.style.display = 'none';
             //!penser à dynamiser
-            this.rdv.pro_id = 1;
+            this.rdv.pro_id = this.$store.state.user.data.id;
             let idRdv;
 
 
             //enregistrement bdd
             try {
-                const response = await this.axios.post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv`, this.rdv);
+                const response = await this.axios.post(`http://localhost:3000/api/pro/${this.$store.state.user.data.id}/rdv`, this.rdv);
                 console.log("rdv enregistré", response);
                 this.rdv.id = response.data.id;
 
@@ -315,7 +339,7 @@ export default {
           console.log(userId)
             try {
                 let calendarApi = this.$refs.fullCalendar.getApi()
-                const response = await this.axios.get(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv`, this.rdv);
+                const response = await this.axios.get(`http://localhost:3000/api/pro/${this.id}/rdv`, this.rdv);
                 const rdvs = response.data;
                 rdvs.forEach(rdv => {
                     console.log(rdv)

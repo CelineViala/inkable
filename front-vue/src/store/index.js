@@ -2,15 +2,20 @@ import {createStore, createstore} from 'vuex';
 import axios from 'axios';
 export default createStore({
     state:{
-        user:{},
-        
+        responseUser:null,
+        user:null,
+        id:null,
         // message:null
         styles:[],
         cities:[],
         requestObj:{}
     },
     mutations:{
-        check(state,user){
+        async check(state,data){
+          
+            state.responseUser=await data;
+        },
+        getUser(state,user){
             state.user=user;
         },
         getAllStyles(state,styles){
@@ -24,19 +29,20 @@ export default createStore({
         }
     },
     actions:{
-        check({commit}){
+        async check({commit}){
             console.log("<<<<<<<<<<<<<<<<<<<<<")
-            axios.get('http://localhost:3000/checkRole')
-                .then((response) => {
-                    console.log("afterConnect");
-                    console.log(response.data);
-                    commit('check',response.data)
-                })
-                .catch(err=>{
-                    console.log("error after connect")
-                    console.log(err)
-                })
+            const response=await axios.get('http://localhost:3000/checkRole');
+            commit('check',response.data)
+                
         },
+        async getUser({dispatch,commit}){
+            await dispatch('check');
+            const response=await axios.get(`http://localhost:3000/api/pro/${this.state.responseUser.id}`)
+            console.log(response.data)
+            commit('getUser',response.data)
+        },
+        
+        
         getAllStyles({commit}){
             
             //récupération des styles a afficher dans les balises select
