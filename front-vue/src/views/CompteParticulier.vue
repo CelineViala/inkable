@@ -94,10 +94,15 @@ export default {
         }
     },
     created(){
+      this.$store.dispatch('check'); 
+      console.log(this.$store.state.user.id)
+      
+
+   },
+    mounted() {
       this.axios
-        .get('http://localhost:3000/api/consumer/1')
+        .get(`http://localhost:3000/api/consumer/${this.$store.state.user.id}`)
         .then((response) => {
-          
           this.consumer=response.data;
           this.editConsumer.email=response.data.email;
           // this.editConsumer.password=response.data.password;
@@ -109,9 +114,8 @@ export default {
           console.log(err);       
           return
         })
-      this.$store.dispatch('check'); 
 
-   },
+    },
     methods:{
         handleFile:function(e){
         this.$store.dispatch('createRequestObjForCloudinary',e);  

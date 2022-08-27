@@ -2,7 +2,8 @@ import {createStore, createstore} from 'vuex';
 import axios from 'axios';
 export default createStore({
     state:{
-        user:'Anonyme',
+        user:{},
+        
         // message:null
         styles:[],
         cities:[],
@@ -24,6 +25,7 @@ export default createStore({
     },
     actions:{
         check({commit}){
+            console.log("<<<<<<<<<<<<<<<<<<<<<")
             axios.get('http://localhost:3000/checkRole')
                 .then((response) => {
                     console.log("afterConnect");
