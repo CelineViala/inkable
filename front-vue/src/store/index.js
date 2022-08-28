@@ -2,8 +2,10 @@ import {createStore, createstore} from 'vuex';
 import axios from 'axios';
 export default createStore({
     state:{
-        responseUser:null,
-        user:null,
+        dataToken:null,
+        user:{
+            role:'anonyme'
+        },
         id:null,
         // message:null
         styles:[],
@@ -12,8 +14,9 @@ export default createStore({
     },
     mutations:{
         async check(state,data){
-          
-            state.responseUser=await data;
+            
+            state.dataToken=await data;
+            console.log(state.dataToken)
         },
         getUser(state,user){
             state.user=user;
@@ -30,15 +33,17 @@ export default createStore({
     },
     actions:{
         async check({commit}){
-            console.log("<<<<<<<<<<<<<<<<<<<<<")
             const response=await axios.get('http://localhost:3000/checkRole');
             commit('check',response.data)
                 
         },
         async getUser({dispatch,commit}){
             await dispatch('check');
-            const response=await axios.get(`http://localhost:3000/api/pro/${this.state.responseUser.id}`)
-            console.log(response.data)
+            let response;
+            if(this.state.dataToken.role==='pro')
+                response=await axios.get(`http://localhost:3000/api/pro/${this.state.dataToken.id}`);
+            else if(this.state.dataToken.role==='consumer')
+                response=await axios.get(`http://localhost:3000/consumer/pro/${this.state.dataToken.id}`);
             commit('getUser',response.data)
         },
         

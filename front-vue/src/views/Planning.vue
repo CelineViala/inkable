@@ -1,8 +1,6 @@
 <template>
     <section class=" gradient-custom">
         <div class="container py-5 h-10">
-            <div>{{"role"}}</div>
-
             <div class="container py-5 h-10">
                 <div class="card" style="border-radius: 1rem;">
                     <FullCalendar ref="fullCalendar" :options="calendarOptions" />
@@ -147,17 +145,6 @@ export default {
                     day: '2-digit',
 
                 },
-                //  events: [{
-                //     id: 'a',
-                //     title: 'my event',
-                //     extendedProps: {
-                //         description: "test"
-                //     },
-                //     start: '2022-08-24 12:00',
-                //     end: '2022-08-24 15:00',
-
-
-                // }],
                 locale: 'fr-FR',
                 selectable: true,
                 editable: true,
@@ -174,12 +161,15 @@ export default {
     },
     methods: {
         goToday: function () {
+            this.startRange=new Date();
+            this.endRange=new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
             this.$refs.fullCalendar.getApi().setOption('visibleRange', {
-                start: new Date(),
-                end: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                start: this.startRange,
+                end: this.endRange
             });
         },
         moveBackOneDay: function () {
+            console.log(this.startRange,this.endRange);
             this.startRange.setDate(this.startRange.getDate() - 1);
             this.endRange.setDate(this.endRange.getDate() - 1);
             this.$refs.fullCalendar.getApi().setOption('visibleRange', {
@@ -219,6 +209,7 @@ export default {
             edit.textContent = "✎";
             edit.classList.add("btn-edit");
             // projet.innerHTML = arg.event.extendedProps.projet
+            edit.addEventListener("click",this.editInfoRdv);
             title.innerHTML = arg.event.title;
             description.innerHTML = arg.event.extendedProps.description;
             del.addEventListener("click", this.deleteRdv)
@@ -228,10 +219,12 @@ export default {
             }
 
         },
+        editInfoRdv(e){
+            this.$refs.formElm.style.display = "block";
+        },
         deleteRdv(e) {//route :/api/pro/:idPro/rdv/:idRdv'
             console.log(e.target.id);
             this.$refs.fullCalendar.getApi().getEventById(e.target.id).remove();
-
             this.axios
                 .delete(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv/${e.target.id}`)
                 .then((response) => {
@@ -267,17 +260,18 @@ export default {
             let requestObj = {}
             requestObj.beginning_hour = new Date(info.event._instance.range.start);
             requestObj.ending_hour = new Date(info.event._instance.range.end);
-            console.log(requestObj)
+            console.log("changement rdv")
             const idRdv = info.event._def.publicId
-
-            this.axios
+            const isOk=confirm("Voulez vous valider la modification de rdv?");
+            if (isOk)
+            {this.axios
                 .patch(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv/${idRdv}`, requestObj)
                 .then((response) => {
                     console.log(response.data)
                 })
                 .catch((err) => {
                     console.log(err)
-                });
+                });}
 
 
         },
@@ -307,13 +301,13 @@ export default {
         async valid(e) {
             this.$refs.formElm.style.display = 'none';
             //!penser à dynamiser
-            this.rdv.pro_id = this.$store.state.user.data.id;
+            this.rdv.pro_id = this.$store.state.user.id;
             let idRdv;
 
 
             //enregistrement bdd
             try {
-                const response = await this.axios.post(`http://localhost:3000/api/pro/${this.$store.state.user.data.id}/rdv`, this.rdv);
+                const response = await this.axios.post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv`, this.rdv);
                 console.log("rdv enregistré", response);
                 this.rdv.id = response.data.id;
 

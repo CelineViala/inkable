@@ -1,5 +1,5 @@
 <template>
-<h1>{{this.user}}</h1>
+<h1>{{this.user.role}}</h1>
 <!-- 1ere partie du header -->
 <div class="px-3 py-2 text-bg-dark">
       <div class="container">
