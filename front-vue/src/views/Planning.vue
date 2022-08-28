@@ -26,7 +26,7 @@
                             </label>
                         </div>
                         <div class="form-outline form-white mb-4">
-                            <label class="mr-sm-2 form-label" for="inlineFormCustomSelect">Statut : </label>
+                            <label class="mr-sm-2 form-label" for="inlineFormCustomSelect">Projet : </label>
                             <select v-model="rdv.project_id" class="custom - select mr - sm - 2 form-control form-control-lg"
                                 id="inlineFormCustomSelect">
                                 <option class="form-control form-control-lg" ref="accepted" value="accepté" selected>Projet truc</option>
@@ -44,7 +44,9 @@
 
                         <input @click="cancel" type="button" class="btn btn-outline-light btn-lg px-5" value="ANNULER">
 
-                        <input @click="valid" type="button" class="btn btn-outline-light btn-lg px-5" value="VALIDER">
+                        <input @click="valid" ref="buttonValid" type="button" class="btn btn-outline-light btn-lg px-5" value="VALIDER" hidden>
+
+                        <input @click="modify" ref="buttonEdit" type="button" class="btn btn-outline-light btn-lg px-5" value="MODIFIER" hidden>
 
                     </form>
                 </div>
@@ -186,19 +188,23 @@ export default {
                 start: this.startRange,
                 end: this.endRange
             });
-            //       this.$refs.fullCalendar.getApi().setOption('visibleRange', {
-            //   start: this.$refs.fullCalendar.getApi().getOption('visibleRange').start+1,
-            //   end: this.$refs.fullCalendar.getApi().getOption('visibleRange').end+1
-            // });
+        
         },
         formateEvent: function (arg) {
             var event = arg.event;
             // console.log(arg.event.extendedProps);
             let title = document.createElement('div')
-            let description = document.createElement('div')
-            let del = document.createElement('div')
-            let edit = document.createElement('div')
+            title.classList.add("titleRdv");
+            
+            let description = document.createElement('div');
+            description.classList.add("descriptionRdv");
+            let del = document.createElement('div');
+            let edit = document.createElement('div');
+            let seeMore = document.createElement('div');
             del.classList.add("btn-del");
+            seeMore.classList.add("btn-seeMore");
+            seeMore.id=event.id;
+            seeMore.textContent="+"
             del.id = event.id;
             del.textContent = "❌";
             let projet = document.createElement('a');
@@ -207,20 +213,37 @@ export default {
             projet.textContent = "lien vers le projet"
             // projet.href = "https://www.google.fr"
             edit.textContent = "✎";
+            edit.id=event.id;
             edit.classList.add("btn-edit");
             // projet.innerHTML = arg.event.extendedProps.projet
             edit.addEventListener("click",this.editInfoRdv);
             title.innerHTML = arg.event.title;
             description.innerHTML = arg.event.extendedProps.description;
-            del.addEventListener("click", this.deleteRdv)
-            let arrayOfDomNodes = [title, description, projet, del, edit]
+            del.addEventListener("click", this.deleteRdv);
+            seeMore.addEventListener("click",this.displayMore);
+            let arrayOfDomNodes = [title, description, projet, del, edit,seeMore]
             return {
                 domNodes: arrayOfDomNodes
             }
 
         },
+        displayMore(e){
+            
+        },
         editInfoRdv(e){
             this.$refs.formElm.style.display = "block";
+            this.$refs.buttonEdit.removeAttribute("hidden");
+            this.$refs.buttonEdit.id=e.target.id;
+
+            this.$refs.buttonValid.setAttribute("hidden","hidden");
+            const rdvElm=e.target.parentNode;
+            const event=this.$refs.fullCalendar.getApi().getEventById(e.target.id)._instance.range
+            console.log(event.start,event.end)
+           
+            this.$refs.dataElm.textContent = `${this.format(event.start)} - ${this.format(event.end)}`
+            this.rdv.title=rdvElm.querySelector(".titleRdv").textContent;
+            this.rdv.note=rdvElm.querySelector(".descriptionRdv").textContent;
+       
         },
         deleteRdv(e) {//route :/api/pro/:idPro/rdv/:idRdv'
             console.log(e.target.id);
@@ -247,9 +270,12 @@ export default {
             if (!isFree)
                 alert("chevauchement");
             this.$refs.formElm.style.display = "block"
-            console.log(info)
+            this.$refs.buttonValid.removeAttribute("hidden")
+            this.$refs.buttonEdit.setAttribute("hidden","hidden");
+            console.log(info.start)
             // this.$refs.formElm.style.top = info.jsEvent.y+ "px";
             // this.$refs.formElm.style.left = info.jsEvent.x+ "px";
+
             this.$refs.dataElm.textContent = `${this.format(info.start)} - ${this.format(info.end)}`
             this.rdv.beginning_hour = info.start
             this.rdv.ending_hour = info.end;
@@ -283,7 +309,7 @@ export default {
             return true
         },
         format(date) {
-            return this.calendar.apiCalendar.formatDate(date, {
+            return this.$refs.fullCalendar.getApi().formatDate(date, {
                 weekday: 'short',
                 month: 'short',
                 year: 'numeric',
@@ -300,7 +326,6 @@ export default {
 
         async valid(e) {
             this.$refs.formElm.style.display = 'none';
-            //!penser à dynamiser
             this.rdv.pro_id = this.$store.state.user.id;
             let idRdv;
 
@@ -327,6 +352,24 @@ export default {
                 end: this.rdv.ending_hour,
             })
             this.rdv = {};
+        },
+        async modify(e){
+            this.$refs.formElm.style.display = 'none';
+            console.log(this.rdv);
+            //enregistrement bdd
+            try {
+                const response = await this.axios.patch(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv/${e.target.id}`, this.rdv);
+                console.log("rdv enregistré", response);
+
+
+            } catch (error) {
+                console.log(error)
+            }
+            const event=this.$refs.fullCalendar.getApi().getEventById(e.target.id);
+            event.setProp("title",this.rdv.title);
+            event.setExtendedProp("description",this.rdv.note)
+            this.rdv={}
+
         },
         async getListRdv() {
           const userId=await this.user
@@ -390,6 +433,14 @@ export default {
     right: 0;
     bottom: 0;
 }
+.btn-seeMore {
+    width: 20px;
+    height: 20px;
+    background-color: rgb(51, 11, 180);
+    position: absolute;
+    right: 40px;
+    bottom: 0;
+}
 
 .classLink {
     color: #fff;
@@ -406,7 +457,7 @@ export default {
 }
 
 .fc-timegrid-event-harness {
-    overflow: auto;
+    overflow: hidden;
 }
 
 body {

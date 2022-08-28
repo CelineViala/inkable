@@ -6,8 +6,7 @@ export default createStore({
         user:{
             role:'anonyme'
         },
-        id:null,
-        // message:null
+        currentProject:null,
         styles:[],
         cities:[],
         requestObj:{}
