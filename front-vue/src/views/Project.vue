@@ -17,8 +17,8 @@
             <div class="form-outline form-white mb-4">
               <label class="form-label" for="typeText">Titre du projet</label>
               <input v-model="editProject.title" type="text" id="typeText" class="form-control form-control-lg" />
+            </div>
           </div>
-         </div>
 
           <div class="card-body">
             <div class="form-outline form-white mb-4">
@@ -200,50 +200,43 @@ export default {
       }
     }
   },
-  created() {
-    this.$store.dispatch('check');
-    this.axios
-      .get('http://localhost:3000/api/projet/1')
-      .then((response) => {
-        console.log(response.data);
-        this.project_id=response.data.id;
-        this.first_name_client=response.data.consumer.first_name;
-        this.last_name_client=response.data.consumer.last_name;
-        this.editProject = response.data;
-        if (response.data.color)
-          this.editProject.color = "color";
-        else
-          this.editProject.color = "black_and_white";
+  created() { 
+    this.$store.dispatch('getUser');
+      this.axios
+        .get(`http://localhost:3000/api/projet/1`)
+        .then((response) => {
+          console.log(response.data);
+          this.project_id=response.data.id;
+          this.first_name_client=response.data.consumer.first_name;
+          this.last_name_client=response.data.consumer.last_name;
+          this.editProject = response.data;
+          if (response.data.color)
+            this.editProject.color = "color";
+          else
+            this.editProject.color = "black_and_white";
 
-        if (response.data.status === "accepté")
-          this.$refs.accepted.setAttribute("selected", true);
-        else if (response.data.status === "en attente")
-          this.$refs.waiting.setAttribute("selected", true);
-        if (response.data.status === "refusé")
-          this.$refs.refused.setAttribute("selected", true);
+          if (response.data.status === "accepté")
+            this.$refs.accepted.setAttribute("selected", true);
+          else if (response.data.status === "en attente")
+            this.$refs.waiting.setAttribute("selected", true);
+          if (response.data.status === "refusé")
+            this.$refs.refused.setAttribute("selected", true);
 
-        const rdvs = this.editProject.appointments;
+          const rdvs = this.editProject.appointments;
 
-        this.calendarApi = this.$refs.list.getApi();
-        rdvs.forEach(rdv => {
-          this.calendarApi.addEvent({
-            id: rdv.id,
-            title: rdv.title,
-            extendedProps: {
-              description: rdv.note,
-
-
-            },
-            start: new Date(rdv.beginning_hour),
-            end: new Date(rdv.ending_hour)
+          this.calendarApi = this.$refs.list.getApi();
+          rdvs.forEach(rdv => {
+            this.calendarApi.addEvent({
+              id: rdv.id,
+              title: rdv.title,
+              extendedProps: {
+                description: rdv.note,
+              },
+              start: new Date(rdv.beginning_hour),
+              end: new Date(rdv.ending_hour)
+            });
           });
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        return
-      })
-
+        }); 
   },
   methods: {
     format(date) {
