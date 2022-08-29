@@ -2,54 +2,83 @@
   <h1>Project Pro</h1>
 
   <section class=" gradient-custom">
+
     <div class="container py-5 h-100">
+
       <div class="card bg-dark text-white" style="border-radius: 1rem;">
-      <p>Prénom du client: {{this.first_name_client}}</p>
-      <p>Nom du client: {{this.last_name_client}}</p>
+
+        <div class="card-body">
+          <h3><strong>Client :</strong> {{this.first_name_client}} {{this.last_name_client}}</h3>
+        </div>
 
         <form>
-          <div class="form-outline form-white mb-4">
-            <input v-model="editProject.title" type="text" id="typeText" class="form-control form-control-lg" />
-            <label class="form-label" for="typeText">Titre du projet</label>
-          </div>
-         
 
-          <div class="form-outline form-white mb-4">
-            <!-- <input v-model="editProject.description" type="text" id="typeText" class="form-control form-control-lg" />-->
-            <textarea v-model="editProject.description" type="text" id="typeText"
-              class="form-control form-control-lg"></textarea>
-            <label class="form-label" for="typeText">Description</label>
+          <div class="card-body">
+            <div class="form-outline form-white mb-4">
+              <label class="form-label" for="typeText">Titre du projet</label>
+              <input v-model="editProject.title" type="text" id="typeText" class="form-control form-control-lg" />
           </div>
+         </div>
 
-          <!-- Titre -->
-          <div class="form-outline form-white mb-4">
-            <input v-model="editProject.area" type="text" id="typeText" class="form-control form-control-lg" />
-            <label class="form-label" for="typeText">Zone à tatouer</label>
+          <div class="card-body">
+            <div class="form-outline form-white mb-4">
+              <!-- <input v-model="editProject.description" type="text" id="typeText" class="form-control form-control-lg" />-->
+              <label class="form-label" for="typeText">Description</label>
+              <textarea v-model="editProject.description" type="text" id="typeText"
+                class="form-control form-control-lg"></textarea>
+            </div>
           </div>
 
-          <!-- Coloration -->
-          <div class="form-outline form-white mb-4 form-check-inline">
-            <input ref="inputTest" v-model="editProject.color" class="form-check-input" type="radio"
-              name="flexRadioDefault" id="flexRadioDefault1" value="black_and_white">
-            <label class="form-check-label" for="flexRadioDefault">
-              Noir et blanc
-            </label>
-          </div>
+        
+          <div class="card-body">
 
-          <div class="form-outline form-white mb-4 form-check-inline">
-            <input v-model="editProject.color" class="form-check-input" type="radio" name="flexRadioDefault"
-              id="flexRadioDefault2" value="color">
-            <label class="form-check-label" for="flexRadioDefault">
-              Couleur
-            </label>
+            <!-- Division en 2 colonnes -->
+            <div class="d-flex ">
+
+              <!-- Côté gauche -->
+              <div class="flex-grow-1 ms-3">
+
+                <!-- Zone à tatouer -->
+                <div class="form-outline form-white mb-4">
+                  <label class="form-label" for="typeText">Zone à tatouer</label>
+                  <input v-model="editProject.area" type="text" id="typeText" class="form-control form-control-lg" />
+                </div>
+
+              </div>
+
+              <!-- Côté droit -->
+              <div class="flex-grow-1 ms-3">
+
+                <label class="form-label" for="typeText">Coloration</label>
+
+                <div class="flex-grow-1 ms-3">
+
+                  <!-- Coloration -->
+                  <div class="form-outline form-white mb-4 form-check-inline">
+                    <input ref="inputTest" v-model="editProject.color" class="form-check-input m-1" type="radio"
+                      name="flexRadioDefault" id="flexRadioDefault1" value="black_and_white">
+                    <label class="form-check-label" for="flexRadioDefault"> Noir et blanc</label>
+                  </div>
+
+                  <div class="form-outline form-white mb-4 form-check-inline">
+                    <input v-model="editProject.color" class="form-check-input m-1" type="radio" name="flexRadioDefault"
+                      id="flexRadioDefault2" value="color">
+                    <label class="form-check-label" for="flexRadioDefault">
+                      Couleur
+                    </label>
+                  </div>
+
+                </div> 
+              </div>
+            </div>
           </div>
 
           <div class="form-outline form-white mb-4">
             <label class="mr-sm-2" for="inlineFormCustomSelect">Statut : </label>
             <select v-model="editProject.status" class="custom - select mr - sm - 2" id="inlineFormCustomSelect">
-              <option ref="accepted" value="accepté">Accepté</option>
-              <option ref="waiting" value="en attente">En attente</option>
-              <option ref="refused" value="refusé">Refusé</option>
+              <option ref="accepted" style="background-color: lightgreen;" value="accepté">Accepté</option>
+              <option ref="waiting" style="background-color:lightgray;" value="en attente">En attente</option>
+              <option ref="refused" style="background-color:lightcoral;" value="refusé">Refusé</option>
             </select>
           </div>
 
@@ -70,7 +99,7 @@
   <section class="gradient-custom">
     <div class="container py-5 h-100">
 
-      <div class="card bg-dark text-white ">
+      <div class="card ">
         <!-- Titre -->
         <div class="card-body">
           <h1 class="card-title">RDV</h1>
