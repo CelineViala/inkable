@@ -15,7 +15,6 @@ export default createStore({
         async check(state,data){
             
             state.dataToken=await data;
-            console.log(state.dataToken)
         },
         getUser(state,user){
             state.user=user;
@@ -39,10 +38,11 @@ export default createStore({
         async getUser({dispatch,commit}){
             await dispatch('check');
             let response;
+            
             if(this.state.dataToken.role==='pro')
                 response=await axios.get(`http://localhost:3000/api/pro/${this.state.dataToken.id}`);
             else if(this.state.dataToken.role==='consumer')
-                response=await axios.get(`http://localhost:3000/consumer/pro/${this.state.dataToken.id}`);
+                response=await axios.get(`http://localhost:3000/api/consumer/${this.state.dataToken.id}`);
             commit('getUser',response.data)
         },
         
