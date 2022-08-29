@@ -53,13 +53,15 @@
 
     </div>
 
+
+    <!-- Container des cartes -->
     <div class="container py-5 h-10">
 
       <div class="row row-cols-2 row-cols-md-5 g-4">
 
         <div class="col" v-for="p in pro">
-
-          <div class="card bg-dark text-white">
+          
+            <div class="card bg-dark text-white">
             
             <img src="https://picsum.photos/200" class="card-img-top" alt="image tatoueur">
             
@@ -68,8 +70,9 @@
               <p class="card-text">{{p.city}}</p>
               <router-link :to="{name:'ProfilPro',params:{id:p.id}}" class="btn btn-primary">Voir plus</router-link>
             </div>
-
           </div>
+
+          
 
         </div>
       
