@@ -14,7 +14,7 @@ INSERT INTO
         "role"
     )
 VALUES (
-        'le studio cool',
+        'le studio cool, cool, cool, cool, mega cool',
         'Toulouse',
         'lestudicool@gmail.com',
         'jesuiscool',
