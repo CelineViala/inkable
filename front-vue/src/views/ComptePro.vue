@@ -165,11 +165,12 @@ export default {
             errorMessage:null
         }
     },
-    created(){
+    async created(){
       
+      await this.$store.dispatch('getUser'); 
      
       this.axios
-        .get('http://localhost:3000/api/pro/3')
+        .get(`http://localhost:3000/api/pro/${this.$store.state.user.id}`)
         .then((response) => {
           console.log(response.data)
          
@@ -191,7 +192,6 @@ export default {
           console.log(err);       
           return
         })
-      this.$store.dispatch('check'); 
 
    },
     methods:{

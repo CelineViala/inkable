@@ -93,8 +93,8 @@ export default {
             errorMessage:null
         }
     },
-    created(){
-      this.$store.dispatch('check'); 
+    async created(){
+      await this.$store.dispatch('getUser'); 
       console.log(this.$store.state.user.id)
       
 
