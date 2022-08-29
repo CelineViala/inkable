@@ -82,7 +82,7 @@
             <button type="button" class="btn btn-light text-dark me-2">404</button>
           </router-link>
 
-          <router-link to="/project">
+          <router-link to="/project/1">
             <button type="button" class="btn btn-primary me-2">projet</button>
           </router-link>
 

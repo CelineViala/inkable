@@ -4,6 +4,7 @@
     <div class="container py-5 h-10">
 
       <div class="container py-5 h-10">
+        <h4 class="text-white">Prochains rendez-vous</h4>
         <div class="card" style="border-radius: 1rem;">
           <FullCalendar ref="fullCalendar" :options="calendarOptions" />
           <p> Si vous souhaitez modifier ou annuler un rendez-vous, contactez votre tatoueur</p>
@@ -21,7 +22,7 @@
                   <h5>{{project.title}}</h5>
                   <p>{{project.area}}</p>
                   <!-- Ce bouton amène sur la page de projet non modifiable, seul le pro peut le faire -->
-                  <a class="btn btn-primary" href="#" role="button">Détails du projet</a>
+                  <router-link class="btn btn-primary" :to="{ name:'Project', params: {id:project.id} }" role="button">Détails du projet</router-link>
                 </div>
               </div>
             </div>
@@ -47,6 +48,7 @@ export default {
   },
   async created() {
     await this.$store.dispatch('getUser');
+    this.addEvents();
     console.log("<<<<<<<<<<<<<<<<<<", this.$store.state.user);
   },
   data() {
@@ -59,6 +61,11 @@ export default {
         plugins: [listDayPlugin, interactionPlugin],
         initialView: 'listYear',
         height: 300,
+        headerToolbar: {
+            start: '', // will normally be on the left. if RTL, will be on the right
+            center: '',
+            end: ''
+        },
         titleFormat: // will produce something like "Tuesday, September 18, 2018"
         {
           weekday: 'long',
@@ -68,29 +75,7 @@ export default {
           hour: '2-digit',
           minute: '2-digit'
         },
-        events: [{
-          id: 'a',
-          title: 'my event',
-          extendedProps: {
-            description: "test"
-          },
-          start: '2022-08-24 12:00',
-          end: '2022-08-24 15:00',
-
-
-        },
-        {
-          id: 'b',
-          title: 'my event 2',
-          extendedProps: {
-            description: "test"
-          },
-          start: '2022-08-24 15:00',
-          end: '2022-08-24 16:00',
-
-
-        },
-        ],
+        
         locale: 'fr-FR',
         selectable: true,
         timeZone: 'locale',
@@ -102,5 +87,32 @@ export default {
       }
     }
   },
+  methods:{
+    addEvents(){
+      const rdvs=[];
+      const projects=this.$store.state.user.projects;
+      console.log(projects)
+      projects.forEach(project => {
+        const rdvsProject=project.appointments;
+        rdvsProject.forEach(rdv => {
+          rdv.pro=project.pro.studio_name;
+          rdv.nameProject=project.title;
+          if (new Date(rdv.beginning_hour).getDay()>=new Date().getDay())
+            rdvs.push(rdv);
+        });
+        
+      });
+      rdvs.forEach(rdv => {
+                    console.log(rdv)
+                    this.$refs.fullCalendar.getApi().addEvent({
+                        id: rdv.id,
+                        title: `RDV avec "${rdv.pro}" pour le projet "${rdv.nameProject}"`,
+                        start: new Date(rdv.beginning_hour),
+                        end: new Date(rdv.ending_hour)
+                    });
+                });
+      console.log(rdvs)
+    }
+  }
 }
 </script>

@@ -67,7 +67,7 @@ const routes=[
     },
     {
         name:'Project',
-        path:'/project',
+        path:'/project/:id',
         component:Project,
         meta:{
             allowAnonymous:true
