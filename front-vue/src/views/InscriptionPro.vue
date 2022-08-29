@@ -262,8 +262,8 @@
 <script>
 export default {
     name:'Inscriptions',
-    created(){
-    this.$store.dispatch('check');
+    async created(){
+     await this.$store.dispatch('getUser');
    },
     data(){
         return {

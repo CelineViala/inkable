@@ -43,6 +43,7 @@ export default createStore({
                 response=await axios.get(`http://localhost:3000/api/pro/${this.state.dataToken.id}`);
             else if(this.state.dataToken.role==='consumer')
                 response=await axios.get(`http://localhost:3000/api/consumer/${this.state.dataToken.id}`);
+            
             commit('getUser',response.data)
         },
         

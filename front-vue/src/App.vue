@@ -141,7 +141,7 @@ export default {
     
     this.axios.defaults.headers.common['Authorization']=`Bearer ${localStorage.token}`;
     
-    await   this.$store.dispatch('check');
+    //await this.$store.dispatch('getUser');
     this.$store.dispatch('getAllStyles');
     this.$store.dispatch('getAllCities');
     
