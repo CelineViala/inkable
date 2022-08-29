@@ -148,18 +148,7 @@ export default {
        
     }
   },
-  created(){
-    this.$store.dispatch('check');
-  
-    // this.role="pro"
-    // console.log("test",this.role)
-    // this.axios
-    //   .get('http://localhost:3000/api/pro')
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     this.pro=response.data;
-    //   })
-  }
+ 
     
 }
 </script>

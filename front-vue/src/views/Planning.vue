@@ -69,17 +69,15 @@ export default {
     },
     async created() {
         try {
-          await this.$store.dispatch('getUser');
-          console.log(this.$store.state.user);
+       
           const rdvs = this.$store.state.user.appointments;
-                rdvs.forEach(rdv => {
+                rdvs?.forEach(rdv => {
                     console.log(rdv)
                     this.$refs.fullCalendar.getApi().addEvent({
                         id: rdv.id,
                         title: rdv.title,
                         extendedProps: {
                             description: rdv.note,
-
 
                         },
                         start: new Date(rdv.beginning_hour),
@@ -209,7 +207,7 @@ export default {
             del.textContent = "❌";
             let projet = document.createElement('a');
             projet.classList.add("classLink");
-            projet.setAttribute("href", "/project");
+            projet.setAttribute("href", "/project/1");
             projet.textContent = "lien vers le projet"
             // projet.href = "https://www.google.fr"
             edit.textContent = "✎";

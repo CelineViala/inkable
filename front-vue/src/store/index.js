@@ -27,24 +27,39 @@ export default createStore({
         },
         createRequestObjForCloudinary(state,requestObj){
             state.requestObj=requestObj;
+        },
+        resetRequestObj(state){
+            state.requestObj={};
+        },
+        setAnonymous(state){
+            state.user.role="anonyme";
         }
     },
     actions:{
+        async setAnonymous({commit}){
+            commit('setAnonymous')
+        },
         async check({commit}){
             const response=await axios.get('http://localhost:3000/checkRole');
             commit('check',response.data)
                 
         },
         async getUser({dispatch,commit}){
-            await dispatch('check');
-            let response;
-            
-            if(this.state.dataToken.role==='pro')
-                response=await axios.get(`http://localhost:3000/api/pro/${this.state.dataToken.id}`);
-            else if(this.state.dataToken.role==='consumer')
-                response=await axios.get(`http://localhost:3000/api/consumer/${this.state.dataToken.id}`);
-            
-            commit('getUser',response.data)
+            try {
+                
+                await dispatch('check');
+                let response;
+                
+                if(this.state.dataToken.role==='pro')
+                    response=await axios.get(`http://localhost:3000/api/pro/${this.state.dataToken.id}`);
+                else if(this.state.dataToken.role==='consumer')
+                    response=await axios.get(`http://localhost:3000/api/consumer/${this.state.dataToken.id}`);
+                
+                commit('getUser',response.data)
+            } catch (error) {
+                dispatch('setAnonymous');
+                console.log(error)
+            }
         },
         
         
@@ -89,6 +104,13 @@ export default createStore({
 
             reader.readAsDataURL(event.target.files[0]);
         },
+        resetRequestObj({commit}){
+            commit('resetRequestObj');
+        },
+        logout({commit}){
+            localStorage.removeItem("token");
+            commit('setAnonymous');
+        }
         // handleUploadToCloudinary({commit}){
         //     let instance = axios.create();
         //     delete instance.defaults.headers.common['Authorization'];

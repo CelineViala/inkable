@@ -108,9 +108,6 @@ export default {
             messageError:null,
         }
     },
-    created(){
-    this.$store.dispatch('check');
-   },
    methods:{
     validForm:function(){ 
       if(this.newProject.color!==undefined)   

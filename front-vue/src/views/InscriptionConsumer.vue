@@ -96,10 +96,7 @@
 export default {
     name:'Inscriptions',
     created(){
-      
-      this.$store.state.requestObj={};
-      this.$store.dispatch('check'); 
-
+      this.$store.dispatch('resetRequestObj');
    },
     data(){
         return {
@@ -135,7 +132,7 @@ export default {
                       .then((response) => {
                           console.log(response.data);
                           this.newConsumer={};
-                          this.$store.state.requestObj={};
+                          this.$store.dispatch('resetRequestObj');
                           this.$router.push('/connexion');   
                           this.errorMessage=null;
                           this.successMessage= "Vous êtes bien inscrit!";
@@ -158,7 +155,7 @@ export default {
                       .then((response) => {
                           console.log(response.data);
                           this.newConsumer={};
-                          this.$store.state.requestObj={};
+                          this.$store.dispatch('resetRequestObj');
                           this.errorMessage=null;
                           this.successMessage="Vous êtes bien inscrit!";
                           this.$router.push('/connexion');       
