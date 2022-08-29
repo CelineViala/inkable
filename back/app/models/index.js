@@ -17,6 +17,26 @@ Project.hasMany(Message, {
     foreignKey: 'project_id',
 });
 
+Message.belongsTo(Pro, {
+    as: 'pro',
+    foreignKey: 'pro_id',
+});
+
+Pro.hasMany(Message, {
+    as: 'messages',
+    foreignKey: 'pro_id',
+});
+
+Message.belongsTo(Consumer, {
+    as: 'consumer',
+    foreignKey: 'consumer_id',
+});
+
+Consumer.hasMany(Message, {
+    as: 'messages',
+    foreignKey: 'consumer_id',
+});
+
 Project.belongsTo(Consumer, {
     as: 'consumer',
     foreignKey: 'consumer_id',
