@@ -63,7 +63,7 @@ module.exports = {
         const filteredPros = await client.query(`
             SELECT DISTINCT pro.*,style.name FROM pro
             JOIN categorise ON pro_id=pro.id
-            JOIN style on categorise.style_id=style_id
+            JOIN style on categorise.style_id=style.id
             WHERE style.name IN ('floral','tribal') AND city IN ('Lyon','Paris') AND color IN (true,false) AND black_and_white IN (true,false)
             `);
 

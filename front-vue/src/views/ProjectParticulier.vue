@@ -7,7 +7,7 @@
       <div class="card bg-dark text-white" style="border-radius: 1rem;">
 
         <div class="card-body">
-          <h3><strong>Tatoueur : </strong>{{this.project.pro.studio_name}}</h3>
+          <h3><strong>Tatoueur : </strong>{{this.pro_name}}</h3>
         </div>
 
         <div class="card-body">
@@ -103,7 +103,7 @@
 
 
         <!--Conteneur des messages à dupplique en cas de nouveau message-->
-        <div v-for="message in this.project.messages" lass="container_messages py-3 h-100">
+        <div v-for="message in this.project.messages" class="container_messages py-3 h-100">
           <div class="card-body">
 
             <div class="d-flex justify-content-start rounded-3 text-black" style="background-color: #efefef;">
@@ -153,6 +153,7 @@ export default {
       errorMessage: null,
       calendarApi: null,
       project_id:null,
+      pro_name:null,
       project: {},
       calendarOptions: {
         plugins: [listPlugin, dayGridPlugin, interactionPlugin],
@@ -179,13 +180,16 @@ export default {
     }
   },
 
-  created() {
-      this.$store.dispatch('getUser');
+  async created() {
+      await this.$store.dispatch('getUser');
       this.axios
         .get(`http://localhost:3000/api/projet/1`)
         .then((response) => {
           console.log(response.data);
           this.project=response.data;
+          this.pro_name=response.data.pro.studio_name;
+          
+
           if (response.data.color)
             this.project.color = "Couleur";
           else
@@ -209,9 +213,6 @@ export default {
             });
           });
         }); 
-  },
-  mounted() {
-    console.log(this.$refs)
   },
   methods: {
     format(date) {
