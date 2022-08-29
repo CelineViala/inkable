@@ -11,7 +11,7 @@ module.exports = {
             id,
         } = req.params;
         const project = await Project.findByPk(id, {
-            include: ['messages', 'appointments', 'consumer'],
+            include: ['messages', 'appointments', 'consumer', 'pro'],
         });
         if (project) {
             res.json(project);
