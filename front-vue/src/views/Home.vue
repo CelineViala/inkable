@@ -3,7 +3,7 @@
     <div class="container py-5 h-10">
 
       <!-- Partie recherche -->
-      <div class="card" style="border-radius: 1rem;">
+      <div class="card bg-dark text-white" style="border-radius: 1rem;">
         <div class="card-body p-4 text-center">
           <!-- Formulaire de recherche -->
           <form>
@@ -89,8 +89,7 @@ export default {
     }
   },
   created(){
-    this.role="pro";
-    console.log("test",this.role);
+    
     this.axios
       .get('http://localhost:3000/api/pro')
       .then((response) => {

@@ -167,7 +167,7 @@ export default {
     },
     async created(){
       
-      await this.$store.dispatch('getUser'); 
+      
      
       this.axios
         .get(`http://localhost:3000/api/pro/${this.$store.state.user.id}`)

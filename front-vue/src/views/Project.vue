@@ -201,7 +201,7 @@ export default {
     }
   },
   created() { 
-    this.$store.dispatch('getUser');
+    
       this.axios
         .get(`http://localhost:3000/api/projet/1`)
         .then((response) => {

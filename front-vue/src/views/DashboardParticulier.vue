@@ -47,9 +47,9 @@ export default {
     FullCalendar // make the <FullCalendar> tag available
   },
   async created() {
-    await this.$store.dispatch('getUser');
+    // await this.$store.dispatch('getUser');
     this.addEvents();
-    console.log("<<<<<<<<<<<<<<<<<<", this.$store.state.user);
+    // console.log("<<<<<<<<<<<<<<<<<<", this.$store.state.user);
   },
   data() {
 

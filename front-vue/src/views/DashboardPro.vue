@@ -46,7 +46,7 @@
                   <h5>{{projet.title}}</h5>
                   <p>Zone de tatouage : {{projet.area}} </p>
                   <!-- ce boutton amène sur la page de projet modifiable ATTENTION Penser à dynamyser avec un params id du projet-->
-                  <router-link :to="{name:'Project'}" class="btn btn-primary">Détail du projet</router-link>
+                  <router-link :to="{name:'Project', params:{id:projet.id}}" class="btn btn-primary">Détail du projet</router-link>
                 </div>
               </div>
             </div>
@@ -88,7 +88,7 @@ export default {
     FullCalendar // make the <FullCalendar> tag available
   },
   created(){
-    this.$store.dispatch('check');
+ 
     
     //récupération du pro en bdd;
     this.axios
@@ -140,7 +140,7 @@ export default {
   },
   methods:{
     handleFile(e){
-      this.$store.state.requestObj={};
+      this.$store.dispatch('resetRequestObj');
       this.$store.dispatch('createRequestObjForCloudinary',e);
       this.picture=true;
     },

@@ -262,9 +262,7 @@
 <script>
 export default {
     name:'Inscriptions',
-    async created(){
-     await this.$store.dispatch('getUser');
-   },
+    
     data(){
         return {
             newPro:{

@@ -14,6 +14,7 @@ import Planning from '@/views/Planning.vue';
 import Page404 from '@/views/Page404.vue';
 import ProjectParticulier from '@/views/ProjectParticulier';
 import Createurs from '@/views/Createurs.vue';
+const store = require('../store')
 
 const routes=[
     {
@@ -147,14 +148,18 @@ const router=createRouter({
     routes
 })
 
-router.beforeEach((to,from,next)=>{
-    console.log("before",to,from)
-    console.log(to.meta.allowAnonymous)
+router.beforeEach(async (to,from,next)=>{
     
+    try {
+        console.log(store)
+        await store.default.dispatch('getUser');    
+    } catch (error) {
+        console.log(error);
+    }
     if(!to.meta.allowAnonymous)
         next({
-             path:'/connexion',
-         })
+            path:'/connexion',
+        })
     else next();
    
 })

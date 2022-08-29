@@ -94,8 +94,8 @@ export default {
         }
     },
     async created(){
-      await this.$store.dispatch('getUser'); 
-      console.log(this.$store.state.user.id)
+    
+      console.log(this.$store.state.user)
       
 
    },
