@@ -115,7 +115,7 @@ module.exports = {
             }
 
             if (req.body.city) {
-                pro.city = req.body.city;
+                pro.city = req.body.city.toUpperCase();
             }
 
             if (req.body.styles) {
