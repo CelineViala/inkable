@@ -22,7 +22,7 @@
                   <h5>{{project.title}}</h5>
                   <p>{{project.area}}</p>
                   <!-- Ce bouton amène sur la page de projet non modifiable, seul le pro peut le faire -->
-                  <a class="btn btn-primary" href="#" role="button">Détails du projet</a>
+                  <router-link class="btn btn-primary" :to="{ name:'Project', params: {id:project.id} }" role="button">Détails du projet</router-link>
                 </div>
               </div>
             </div>
@@ -97,7 +97,8 @@ export default {
         rdvsProject.forEach(rdv => {
           rdv.pro=project.pro.studio_name;
           rdv.nameProject=project.title;
-          rdvs.push(rdv);
+          if (new Date(rdv.beginning_hour).getDay()>=new Date().getDay())
+            rdvs.push(rdv);
         });
         
       });
@@ -105,7 +106,7 @@ export default {
                     console.log(rdv)
                     this.$refs.fullCalendar.getApi().addEvent({
                         id: rdv.id,
-                        title: `RDV avec "${rdv.pro}" pour le projet "${rdv.nameProject}""`,
+                        title: `RDV avec "${rdv.pro}" pour le projet "${rdv.nameProject}"`,
                         start: new Date(rdv.beginning_hour),
                         end: new Date(rdv.ending_hour)
                     });
