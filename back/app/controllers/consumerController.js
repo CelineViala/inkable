@@ -7,7 +7,7 @@ module.exports = {
         // récupère l'id du consumer
         const { id } = req.params;
         // trouve le consumer
-        const consumer = await Consumer.findByPk(id);
+        const consumer = await Consumer.findByPk(id, { include: ['projects'] });
         // si ok, on renvoi le consumer, sinon une erreur
         if (consumer) {
             res.json(consumer);

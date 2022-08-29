@@ -6,37 +6,21 @@
       <div class="container py-5 h-10">
         <div class="card" style="border-radius: 1rem;">
           <FullCalendar ref="fullCalendar" :options="calendarOptions" />
-          <p> Si vous souaitez modifier ou annuler un rendez-vous, contactez votre tatoueur</p>
+          <p> Si vous souhaitez modifier ou annuler un rendez-vous, contactez votre tatoueur</p>
         </div>
       </div>
 
       <!-- Première carte projet -->
       <div class="container py-5 h-10">
         <h4 class="text-white">Projets en cours</h4>
-        <div class="container py-4">
+        <div v-for ="project in this.$store.state.user.projects" class="container py-4">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-8">
               <div class="card bg-dark text-white" style="border-radius: 1rem;">
                 <div class="card-body p-4">
-                  <h5>Titre du projet</h5>
-                  <p>Zone du tatouage</p>
+                  <h5>{{project.title}}</h5>
+                  <p>{{project.area}}</p>
                   <!-- Ce bouton amène sur la page de projet non modifiable, seul le pro peut le faire -->
-                  <a class="btn btn-primary" href="#" role="button">Détails du projet</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Seconde carte projet -->
-        <div class="container py-5 h-10">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-8">
-              <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                <div class="card-body p-4">
-                  <h5>Titre du projet</h5>
-                  <p>Zone du tatouage</p>
-                  <!-- Attention à bien changer le lien pour un route en /project-particulier/:id -->
                   <a class="btn btn-primary" href="#" role="button">Détails du projet</a>
                 </div>
               </div>
@@ -61,8 +45,9 @@ export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
   },
-  created() {
-    this.$store.dispatch('check');
+  async created() {
+    await this.$store.dispatch('getUser');
+    console.log("<<<<<<<<<<<<<<<<<<", this.$store.state.user);
   },
   data() {
 
