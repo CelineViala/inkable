@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const { required } = require('joi');
 const { Pro, Consumer, Style } = require('../models');
 const InputError = require('../errors/inputError');
 const ApiError = require('../errors/apiError');
@@ -20,6 +19,7 @@ const authController = {
         delete req.body.passwordConfirm;
         req.body.role = 'pro';
         req.body.password = await serviceAuth.hashPassword(req.body.password);
+        req.body.city = req.body.city.toUpperCase();
 
         // transformation du tableau req.body.styles pour pouvoir faire l'insertion du pro dans la
         // bdd tout en remplissant la table "Style" (association manyTomany)
