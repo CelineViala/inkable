@@ -73,6 +73,8 @@
           class="btn btn-primary btn-lg" value="Valider l'inscription" type="button"/>
 
           </div>
+          <p class="text-success">{{this.successMessage}}</p>
+          <p class="text-danger">{{this.errorMessage}}</p>
         
 
           
@@ -105,7 +107,9 @@ export default {
             newConsumer:{
                   
             },
-            message:null
+            successMessage:null,
+            errorMessage:null,
+           
         }
     },
     methods:{
@@ -132,12 +136,14 @@ export default {
                           console.log(response.data);
                           this.newConsumer={};
                           this.$store.state.requestObj={};
-                          this.message="Vous êtes bien inscrit!";
-                          this.$router.push('/connexion');       
+                          this.$router.push('/connexion');   
+                          this.errorMessage=null;
+                          this.successMessage= "Vous êtes bien inscrit!";
                       })
                       .catch((err)=>{
                           console.log(err);
-                          this.message=err.response.data.message;
+                          this.successMessage=null;
+                          this.errorMessage=err.response.data.message;
                           return
                       })                                  
                 })
@@ -153,12 +159,14 @@ export default {
                           console.log(response.data);
                           this.newConsumer={};
                           this.$store.state.requestObj={};
-                          this.message="Vous êtes bien inscrit!";
+                          this.errorMessage=null;
+                          this.successMessage="Vous êtes bien inscrit!";
                           this.$router.push('/connexion');       
                       })
                       .catch((err)=>{
                           console.log(err);
-                          this.message=err.response.data.message;
+                          this.successMessage=null;
+                          this.errorMessage=err.response.data.message;
                           return
                       })
 
