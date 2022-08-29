@@ -113,7 +113,7 @@ export default {
       if(this.newProject.color!==undefined)   
         this.newProject.color=this.newProject.color==='color'?true:false;
       this.newProject.pro_id=1; //ATTENTION rendre dynamique
-      this.newProject.consumer_id=1; //ATTENTION rendre dynamique
+      this.newProject.consumer_id=this.$store.state.user.id; //ATTENTION rendre dynamique
       
       this.axios
       .post('http://localhost:3000/api/projet',this.newProject) 

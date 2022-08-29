@@ -87,16 +87,7 @@ export default {
           
         } catch (error) {
           console.log(error)
-        }
-          
-        
-          
-        
-        
-    },
-    mounted() {
-
-      console.log(this.user)
+        }    
     },
     computed:{
     async user() {
