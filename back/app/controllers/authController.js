@@ -52,7 +52,7 @@ const authController = {
         if (req.user.role === 'consumer') { res.json('Vous pouvez accéder à votre dashboard Consumer'); } else { res.sendStatus(403); }
     },
     verifyToken(req, res) {
-        res.json(req.user.role);
+        res.json(req.user);
     },
     testPro(req, res) {
         if (req.user.role === 'pro') { res.json('Vous pouvez accéder à votre dashboard Pro'); } else { res.sendStatus(403); }
@@ -71,7 +71,7 @@ const authController = {
         }
         if (!await serviceAuth.checkPassword(req.body.password, user.password)) throw new InputError('Mot de passe erroné', { statusCode: 400 });
         const accessToken = jwt.sign(
-            { role: user.role },
+            { role: user.role, id: user.id },
             process.env.JWT_SECRET,
         );
         return res.json({ accessToken }); // le token devra être stocké côté front pour connaitre

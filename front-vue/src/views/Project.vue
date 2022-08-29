@@ -3,14 +3,16 @@
 
   <section class=" gradient-custom">
     <div class="container py-5 h-100">
-
       <div class="card bg-dark text-white" style="border-radius: 1rem;">
+      <p>Prénom du client: {{this.first_name_client}}</p>
+      <p>Nom du client: {{this.last_name_client}}</p>
 
         <form>
           <div class="form-outline form-white mb-4">
             <input v-model="editProject.title" type="text" id="typeText" class="form-control form-control-lg" />
             <label class="form-label" for="typeText">Titre du projet</label>
           </div>
+         
 
           <div class="form-outline form-white mb-4">
             <!-- <input v-model="editProject.description" type="text" id="typeText" class="form-control form-control-lg" />-->
@@ -141,6 +143,9 @@ export default {
       successMessage: null,
       errorMessage: null,
       calendarApi: null,
+      first_name_client:null,
+      last_name_client:null,
+      project_id:null,
       editProject: {},
       calendarOptions: {
         plugins: [listPlugin, dayGridPlugin, interactionPlugin],
@@ -172,6 +177,9 @@ export default {
       .get('http://localhost:3000/api/projet/1')
       .then((response) => {
         console.log(response.data);
+        this.project_id=response.data.id;
+        this.first_name_client=response.data.consumer.first_name;
+        this.last_name_client=response.data.consumer.last_name;
         this.editProject = response.data;
         if (response.data.color)
           this.editProject.color = "color";
@@ -240,7 +248,7 @@ export default {
       reqProject.color = this.editProject.color === "color" ? true : false;
 
       this.axios
-        .patch('http://localhost:3000/api/projet/1', reqProject)
+        .patch(`http://localhost:3000/api/projet/${this.project_id}`, reqProject)
         .then((response) => {
           console.log(response.data);
           this.errorMessage = null;

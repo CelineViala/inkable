@@ -2,14 +2,22 @@ import {createStore, createstore} from 'vuex';
 import axios from 'axios';
 export default createStore({
     state:{
-        user:'Anonyme',
-        // message:null
+        dataToken:null,
+        user:{
+            role:'anonyme'
+        },
+        currentProject:null,
         styles:[],
         cities:[],
         requestObj:{}
     },
     mutations:{
-        check(state,user){
+        async check(state,data){
+            
+            state.dataToken=await data;
+            console.log(state.dataToken)
+        },
+        getUser(state,user){
             state.user=user;
         },
         getAllStyles(state,styles){
@@ -23,18 +31,22 @@ export default createStore({
         }
     },
     actions:{
-        check({commit}){
-            axios.get('http://localhost:3000/checkRole')
-                .then((response) => {
-                    console.log("afterConnect");
-                    console.log(response.data);
-                    commit('check',response.data)
-                })
-                .catch(err=>{
-                    console.log("error after connect")
-                    console.log(err)
-                })
+        async check({commit}){
+            const response=await axios.get('http://localhost:3000/checkRole');
+            commit('check',response.data)
+                
         },
+        async getUser({dispatch,commit}){
+            await dispatch('check');
+            let response;
+            if(this.state.dataToken.role==='pro')
+                response=await axios.get(`http://localhost:3000/api/pro/${this.state.dataToken.id}`);
+            else if(this.state.dataToken.role==='consumer')
+                response=await axios.get(`http://localhost:3000/consumer/pro/${this.state.dataToken.id}`);
+            commit('getUser',response.data)
+        },
+        
+        
         getAllStyles({commit}){
             
             //récupération des styles a afficher dans les balises select

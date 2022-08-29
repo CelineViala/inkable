@@ -1,5 +1,5 @@
 <template>
-<h1>{{this.user}}</h1>
+<h1>{{this.user.role}}</h1>
 <!-- 1ere partie du header -->
 <div class="px-3 py-2 text-bg-dark">
       <div class="container">
@@ -124,12 +124,7 @@ import Home from './views/Home.vue'
 export default {
   name: 'App',
   components:{Home},
-  data(){
-        return {
-          isPro:false,
-      
-        }
-  },
+  
   computed:{
     user() {
           return this.$store.state.user
@@ -138,29 +133,15 @@ export default {
         return this.$store.state.cities
     }
   },
-  methods:{
-     checkRole: async function(){
-      console.log(localStorage.token)
-      let role;
-      try {
-        const response=await this.axios.get('http://localhost:3000/checkRole');
-        role= await response.data;
-        
-        
-      } catch (error) {
-        console.log(error)
-      }
-      if(role==='pro') this.isPro=true;
-      
-  }
-  },
+ 
   updated(){
     console.log("updated");
   },
   async created(){  
     
     this.axios.defaults.headers.common['Authorization']=`Bearer ${localStorage.token}`;
-    this.checkRole();
+    
+    await   this.$store.dispatch('check');
     this.$store.dispatch('getAllStyles');
     this.$store.dispatch('getAllCities');
     
