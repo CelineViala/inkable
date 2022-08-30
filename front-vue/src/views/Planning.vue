@@ -67,12 +67,12 @@ export default {
     components: {
         FullCalendar // make the <FullCalendar> tag available
     },
-    async created() {
+    async mounted() {
         try {
        
           const rdvs = this.$store.state.user.appointments;
                 rdvs?.forEach(rdv => {
-                    console.log(rdv)
+                    console.log(rdv, this.$refs)
                     this.$refs.fullCalendar.getApi().addEvent({
                         id: rdv.id,
                         title: rdv.title,

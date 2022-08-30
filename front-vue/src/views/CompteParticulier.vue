@@ -145,7 +145,7 @@ export default {
 
                     //requete pour enregistrer le consumer
                     this.axios
-                       .patch('http://localhost:3000/api/consumer/1',this.editConsumer)
+                       .patch(`http://localhost:3000/api/consumer/${this.$store.state.user.id}`,this.editConsumer)
                        .then((response) => {
                         console.log(response.data);
                         this.errorMessage=null;
@@ -168,7 +168,7 @@ export default {
                 })
             }else{
               this.axios
-                    .patch('http://localhost:3000/api/consumer/1',this.editConsumer)
+                    .patch(`http://localhost:3000/api/consumer/${this.$store.state.user.id}`,this.editConsumer)
                     .then((response) => {
                         console.log(response.data);
                         this.errorMessage=null;

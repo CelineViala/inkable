@@ -1,12 +1,12 @@
 import {createStore, createstore} from 'vuex';
 import axios from 'axios';
+const router=require('../router')
 export default createStore({
     state:{
         dataToken:null,
         user:{
             role:'anonyme'
         },
-        currentProject:null,
         styles:[],
         cities:[],
         requestObj:{}
@@ -30,6 +30,9 @@ export default createStore({
         },
         resetRequestObj(state){
             state.requestObj={};
+        },
+        deleteUser(state){
+            state.user={};
         },
         setAnonymous(state){
             state.user.role="anonyme";
@@ -98,16 +101,23 @@ export default createStore({
 
             reader.readAsDataURL(event.target.files[0]);
         },
+        deleteUser({commit}){
+            commit('deleteUser');
+        },
         resetRequestObj({commit}){
             commit('resetRequestObj');
         },
-        logout({dispatch,commit}){
+        async logout({dispatch,commit}){
             //suppression du Token
             localStorage.removeItem("token");
             //suppression du header Authorization(le back ne reconnaitra plus l'utilisateur )
             delete axios.defaults.headers.common['Authorization'];
             //mise à jour de user.role à anonyme
-            dispatch('setAnonymous');
+            await dispatch('deleteUser');
+            await dispatch('setAnonymous');
+            console.log(router)
+            router.default.push('/'); 
+
         }
         // handleUploadToCloudinary({commit}){
         //     let instance = axios.create();

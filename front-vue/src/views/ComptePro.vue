@@ -232,7 +232,7 @@ export default {
 
                     //requete pour enregistrer le pro
                     this.axios
-                       .patch('http://localhost:3000/api/pro/3',this.editPro)
+                       .patch(`http://localhost:3000/api/pro/${this.$store.state.user.id}`,this.editPro)
                        .then((response) => {
                         console.log(response.data);
                         this.errorMessage=null;
@@ -256,7 +256,7 @@ export default {
 
             }else{
             this.axios
-                  .patch('http://localhost:3000/api/pro/3',this.editPro)
+                  .patch(`http://localhost:3000/api/pro/${this.$store.state.user.id}`,this.editPro)
                   .then((response) => {
                       console.log(response.data);
                       this.errorMessage=null;
