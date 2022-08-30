@@ -5,9 +5,16 @@ import router from './router';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import createStore from './store';
+import Cloudinary from "cloudinary-vue";
+
 
 
 createApp(App)
+.use(Cloudinary, {
+    configuration: { 
+      cloudName: "dmoacy4yl",
+    },
+})
 .use(VueAxios,axios)
 .use(createStore)
 .use(router)

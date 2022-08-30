@@ -2,24 +2,32 @@
   "name": "projet-06-inkable",
   "version": "1.0.0",
   "description": "Projet INKABLE",
+  "author": "",
+  "scripts": {
+    "back": "cd back && npm run dev",
+    "front-vue": "cd front-vue && npm run build",
+    "heroku-postbuild": "npm i --force && cd front-vue && npm i --force && cd ../back && npm i --force",
+    "start": "concurrently --kill-others 'npm run back' 'npm run front-vue'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "main": "vetur.config.js",
+  "dependencies": {
+    "cloudinary-vue": "^1.0.0"
+  },
+  "devDependencies": {
+    "vue-cli-plugin-cloudinary": "~0.0.6"
+  },
+  "bugs": {
+    "url": "https://github.com/O-clock-Daguerre/projet-06-inkable/issues"
+  },
   "directories": {
     "doc": "docs"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "npm i --force && cd front-vue && npm i --force && cd ../back && npm i --force",
-    "start": "concurrently --kill-others 'npm run back' 'npm run front-vue'",
-    "front-vue": "cd front-vue && npm run build",
-    "back": "cd back && npm run dev"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/O-clock-Daguerre/projet-06-inkable.git"
-  },
+
+  "homepage": "https://github.com/O-clock-Daguerre/projet-06-inkable#readme",
   "keywords": [],
-  "author": "",
   "license": "ISC",
+
   "bugs": {
     "url": "https://github.com/O-clock-Daguerre/projet-06-inkable/issues"
   },
@@ -33,5 +41,10 @@
   },
   "dependencies": {
     "concurrently": "^7.3.0"
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/O-clock-Daguerre/projet-06-inkable.git"
+
   }
 }

@@ -1,5 +1,11 @@
 import {createStore, createstore} from 'vuex';
 import axios from 'axios';
+import {CloudinaryImage} from '@cloudinary/url-gen';
+import { Cloudinary } from "@cloudinary/url-gen";
+import { thumbnail } from "@cloudinary/url-gen/actions/resize";
+import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
+import {focusOn} from "@cloudinary/url-gen/qualifiers/gravity";
+import {FocusOn} from "@cloudinary/url-gen/qualifiers/focusOn";
 const router=require('../router')
 export default createStore({
     state:{
@@ -90,7 +96,23 @@ export default createStore({
             let clientFile;
             reader.addEventListener("load", ()=>{
             clientFile=reader.result;
-            
+            // console.log(clientFile);
+            // const cld = new Cloudinary({
+            //     cloud: {
+            //       cloudName: 'dmoacy4yl',
+            //       apiKey:'488459514946562',
+            //       apiSecret:'1Yb7F1TRgKOX0hIUdgrA4JXlmLM'
+            //     }
+            //   });
+              
+            // const myImage = cld.image(event.target.files[0]);
+            // myImage
+            //     .resize(thumbnail().width(150).height(150).gravity(focusOn(FocusOn.face())))  // Crop the image, focusing on the face.
+            //     .roundCorners(byRadius(20))
+              
+            // console.log(myImage.toURL());
+            // cld.url(myImage.toURL())
+            // myImage.toURL();
             let requestObj={
                 url:'https://api.cloudinary.com/v1_1/dmoacy4yl/image/upload',
                 method:"POST",
