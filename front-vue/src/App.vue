@@ -161,6 +161,7 @@ export default {
   },
   async created(){  
     
+    //met le token dans le header 
     this.axios.defaults.headers.common['Authorization']=`Bearer ${localStorage.token}`;
     // try {
     //   await this.$store.dispatch('getUser');

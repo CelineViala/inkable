@@ -22,7 +22,7 @@
                   <h5>{{project.title}}</h5>
                   <p>{{project.area}}</p>
                   <!-- Ce bouton amène sur la page de projet non modifiable, seul le pro peut le faire -->
-                  <router-link class="btn btn-primary" :to="{ name:'Project', params: {id:project.id} }" role="button">Détails du projet</router-link>
+                  <router-link class="btn btn-primary" :to="{ name:'ProjectParticulier', params: {id:project.id} }" role="button">Détails du projet</router-link>
                 </div>
               </div>
             </div>
@@ -49,7 +49,7 @@ export default {
   async created() {
     // await this.$store.dispatch('getUser');
     this.addEvents();
-    // console.log("<<<<<<<<<<<<<<<<<<", this.$store.state.user);
+     console.log("<<<<<<<<<<<<<<<<<<", this.$store.state.user);
   },
   data() {
 
@@ -92,9 +92,9 @@ export default {
       const rdvs=[];
       const projects=this.$store.state.user.projects;
       console.log(projects)
-      projects.forEach(project => {
+      projects?.forEach(project => {
         const rdvsProject=project.appointments;
-        rdvsProject.forEach(rdv => {
+        rdvsProject?.forEach(rdv => {
           rdv.pro=project.pro.studio_name;
           rdv.nameProject=project.title;
           if (new Date(rdv.beginning_hour).getDay()>=new Date().getDay())
@@ -102,7 +102,7 @@ export default {
         });
         
       });
-      rdvs.forEach(rdv => {
+      rdvs?.forEach(rdv => {
                     console.log(rdv)
                     this.$refs.fullCalendar.getApi().addEvent({
                         id: rdv.id,

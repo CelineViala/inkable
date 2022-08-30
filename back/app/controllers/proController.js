@@ -16,56 +16,69 @@ module.exports = {
 
     async CreateSearch(req, res) {
         // ! a continuer plus tard et à tester !
-        try {
-            const searchCity = req.body.city;
-            const searchColor = req.body.color;
-            const searchBw = req.body.black_and_white;
-            const searchStyle = req.body.styles;
+        // try {
+        // const searchCity = req.body.city;
+        //     const searchColor = req.body.color;
+        //     const searchBw = req.body.black_and_white;
+        //     const searchStyle = req.body.styles;
 
-            if (searchCity) {
-                const sqlCity = await client.query('SELECT city FROM "pro" WHERE city = searchCity');
-                return res.json(sqlCity);
-            }
-            if (searchColor) {
-                const sqlColor = await client.query('SELECT color FROM "pro" WHERE color = searchColor');
-                return res.json(sqlColor);
-            }
-            if (searchBw) {
-                const sqlBW = await client.query('SELECT black_and_white FROM "pro" WHERE black_and_white = searchBw');
-                return res.json(sqlBW);
-            }
-            if (searchStyle) {
-                const sqlStyle = await client.query('SELECT name FROM "style" WHERE name = searchStyle');
-                return res.json(sqlStyle);
-            }
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({
-                message: 'Erreur lors de la récupération des filtres',
-            });
-        }
+        //     if (searchCity) {
+        //         const sqlCity = await client.query('SELECT city FROM "pro" WHERE city = searchCity');
+        //         return res.json(sqlCity);
+        //     }
+        //     if (searchColor) {
+        //         const sqlColor = await client.query('SELECT color FROM "pro" WHERE color = searchColor');
+        //         return res.json(sqlColor);
+        //     }
+        //     if (searchBw) {
+        //         const sqlBW = await client.query('SELECT black_and_white FROM "pro" WHERE black_and_white = searchBw');
+        //         return res.json(sqlBW);
+        //     }
+        //     if (searchStyle) {
+        //         const sqlStyle = await client.query('SELECT name FROM "style" WHERE name = searchStyle');
+        //         return res.json(sqlStyle);
+        //     }
+        // } catch (error) {
+        //     console.log(error);
+        //     res.status(500).json({
+        //         message: 'Erreur lors de la récupération des filtres',
+        //     });
+        // }
 
-        const filter = {
-        };
-        const styles = {};
+        let query = `SELECT DISTINCT pro.* FROM pro
+        LEFT OUTER JOIN categorise ON pro_id=pro.id
+        LEFT OUTER JOIN style on categorise.style_id=style.id
+        WHERE `;
+        let conditions = [];
+        const args = [];
+        let count = 1;
 
         if (req.body.city !== undefined) {
-            filter.city = req.body.city;
+            conditions.push(`city = $${count}`);
+            args.push(req.body.city);
+            count += 1;
         }
         if (req.body.color !== undefined) {
-            filter.color = req.body.color;
+            conditions.push(`color = $${count}`);
+            args.push(req.body.color);
+            count += 1;
         }
         if (req.body.black_and_white !== undefined) {
-            filter.color = req.body.black_and_white;
+            conditions.push(`black_and_white = $${count}`);
+            args.push(req.body.black_and_white);
+            count += 1;
         }
-        if (req.body.styles !== undefined) { styles.name = req.body.styles; }
+        if (req.body.style !== undefined) {
+            conditions.push(`style.name= $${count}`);
+            args.push(req.body.style);
+        }
 
-        const filteredPros = await client.query(`
-            SELECT DISTINCT pro.*,style.name FROM pro
-            JOIN categorise ON pro_id=pro.id
-            JOIN style on categorise.style_id=style.id
-            WHERE style.name IN ('floral','tribal') AND city IN ('Lyon','Paris') AND color IN (true,false) AND black_and_white IN (true,false)
-            `);
+        conditions = conditions.join(' AND ');
+        query += conditions;
+
+        const filteredPros = await client.query(query, {
+            bind: args,
+        });
 
         res.json(filteredPros[0]);
     },

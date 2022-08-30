@@ -53,20 +53,7 @@
           </div>
         </div>
 
-<!-- Seconde carte projet -->
-       <div class="container py-5 h-10">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-8">
-              <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                <div class="card-body p-4">
-                  <h5>Titre du projet</h5>
-                  <p>Zone du tatouage</p>
-                  <button type="button" class="btn btn-primary">Détails du projet</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
 
   
@@ -92,7 +79,7 @@ export default {
     
     //récupération du pro en bdd;
     this.axios
-        .get('http://localhost:3000/api/pro/1')
+        .get(`http://localhost:3000/api/pro/${this.$store.state.user.id}`)
         .then((response) => {
           this.pro=response.data;   
           console.log(response.data);
@@ -156,7 +143,7 @@ export default {
               instance(this.$store.state.requestObj)
                 .then((response) => {
                   this.axios
-                    .post('http://localhost:3000/api/pro/1/tatouages',{pro_id:1,tattoo_picture_path:response.data.url})
+                    .post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages`,{pro_id:this.$store.state.user.id,tattoo_picture_path:response.data.url})
                     .then((res)=>{
                        this.errorMessage=null;
                        this.successMessage="Votre photo a bien été envoyée";
@@ -185,7 +172,7 @@ export default {
       try {
         console.log(this.$refs)
         let calendarApi = this.$refs.list.getApi()
-        const response=await this.axios.get('http://localhost:3000/api/pro/1/rdv',this.rdv);
+        const response=await this.axios.get(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv`,this.rdv);
         const rdvs = response.data;
         rdvs.forEach(rdv => {
                 console.log(rdv)
@@ -201,7 +188,7 @@ export default {
             });
       
       } catch (error) {
-        alert(error)
+        console.log(error)
       }
   }
 }

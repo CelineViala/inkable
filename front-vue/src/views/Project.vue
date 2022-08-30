@@ -201,9 +201,9 @@ export default {
     }
   },
   created() { 
-    
+     
       this.axios
-        .get(`http://localhost:3000/api/projet/1`)
+        .get(`http://localhost:3000/api/projet/${this.$route.params.id}`)
         .then((response) => {
           console.log(response.data);
           this.project_id=response.data.id;

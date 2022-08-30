@@ -9,16 +9,16 @@
           <form>
             <!-- Ville -->
             <div class="mb-3">
-              <select class="form-select" aria-label="Default select example">
-                <option selected>Choisissez une ville</option>
+              <select v-model="searchForm.city" class="form-select" aria-label="Default select example">
+                <option value="default">Choisissez une ville</option>
                 <option v-for="city in this.$store.state.cities" :value="city">{{city}}</option>
               </select>
             </div>
 
             <!-- Style -->
             <div class="mb-3">
-              <select class="form-select" aria-label="Default select example">
-                <option selected>Choisissez un style</option>
+              <select v-model="searchForm.style" class="form-select" aria-label="Default select example">
+                <option value="default">Choisissez un style</option>
                 <option v-for="style in this.$store.state.styles" :value="style">{{style}}</option>
               </select>
             </div>
@@ -26,7 +26,7 @@
             <!-- Checkbox -->
             <div class="mb-3">
               <div class="form-check-inline">
-                <input class="form-check-input" type="checkbox" value="" id="colorTatoo" checked>
+                <input v-model="searchForm.color" class="form-check-input" type="checkbox" id="colorTatoo">
                 <label class="form-check-label" for="flexCheckDefault">
                   Couleur
                 </label>
@@ -35,7 +35,7 @@
 
             <div class="mb-3">
               <div class="form-check-inline">
-                <input class="form-check-input" type="checkbox" value="" id="bAndWTatto" checked>
+                <input v-model="searchForm.black_and_white" class="form-check-input" type="checkbox" id="bAndWTatto">
                 <label class="form-check-label" for="flexCheckChecked">
                   Noir et Blanc
                 </label>
@@ -43,7 +43,7 @@
             </div>
 
             <div>
-              <button type="submit" class="btn btn-primary">Filtrer</button>
+              <button @click="search" type="submit" class="btn btn-primary">Filtrer</button>
             </div>
 
           </form>
@@ -59,7 +59,7 @@
 
       <div class="row row-cols-2 row-cols-md-5 g-4">
 
-        <div class="col" v-for="p in pro">
+        <div class="col" v-for="p in pros">
           
             <div class="card bg-dark text-white">
             
@@ -86,20 +86,47 @@ export default {
   name:'Home',
   data(){
     return{
+        searchForm:{
+          style:'default',
+          city:'default'
+        },
         cities:[],
         styles:[],
-        pro:undefined
+        pros:undefined
     }
   },
-  created(){
-    
-    this.axios
-      .get('http://localhost:3000/api/pro')
-      .then((response) => {
-        console.log(response.data);
-        this.pro=response.data;
-      })
-      .catch((err)=> console.log(err));
+  async created(){
+    try {
+      const response=await this.axios.get('http://localhost:3000/api/pro')
+      console.log(response.data)
+      this.pros=response.data;
+    } catch (error) {
+      console.log(error)
+    }
+    await this.$store.dispatch('getAllCities');
+    await this.$store.dispatch('getAllStyles');
+  },
+  methods:{
+    async search(e){
+      e.preventDefault();
+      const requestObj={}
+      if( this.searchForm.city!='default')
+        requestObj.city=this.searchForm.city;
+      if( this.searchForm.style!='default')
+        requestObj.style=this.searchForm.style;
+      if( this.searchForm.color!=undefined)
+        requestObj.color=this.searchForm.color;
+      if( this.searchForm.black_and_white != undefined)
+        requestObj.black_and_white = this.searchForm.black_and_white ;
+      
+      try {
+        const response= await this.axios.post('http://localhost:3000/api/pro/search',requestObj);
+        console.log(response);
+        this.pros=response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
     
 }
