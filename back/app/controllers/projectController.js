@@ -10,8 +10,17 @@ module.exports = {
         const {
             id,
         } = req.params;
+        /* const quizz = await Quiz.findByPk(id, {
+                include: ["tags","author",{
+                    association: "questions",
+                    include: ["level","answers"]
+                }]
+            }) */
         const project = await Project.findByPk(id, {
-            include: ['messages', 'appointments', 'consumer', 'pro'],
+            include: ['appointments', 'consumer', 'pro', {
+                association: 'messages',
+                include: ['pro', 'consumer'],
+            }],
         });
         if (project) {
             res.json(project);
