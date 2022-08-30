@@ -133,7 +133,7 @@
               <!-- Côté gauche -->
               <div class="flex-grow-1 ms-3">
                 <h4> Auteur : </h4>
-                <p> Nom de l'auteur</p>
+                <p> {{(message.consumer!==null)?`${message.consumer?.last_name}  ${message.consumer?.first_name}`:message.pro.studio_name}}</p>
 
                 <h4> Date : </h4>
                 <p> {{ this.format(message.createdAt) }}</p>
