@@ -14,8 +14,7 @@
           <div class="card-body p-4">
             <div class="d-flex">
               <div class="flex-shrink-0">
-           
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                <img :src="pro.profile_picture_path_pro"
                   alt="Generic placeholder image" class="img-fluid"
                   style="width: 180px; border-radius: 10px;" />
               </div>
@@ -75,52 +74,21 @@
     </p>
   </div>
 
- 
-<!-- Second système de rows et colonnes pour la galerie -->
-<div class="row ">
-  <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
-
-    <img
-      src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(73).webp"
-      class="w-100 shadow-1-strong rounded mb-4"
-      alt="Boat on Calm Water"
-    />
-
-    <img
-      src="https://mdbcdn.b-cdn.net/img/Photos/Vertical/mountain1.webp"
-      class="w-100 shadow-1-strong rounded mb-4"
-      alt="Wintry Mountain Landscape"
-    />
-  </div>
-
-  <div class="col-lg-4 mb-4 mb-lg-0">
-    <img
-      src="https://mdbcdn.b-cdn.net/img/Photos/Vertical/mountain2.webp"
-      class="w-100 shadow-1-strong rounded mb-4"
-      alt="Mountains in the Clouds"
-    />
-
-    <img
-      src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(73).webp"
-      class="w-100 shadow-1-strong rounded mb-4"
-      alt="Boat on Calm Water"
-    />
-  </div>
-
-  <div class="col-lg-4 mb-4 mb-lg-0">
-    <img
-      src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(18).webp"
-      class="w-100 shadow-1-strong rounded mb-4"
-      alt="Waves at Sea"
-    />
-
-    <img
-      src="https://mdbcdn.b-cdn.net/img/Photos/Vertical/mountain3.webp"
-      class="w-100 shadow-1-strong rounded mb-4"
-      alt="Yosemite National Park"
-    />
-  </div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="page-title">Galerie</h1>
+        
+        <div class="row">
+            <a v-for="tattoo in pro.tattoos" :href="tattoo.tattoo_picture_path" data-toggle="lightbox" data-gallery="example-gallery" class="col-lg-3 col-md-4 col-6 my-3">
+                <img :src="tattoo.tattoo_picture_path" class="img-fluid card"  >
+            </a>
+            
+        </div>
+    </div>
 </div>
+</div>
+
 </div>
 
 
@@ -129,9 +97,10 @@
 
 
 <script>
+import { Cloudinary } from 'cloudinary-vue';
+import {CloudinaryImage} from '@cloudinary/url-gen';
 
 export default {
- 
   name:'DashboardPro',
   data(){
     return{
@@ -140,7 +109,7 @@ export default {
     }
   },
   async mounted(){
-    console.log(h)
+    console.log(CloudinaryImage)
     try {
       const response=await this.axios.get(`http://localhost:3000/api/pro/${this.$route.params.id}`);
       this.pro=response.data;
@@ -158,4 +127,5 @@ export default {
   text-decoration: none;
   
 }
+
 </style>

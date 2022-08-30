@@ -144,7 +144,7 @@ export default {
                 .then((response) => {
                   console.log("<<<<<<<<<<<<<<<<<",response.data);
                   this.axios
-                    .post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages`,{pro_id:this.$store.state.user.id,tattoo_picture_path:response.data.public_id})
+                    .post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages`,{pro_id:this.$store.state.user.id,tattoo_picture_path:response.data.url})
                     .then((res)=>{
                        this.errorMessage=null;
                        this.successMessage="Votre photo a bien été envoyée";

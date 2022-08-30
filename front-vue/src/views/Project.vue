@@ -1,6 +1,6 @@
 <template>
   <h1>Project Pro</h1>
- 
+
   <section class=" gradient-custom">
 
     <div class="container py-5 h-100">
