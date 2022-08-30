@@ -20,23 +20,23 @@
           <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
 
             <li>
-              <router-link to="/dashbord-pro" class="text-decoration-none">
+              <router-link to="/dashbord-pro" class="text-decoration-none" v-if="this.$store.state.user.role==='pro'">
                 <div class="nav-link text-dark">
-                  Dashboard Pro
+                  Dashboard
                 </div>
               </router-link>
             </li>
 
             <li>
-              <router-link to="/dashbord-particulier" class="text-decoration-none">
+              <router-link to="/dashbord-particulier" class="text-decoration-none" v-if="this.$store.state.user.role==='consumer'">
                 <div class="nav-link text-dark">
-                  Dashboard Part
+                  Dashboard
                 </div>
               </router-link>
             </li>
 
             <li>
-              <router-link to="/planning" class="text-decoration-none">
+              <router-link to="/planning" class="text-decoration-none" v-if="this.$store.state.user.role==='pro'">
                 <div class="nav-link text-dark">
                   Planning
                 </div>
@@ -44,25 +44,17 @@
             </li>
 
             <li>
-              <router-link to="/profil-pro/1" class="text-decoration-none">
+              <router-link to="/compte-pro" class="text-decoration-none" v-if="this.$store.state.user.role==='pro'">
                 <div class="nav-link text-dark">
-                  Profil Pro
+                  Mon Compte
                 </div>
               </router-link>
             </li>
 
             <li>
-              <router-link to="/compte-pro" class="text-decoration-none">
+              <router-link to="/compte-particulier" class="text-decoration-none" v-if="this.$store.state.user.role==='consumer'">
                 <div class="nav-link text-dark">
-                  Modif Compte Pro
-                </div>
-              </router-link>
-            </li>
-
-            <li>
-              <router-link to="/compte-particulier" class="text-decoration-none">
-                <div class="nav-link text-dark">
-                  Modif Compte Part
+                  Mon Compte
                 </div>
               </router-link>
             </li>
@@ -86,10 +78,10 @@
             <button @click="deconnect" type="button" class="btn btn-light text-dark me-2">Se déconnecter</button>
          
           <router-link to="/inscriptionConsumer">
-            <button type="button" class="btn btn-primary me-2">Créer compte part</button>
+            <button type="button" class="btn btn-primary me-2">Créer compte</button>
           </router-link>
           <router-link to="/inscriptionPro">
-            <button type="button" class="btn btn-primary">Créer compte pro</button>
+            <button type="button" class="btn btn-primary">Vous êtes tatoueur ?</button>
           </router-link> 
         </div>
 
@@ -104,15 +96,15 @@
             <button type="button" class="btn btn-light text-dark me-2">404</button>
           </router-link>
 
-          <router-link to="/project/1">
+          <router-link to="/project/1" v-if="this.$store.state.user.role==='pro'">
             <button type="button" class="btn btn-primary me-2">projet</button>
           </router-link>
 
-          <router-link to="/formulaire-project">
+          <router-link to="/formulaire-project/:pro_id" v-if="this.$store.state.user.role==='consumer'">
             <button type="button" class="btn btn-primary me-2">formulaire projet</button>
           </router-link>
 
-          <router-link to="/project-particulier">
+          <router-link to="/project-particulier" v-if="this.$store.state.user.role==='consumer'">
             <button type="button" class="btn btn-primary me-2">projet particulier</button>
           </router-link>
 
