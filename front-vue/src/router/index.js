@@ -22,7 +22,7 @@ const routes=[
         path:'/',
         component: Home,
         meta:{
-            allowAnonymous:true
+            roles:['pro', 'consumer','anonyme']
         }
     },
     {
@@ -30,8 +30,7 @@ const routes=[
         path:'/dashbord-pro',
         component: DashboardPro,
         meta:{
-            allowAnonymous:true,
-            hide:true
+            roles:['pro']
         }
     },
     {
@@ -39,7 +38,7 @@ const routes=[
         path:'/inscriptionPro',
         component:InscriptionPro,
         meta:{
-            allowAnonymous:true
+            roles:['anonyme']
         }
     },
     {
@@ -47,7 +46,7 @@ const routes=[
         path:'/connexion',
         component:Connexion,
         meta:{
-            allowAnonymous:true
+            roles:['anonyme']
         }
     },
     {
@@ -55,15 +54,15 @@ const routes=[
         path:'/inscriptionConsumer',
         component:InscriptionConsumer,
         meta:{
-            allowAnonymous:true
+            roles:['anonyme']
         }
     },
     {
         name:'FormulaireProject',
-        path:'/formulaire-project',
+        path:'/formulaire-project/:pro_id',
         component:FormulaireProject,
         meta:{
-            allowAnonymous:true
+            roles:['consumer']
         }
     },
     {
@@ -71,7 +70,7 @@ const routes=[
         path:'/project/:id',
         component:Project,
         meta:{
-            allowAnonymous:true
+            roles:['pro']
         }
     },
     {
@@ -79,7 +78,7 @@ const routes=[
         path:'/project-particulier',
         component:ProjectParticulier,
         meta:{
-            allowAnonymous:true
+            roles:['consumer']
         }
     },
     {
@@ -87,7 +86,7 @@ const routes=[
         path:'/profil-pro/:id',
         component:ProfilPro,
         meta:{
-            allowAnonymous:true
+            roles:['pro', 'consumer','anonyme']
         }
     },
     {
@@ -95,7 +94,7 @@ const routes=[
         path:'/dashbord-particulier',
         component:DashboardParticulier,
         meta:{
-            allowAnonymous:true
+            roles:['consumer']
         }
     },
     {
@@ -103,7 +102,7 @@ const routes=[
         path:'/compte-particulier',
         component:CompteParticulier,
         meta:{
-            allowAnonymous:true
+            roles:['consumer']
         }
     },
     {
@@ -111,7 +110,7 @@ const routes=[
         path:'/compte-pro',
         component:ComptePro,
         meta:{
-            allowAnonymous:true
+            roles:['pro']
         }
     },
 
@@ -120,7 +119,7 @@ const routes=[
         path:'/planning',
         component:Planning,
         meta:{
-            allowAnonymous:true
+            roles:['pro']
         }
     },
     {
@@ -128,7 +127,8 @@ const routes=[
         path:'/page404',
         component:Page404,
         meta:{
-            allowAnonymous:true
+            roles:['pro', 'consumer','anonyme']
+
         }
     },
     {
@@ -136,10 +136,9 @@ const routes=[
         path:'/createurs',
         component:Createurs,
         meta:{
-            allowAnonymous:true
+            roles:['pro', 'consumer','anonyme']
         }
     },
-
     
 ];
 
@@ -147,6 +146,7 @@ const router=createRouter({
     history:createWebHistory(),
     routes
 })
+
 
 router.beforeEach(async (to,from,next)=>{
     
@@ -156,12 +156,20 @@ router.beforeEach(async (to,from,next)=>{
     } catch (error) {
         console.log(error);
     }
-    if(!to.meta.allowAnonymous)
+
+
+    if(to.meta.roles && !to.meta.roles.includes(store.default._state.data.user.role)){
         next({
-            path:'/connexion',
-        })
+        path:'/connexion',
+    })   
+    }
+      
+
+
     else next();
    
 })
+
+
 
 export default router;
