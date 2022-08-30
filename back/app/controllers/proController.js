@@ -72,14 +72,11 @@ module.exports = {
             conditions.push(`style.name= $${count}`);
             args.push(req.body.style);
         }
-
         conditions = conditions.join(' AND ');
         query += conditions;
-
         const filteredPros = await client.query(query, {
             bind: args,
         });
-
         res.json(filteredPros[0]);
     },
 
