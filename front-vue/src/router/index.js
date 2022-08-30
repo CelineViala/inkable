@@ -59,7 +59,7 @@ const routes=[
     },
     {
         name:'FormulaireProject',
-        path:'/formulaire-project/:pro_id',
+        path:'/formulaire-project/:proId',
         component:FormulaireProject,
         meta:{
             roles:['consumer']
@@ -151,7 +151,6 @@ const router=createRouter({
 router.beforeEach(async (to,from,next)=>{
     
     try {
-        console.log(store)
         await store.default.dispatch('getUser');    
     } catch (error) {
         console.log(error);
