@@ -1,4 +1,5 @@
 <template>
+
 <h1>{{this.user.role}}</h1>
 <!-- 1ere partie du header -->
 <div class="px-3 py-2 ">
@@ -68,50 +69,26 @@
 </div>
 
     <!-- 2eme partie -->
+
+    
     <div class="px-3 py-2 border-bottom mb-3">
 
         <div class="text-end">
           <router-link to="/connexion">
-            <button type="button" class="btn btn-light text-dark me-2">Se connecter</button>
+            <button type="button" class="btn btn-light text-dark me-2 " v-if="this.$store.state.user.role==='anonyme'">Se connecter</button>
           </router-link>
           
-            <button @click="deconnect" type="button" class="btn btn-light text-dark me-2">Se déconnecter</button>
+            <button @click="deconnect" type="button" class="btn btn-light text-dark me-2" v-if="this.$store.state.user.role==='consumer'||this.$store.state.user.role==='pro'">Se déconnecter</button>
          
           <router-link to="/inscriptionConsumer">
-            <button type="button" class="btn btn-primary me-2">Créer compte</button>
+            <button type="button" class="btn btn-primary me-2" v-if="this.$store.state.user.role==='anonyme'">Créer compte</button>
           </router-link>
           <router-link to="/inscriptionPro">
-            <button type="button" class="btn btn-primary">Vous êtes tatoueur ?</button>
+            <button type="button" class="btn btn-primary" v-if="this.$store.state.user.role==='anonyme'">Vous êtes tatoueur ?</button>
           </router-link> 
         </div>
 
     </div>
-
-<!-- 3eme partie -->
-    <div class="px-3 py-2 border-bottom mb-3">
-      
-        <div class="text-end">
-
-          <router-link to="/page404">
-            <button type="button" class="btn btn-light text-dark me-2">404</button>
-          </router-link>
-
-          <router-link to="/project/1" v-if="this.$store.state.user.role==='pro'">
-            <button type="button" class="btn btn-primary me-2">projet</button>
-          </router-link>
-
-          <router-link to="/formulaire-project/:pro_id" v-if="this.$store.state.user.role==='consumer'">
-            <button type="button" class="btn btn-primary me-2">formulaire projet</button>
-          </router-link>
-
-          <router-link to="/project-particulier" v-if="this.$store.state.user.role==='consumer'">
-            <button type="button" class="btn btn-primary me-2">projet particulier</button>
-          </router-link>
-
-        </div>
-        
-    </div>
-
 
   <router-view />
 
