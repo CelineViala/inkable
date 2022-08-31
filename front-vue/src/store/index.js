@@ -2,7 +2,7 @@ import {createStore, createstore} from 'vuex';
 import axios from 'axios';
 import {CloudinaryImage} from '@cloudinary/url-gen';
 import { Cloudinary } from "@cloudinary/url-gen";
-import { thumbnail } from "@cloudinary/url-gen/actions/resize";
+import { thumbnail,scale } from "@cloudinary/url-gen/actions/resize";
 import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
 import {focusOn} from "@cloudinary/url-gen/qualifiers/gravity";
 import {FocusOn} from "@cloudinary/url-gen/qualifiers/focusOn";
@@ -15,7 +15,8 @@ export default createStore({
         },
         styles:[],
         cities:[],
-        requestObj:{}
+        requestObj:{},
+        url:null
     },
     mutations:{
         async check(state,data){
@@ -42,6 +43,9 @@ export default createStore({
         },
         setAnonymous(state){
             state.user.role="anonyme";
+        },
+        transformImg(state,url){
+            state.url=url;
         }
     },
     actions:{
@@ -79,6 +83,27 @@ export default createStore({
                 
             })
         },
+        async transformImg({commit},img){
+            console.log("!!!!!!!!!!!!!!!!!!!!",img)
+            const cld = new Cloudinary({
+                cloud: {
+                  cloudName: 'dmoacy4yl',
+                  apiKey:'488459514946562',
+                  apiSecret:'1Yb7F1TRgKOX0hIUdgrA4JXlmLM'
+                }
+              }); 
+            const myImage = cld.image(img.public_id);
+            
+            myImage
+                // .resize(thumbnail().width(150).height(200).gravity(focusOn(FocusOn.face())))  // Crop the image, focusing on the face.
+                // .roundCorners(byRadius(20))
+                .resize(scale().height(400).width(300))
+              
+            
+            const url=myImage.toURL();
+            await commit('transformImg',url);
+
+        },
         getAllCities({commit}){
             //récupération des styles a afficher dans les balises select
             axios
@@ -96,23 +121,7 @@ export default createStore({
             let clientFile;
             reader.addEventListener("load", ()=>{
             clientFile=reader.result;
-            // console.log(clientFile);
-            // const cld = new Cloudinary({
-            //     cloud: {
-            //       cloudName: 'dmoacy4yl',
-            //       apiKey:'488459514946562',
-            //       apiSecret:'1Yb7F1TRgKOX0hIUdgrA4JXlmLM'
-            //     }
-            //   });
-              
-            // const myImage = cld.image(event.target.files[0]);
-            // myImage
-            //     .resize(thumbnail().width(150).height(150).gravity(focusOn(FocusOn.face())))  // Crop the image, focusing on the face.
-            //     .roundCorners(byRadius(20))
-              
-            // console.log(myImage.toURL());
-            // cld.url(myImage.toURL())
-            // myImage.toURL();
+            console.log(clientFile);
             let requestObj={
                 url:'https://api.cloudinary.com/v1_1/dmoacy4yl/image/upload',
                 method:"POST",
@@ -140,25 +149,25 @@ export default createStore({
             console.log(router)
             router.default.push('/'); 
 
+        },
+        handleUploadToCloudinary({commit}){
+            let instance = axios.create();
+            delete instance.defaults.headers.common['Authorization'];
+            console.log(this.state.requestObj)
+            
+            let url=instance(this.state.requestObj)
+                .then((response) => {
+                    url=response.data.url;
+                    return url
+                    
+                    
+                })
+                .catch(err=>{
+                    return err;
+                })
+            return url
+            
         }
-        // handleUploadToCloudinary({commit}){
-        //     let instance = axios.create();
-        //     delete instance.defaults.headers.common['Authorization'];
-        //     console.log(this.state.requestObj)
-            
-        //     const url=instance(this.state.requestObj)
-        //         .then((response) => {
-        //             url=response.data.url;
-        //             return url
-                    
-                    
-        //         })
-        //         .catch(err=>{
-        //             return err;
-        //         })
-        //     return url
-            
-        // }
 
 
 

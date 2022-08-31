@@ -55,15 +55,18 @@
 
 
     <!-- Container des cartes -->
-    <div class="container py-5 h-10">
 
-      <div class="row row-cols-2 row-cols-md-5 g-4">
+    <!-- <div class="container py-5 h-10"> -->
+    <div class="container py-4 h-10">
+
+      <!-- <div class="row row-cols-2 row-cols-md-5 g-4"> -->
+      <div class="row row-cols-2 row-cols-md-4 g-4">
 
         <div class="col" v-for="p in pros">
           
-            <div class="card bg-dark text-white">
+            <div class="card bg-dark text-white container-card">
             
-            <img src="https://picsum.photos/200" class="card-img-top" alt="image tatoueur">
+            <img :src="p.profile_picture_path_pro!==null?p.profile_picture_path_pro:'https://res.cloudinary.com/dmoacy4yl/image/upload/v1661849691/srak0p28tzkfot53ei9u.jpg'" class="card-img-top" alt="image tatoueur">
             
             <div class="card-body">
               <h5 class="card-title">{{p.studio_name}}</h5>
@@ -95,7 +98,7 @@ export default {
         pros:undefined
     }
   },
-  async created(){
+  async mounted(){
     try {
       const response=await this.axios.get('http://localhost:3000/api/pro')
       console.log(response.data)
@@ -114,11 +117,21 @@ export default {
         requestObj.city=this.searchForm.city;
       if( this.searchForm.style!='default')
         requestObj.style=this.searchForm.style;
-      if( this.searchForm.color!=undefined)
+      if( this.searchForm.color)
         requestObj.color=this.searchForm.color;
-      if( this.searchForm.black_and_white != undefined)
+      if( this.searchForm.black_and_white)
         requestObj.black_and_white = this.searchForm.black_and_white ;
-      
+      console.log(this.searchForm,requestObj)
+      if(!Object.keys(requestObj).length){
+        try {
+          const response=await this.axios.get('http://localhost:3000/api/pro')
+          console.log(response.data);
+          this.pros=response.data;
+          return
+        } catch (error) {
+          console.log(error);
+        }
+      }
       try {
         const response= await this.axios.post('http://localhost:3000/api/pro/search',requestObj);
         console.log(response);
@@ -131,3 +144,8 @@ export default {
     
 }
 </script>
+<style>
+  .container-card{
+    min-height: 500px;
+  }
+</style>

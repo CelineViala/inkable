@@ -13,7 +13,7 @@
             <div class="card-body p-4 text-center">
 
               <div class="flex-shrink-0">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                <img :src="this.editConsumer.profile_picture_path_consumer"
                 alt="Generic placeholder image" class="img-fluid"
                 style="width: 180px; border-radius: 10px;" />
               </div>
@@ -93,13 +93,7 @@ export default {
             errorMessage:null
         }
     },
-    async created(){
-    
-      console.log(this.$store.state.user)
-      
-
-   },
-    mounted() {
+      mounted() {
       this.axios
         .get(`http://localhost:3000/api/consumer/${this.$store.state.user.id}`)
         .then((response) => {
@@ -107,6 +101,7 @@ export default {
           this.editConsumer.email=response.data.email;
           // this.editConsumer.password=response.data.password;
           // this.editConsumer.passwordConfirm=this.editPro.password;
+          this.editConsumer.profile_picture_path_consumer=response.data.profile_picture_path_consumer;
           this.editConsumer.email=response.data.email;
           this.mail=response.data.email; 
         })
@@ -121,9 +116,9 @@ export default {
         this.$store.dispatch('createRequestObjForCloudinary',e);  
         this.picture=true
         },
-        editProfile(e){
+        async editProfile(e){
           e.preventDefault();
-          console.log(this.editConsumer);
+          
           // si le mail n'a pas été modifié il faut supprimer la donnée car sinon on aura une erreur d'utilisateur déjà existant côté back
           if(this.editConsumer.email===this.mail)
             delete this.editConsumer.email;
@@ -136,54 +131,31 @@ export default {
           else{
             if(this.picture)
             {
-              let instance = this.axios.create();
-              delete instance.defaults.headers.common['Authorization'];
-              //envoi photo cloudinary
-              instance(this.$store.state.requestObj)
-                .then((response) => {
-                    this.editConsumer.profile_picture_path_consumer=response.data.url; 
-
-                    //requete pour enregistrer le consumer
-                    this.axios
-                       .patch(`http://localhost:3000/api/consumer/${this.$store.state.user.id}`,this.editConsumer)
-                       .then((response) => {
-                        console.log(response.data);
-                        this.errorMessage=null;
-                        this.successMessage="Vos informations ont bien été modifiées.";
-                        setTimeout(() => {
-
-                          this.successMessage=null;
-                        }, 2000);
-                        this.editConsumer.email=this.mail;     
-                        })
-                        .catch((err)=>{
-                            console.log(err);
-                            this.errorMessage=err.response.data.message;
-                            return
-                        })                               
-                })
-                .catch((err)=>{
-                    console.log(err);
-                    return
-                })
-            }else{
-              this.axios
-                    .patch(`http://localhost:3000/api/consumer/${this.$store.state.user.id}`,this.editConsumer)
-                    .then((response) => {
-                        console.log(response.data);
-                        this.errorMessage=null;
-                        this.successMessage="Vos informations ont bien été modifiées.";
-                        setTimeout(() => {
-                          this.successMessage=null;
-                        }, 2000);
-                        this.editConsumer.email=this.mail;     
-                    })
-                    .catch((err)=>{
-                        console.log(err);
-                        this.errorMessage=err.response.data.message;
-                        return
-                    })
+                try {
+                    let url=await this.$store.dispatch('handleUploadToCloudinary')
+                    this.editConsumer.profile_picture_path_consumer=url;
+                } catch (error) {
+                    console.log(error)
+                }
             }
+            this.axios
+              .patch(`http://localhost:3000/api/consumer/${this.$store.state.user.id}`,this.editConsumer)
+              .then((response) => {
+              console.log(response.data);
+              this.errorMessage=null;
+              this.successMessage="Vos informations ont bien été modifiées.";
+              this.picture=false;
+              setTimeout(() => {
+
+                this.successMessage=null;
+              }, 2000);
+              this.editConsumer.email=this.mail;     
+              })
+              .catch((err)=>{
+                  console.log(err);
+                  this.errorMessage=err.response.data.message;
+                  return
+              })     
           }
         }
     }

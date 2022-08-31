@@ -110,9 +110,7 @@ export default {
             weekday: 'long',
             month: 'long',
             year: 'numeric',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit'
+            day: '2-digit'
         },
         locale: 'fr-FR',
         selectable: true,
@@ -141,24 +139,31 @@ export default {
               delete instance.defaults.headers.common['Authorization'];
               //envoi photo cloudinary
               instance(this.$store.state.requestObj)
-                .then((response) => {
+                .then( (response) => {
                   console.log("<<<<<<<<<<<<<<<<<",response.data);
+                 this.$store.dispatch('transformImg',response.data);
+                  console.log(this.$store.state.url)
                   this.axios
-                    .post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages`,{pro_id:this.$store.state.user.id,tattoo_picture_path:response.data.url})
+                    .post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages`,{pro_id:this.$store.state.user.id,tattoo_picture_path:this.$store.state.url})
                     .then((res)=>{
                        this.errorMessage=null;
                        this.successMessage="Votre photo a bien été envoyée";
+                       setTimeout(() => {
+                        this.successMessage=null;
+                       }, 1000);
                        this.$refs.pictureInput.value=null;
                        this.picture=false;
                     })
                     .catch((err)=>{
                       this.successMessage=null;
                        this.errorMessage="Erreur serveur";
+                       console.log(this.$store.state.url)
                     })
 
                 })
                 .catch((err)=>{
                     this.successMessage=null;
+                    console.log(err)
                     this.errorMessage="Erreur envoi photo";
                     return;
                 })

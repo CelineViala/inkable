@@ -119,15 +119,15 @@ export default {
 
             let instance = this.axios.create();
             delete instance.defaults.headers.common['Authorization'];
-            
-            if(this.picture)
-            {
-            instance(this.$store.state.requestObj)
-                .then((response) => {
-                    this.newConsumer.profile_picture_path_consumer=response.data.url; 
-
-                    //requete pour enregistrer le consumer
-                    this.axios
+            if(this.picture){
+              try {
+                    let url=await this.$store.dispatch('handleUploadToCloudinary')
+                    this.newConsumer.profile_picture_path_consumer=url;
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+            this.axios
                       .post('http://localhost:3000/signupConsumer',this.newConsumer)
                       .then((response) => {
                           console.log(response.data);
@@ -136,39 +136,15 @@ export default {
                           this.$router.push('/connexion');   
                           this.errorMessage=null;
                           this.successMessage= "Vous êtes bien inscrit!";
+                          this.picture=false;
                       })
                       .catch((err)=>{
                           console.log(err);
                           this.successMessage=null;
                           this.errorMessage=err.response.data.message;
                           return
-                      })                                  
-                })
-                .catch((err)=>{
-                    console.log(err);
-                    return
-                })
-            }
-            else{
-              this.axios
-                      .post('http://localhost:3000/signupConsumer',this.newConsumer)
-                      .then((response) => {
-                          console.log(response.data);
-                          this.newConsumer={};
-                          this.$store.dispatch('resetRequestObj');
-                          this.errorMessage=null;
-                          this.successMessage="Vous êtes bien inscrit!";
-                          this.$router.push('/connexion');       
-                      })
-                      .catch((err)=>{
-                          console.log(err);
-                          this.successMessage=null;
-                          this.errorMessage=err.response.data.message;
-                          return
-                      })
-
-            }
-                
+                      })    
+            
             
             
         }
