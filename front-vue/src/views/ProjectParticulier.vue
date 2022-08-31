@@ -115,7 +115,7 @@
 
                 <h4> Date : </h4>
                 <p> {{ this.format(message.createdAt) }}</p>
-              </div> -->
+              </div>
 
               <!-- Côté droit -->
               <div class="flex-grow-1 ms-3">
