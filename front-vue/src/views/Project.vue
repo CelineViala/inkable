@@ -152,7 +152,7 @@
           <form>
             <div class="form-outline form-white mb-4">
               <label for="exampleFormControlTextarea1" class="form-label">Nouveau message</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+              <textarea v-model="this.editProject.messages.content" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
               </div>
 
               <p class="text-success">{{this.messageSuccess}}</p>
@@ -304,7 +304,7 @@ export default {
           this.errorMessage = err.response.data.message;
           return
         })
-    }
+    },
   }
 }
 
