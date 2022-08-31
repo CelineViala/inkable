@@ -75,7 +75,7 @@ const routes=[
     },
     {
         name:'ProjectParticulier',
-        path:'/project-particulier',
+        path:'/project-particulier/:id',
         component:ProjectParticulier,
         meta:{
             roles:['consumer']

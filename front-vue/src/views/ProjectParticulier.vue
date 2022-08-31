@@ -161,8 +161,8 @@ export default {
     },
     data() {
     return {
-      successMessage: null,
-      errorMessage: null,
+      messageSuccess: null,
+      messageError: null,
       calendarApi: null,
       project_id:null,
       pro_name:null,
@@ -194,6 +194,7 @@ export default {
 
   async created() {
     
+    console.log("<<<<<<<<<<<<<<<",this.$route.params.id)
       this.axios
         .get(`http://localhost:3000/api/projet/${this.$route.params.id}`)
         .then((response) => {
