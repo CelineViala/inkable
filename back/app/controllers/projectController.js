@@ -84,7 +84,9 @@ module.exports = {
             where: {
                 pro_id: id,
             },
-        }, { include: 'consumer' });
+            include: 'consumer'
+
+        });
         res.json(projects);
     },
 

@@ -33,7 +33,7 @@
                 <div class="d-flex justify-content-start rounded-3 p-2 mb-2">
 
                   <div v-for="style in this.pro.styles">
-                    <span class="badge text-bg-light">{{style.name}}</span>
+                    <span class="badge m-1 text-bg-light">{{style.name}}</span>
                   </div>
                   
                 </div>
