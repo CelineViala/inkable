@@ -109,7 +109,7 @@
             <div class="d-flex justify-content-start rounded-3 text-black" style="background-color: #efefef;">
               
               <!-- Côté gauche -->
-               <div class="flex-grow-1 ms-3">
+               <div class="flex-grow-1 ms-3" style="min-width:300px">
                 <h4> Auteur : </h4>
                 <p> {{(message.consumer!==null)?`${message.consumer?.last_name}  ${message.consumer?.first_name}`:message.pro.studio_name}}</p>
 
@@ -130,12 +130,12 @@
           <form>
             <div class="form-outline form-white mb-4">
               <label for="exampleFormControlTextarea1" class="form-label">Nouveau message</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+              <textarea v-model="this.newMessage.content" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
 
             <p class="text-success">{{this.messageSuccess}}</p>
             <p class="text-danger">{{this.messageError}}</p>
-            <input @click="validForm" class="btn btn-primary btn-lg px-5" value="Envoyer" type="button"/>
+            <input @click="validFormMessage" class="btn btn-primary btn-lg px-5" value="Envoyer" type="button"/>
           </form>
         </div>
 
@@ -161,6 +161,9 @@ export default {
     },
     data() {
     return {
+      newMessage: {
+
+      },
       messageSuccess: null,
       messageError: null,
       calendarApi: null,
@@ -194,7 +197,7 @@ export default {
 
   async created() {
     
-    console.log("<<<<<<<<<<<<<<<",this.$route.params.id)
+    // console.log("<<<<<<<<<<<<<<<",this.$route.params.id)
       this.axios
         .get(`http://localhost:3000/api/projet/${this.$route.params.id}`)
         .then((response) => {
@@ -225,7 +228,8 @@ export default {
               end: new Date(rdv.ending_hour)
             });
           });
-        }); 
+        })
+        .catch(err=>console.log(err)); 
   },
   methods: {
     format(date) {
@@ -236,6 +240,36 @@ export default {
         day: '2-digit',
         hour: '2-digit',
         minute: '2-digit'
+      })
+    },
+
+    validFormMessage() {
+      console.log(this.newMessage);
+      const idProject=this.$route.params.id;
+      const proId=this.$store.state.user.id;
+      console.log(idProject,proId);
+      const requestObj={
+        content: this.newMessage.content,
+        project_id: idProject,
+        pro_id: proId,
+      };
+    
+    this.axios
+      .post('http://localhost:3000/api/message', requestObj)
+      .then((response) => {
+
+        this.newMessage={};
+        this.messageSuccess="Votre message a bien été envoyé";
+        this.messageError=null;
+        response.data.consumer=this.$store.state.user;
+        console.log('response data', response.data)
+        this.project.messages.push(response.data);
+        
+      })
+      .catch((err)=>{
+        console.log(err)
+        this.messageSuccess=null;
+        this.messageError=err.response.data.message;
       })
     },
   },
