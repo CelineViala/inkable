@@ -55,7 +55,7 @@
                     </button>
                   </a>
 
-                  <router-link v-if="this.$store.state.role==='consumer'" :to="{name:'FormulaireProject',params:{proId:this.$route.params.id}}" class="btn btn-outline-dark text-light flex-grow-1" style="background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));">
+                  <router-link v-if="this.$store.state.user.role==='consumer'" :to="{name:'FormulaireProject',params:{proId:this.$route.params.id}}" class="btn btn-outline-dark text-light flex-grow-1" style="background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));">
                     Prendre rendez-vous
                   </router-link>
                 </div>

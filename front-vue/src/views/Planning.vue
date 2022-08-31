@@ -29,9 +29,9 @@
                             <label class="mr-sm-2 form-label" for="inlineFormCustomSelect">Projet : </label>
                             <select v-model="rdv.project_id" class="custom - select mr - sm - 2 form-control form-control-lg"
                                 id="inlineFormCustomSelect">
-                                <option class="form-control form-control-lg" ref="accepted" value="accepté" selected>Projet truc</option>
-                                <option class="form-control form-control-lg" ref="waiting" value="en attente">En attente</option>
-                                <option class="form-control form-control-lg" ref="refused" value="refusé">Refusé</option>
+
+                                <option v-for="project in this.projects" class="form-control form-control-lg" ref="accepted" :value="project.id" selected>{{project.title}}</option>
+                               
                             </select>
                         </div>
 
@@ -67,38 +67,12 @@ export default {
     components: {
         FullCalendar // make the <FullCalendar> tag available
     },
-    async mounted() {
-        try {
-       
-          const rdvs = this.$store.state.user.appointments;
-                rdvs?.forEach(rdv => {
-                    console.log(rdv, this.$refs)
-                    this.$refs.fullCalendar.getApi().addEvent({
-                        id: rdv.id,
-                        title: rdv.title,
-                        extendedProps: {
-                            description: rdv.note,
-
-                        },
-                        start: new Date(rdv.beginning_hour),
-                        end: new Date(rdv.ending_hour)
-                    });
-                });
-          
-        } catch (error) {
-          console.log(error)
-        }    
-    },
-    computed:{
-    async user() {
-          return await this.$store.state.user
-        },
-    },
     data() {
-        return {
+return {
             id:null,
             calendar: {},
             rdv: {},
+            projects:null,
             startRange: new Date(),
             endRange: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             calendarOptions: {
@@ -150,6 +124,42 @@ export default {
             }
         }
     },
+
+    async mounted() {
+        ///api/pro/:id/projet
+        try {
+            
+            const response=await this.axios.get(`http://localhost:3000/api/pro/${this.$store.state.user.id}/projet`)
+            this.projects=response.data;
+            console.log(this.projects)
+        } catch (error) {
+            console.log(error)
+        }
+        try {
+       
+          const rdvs = this.$store.state.user.appointments;
+                rdvs?.forEach(rdv => {
+                    this.$refs.fullCalendar.getApi().addEvent({
+                        id: rdv.id,
+                        title: rdv.title,
+                        extendedProps: {
+                            description: rdv.note,
+
+                        },
+                        start: new Date(rdv.beginning_hour),
+                        end: new Date(rdv.ending_hour)
+                    });
+                });
+          
+        } catch (error) {
+          console.log(error)
+        }    
+    },
+    computed:{
+    async user() {
+        return await this.$store.state.user
+    },
+},
     methods: {
         goToday: function () {
             this.startRange=new Date();
@@ -363,6 +373,7 @@ export default {
         async getListRdv() {
           const userId=await this.user
           console.log(userId)
+          
             try {
                 let calendarApi = this.$refs.fullCalendar.getApi()
                 const response = await this.axios.get(`http://localhost:3000/api/pro/${this.id}/rdv`, this.rdv);
