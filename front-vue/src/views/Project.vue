@@ -130,16 +130,16 @@
           <div class="card-body">
 
             <div class="d-flex justify-content-start rounded-3 text-black" style="background-color: #efefef;">
-              <!-- Côté gauche -->
+              
               <div class="flex-grow-1 ms-3">
                 <h4> Auteur : </h4>
-                <p> {{(message.consumer!==null)?`${message.consumer?.last_name}  ${message.consumer?.first_name}`:message.pro.studio_name}}</p>
+                <p> {{(message.consumer!==undefined && message.consumer!==null)?`${message.consumer?.last_name}  ${message.consumer?.first_name}`:message.pro.studio_name}}</p>
 
                 <h4> Date : </h4>
-                <p> {{ this.format(message.createdAt) }}</p>
+                <p> {{ this.format(new Date(message.createdAt)) }}</p>
               </div>
 
-              <!-- Côté droit -->
+              
               <div class="flex-grow-1 ms-3">
                 <h4> Message : </h4>
                 <p>{{ message.content }} </p>
@@ -147,9 +147,24 @@
             </div>
           </div>
         </div>
+        
+        <div class="card-body">
+          <form>
+            <div class="form-outline form-white mb-4">
+              <label for="exampleFormControlTextarea1" class="form-label">Nouveau message</label>
+              <textarea v-model="this.newMessage.content" class="form-control" id="exampleFormControlTextarea1" rows="3">test</textarea>
+            </div>
+            
+            <p class="text-success">{{this.successMessage}}</p>
+           <p class="text-danger">{{this.errorMessage}}</p>
+            <input @click="validFormMessage" class="btn btn-primary btn-lg px-5" value="Envoyer" type="button"/>
+          </form>
+        </div>
 
 
       </div>
+
+
     </div>
   </section>
 
@@ -169,6 +184,10 @@ export default {
   },
   data() {
     return {
+
+      newMessage: {
+
+      },
       successMessage: null,
       errorMessage: null,
       calendarApi: null,
@@ -205,12 +224,12 @@ export default {
       }
     }
   },
-  mounted() { 
-     
+    mounted() { 
+      
       this.axios
         .get(`http://localhost:3000/api/projet/${this.$route.params.id}`)
         .then((response) => {
-          console.log(response.data);
+          console.log(">>>>>>>>>>>>>>>>>",response.data);
           this.project_id=response.data.id;
           this.first_name_client=response.data.consumer.first_name;
           this.last_name_client=response.data.consumer.last_name;
@@ -241,7 +260,9 @@ export default {
               end: new Date(rdv.ending_hour)
             });
           });
-        }); 
+        })
+        .catch(err=>console.log(err));
+       
   },
   methods: {
     format(date) {
@@ -254,6 +275,38 @@ export default {
         minute: '2-digit'
       })
     },
+
+    validFormMessage() {
+      console.log(this.newMessage);
+      const idProject=this.$route.params.id;
+      const proId=this.$store.state.user.id;
+      console.log(idProject,proId);
+      const requestObj={
+        content: this.newMessage.content,
+        project_id: idProject,
+        pro_id: proId,
+      };
+       
+
+      this.axios
+      .post('http://localhost:3000/api/message', requestObj)
+      .then((response) => {
+
+        this.newMessage={};
+        this.successMessage="Votre message a bien été envoyé";
+        this.errorMessage=null;
+        response.data.pro=this.$store.state.user;
+        console.log('response data', response.data)
+        this.editProject.messages.push(response.data);
+        
+      })
+      .catch((err)=>{
+        console.log(err)
+        this.successMessage=null;
+        this.errorMessage=err.response.data.message;
+      })
+    },
+
     editProjectForm() {
 
       //       area: "dos"
@@ -280,8 +333,6 @@ export default {
           console.log(response.data);
           this.errorMessage = null;
           this.successMessage = "Vos informations ont bien été modifiées.";
-
-
         })
         .catch((err) => {
           console.log(err);
@@ -289,7 +340,7 @@ export default {
           this.errorMessage = err.response.data.message;
           return
         })
-    }
+    },
   }
 }
 

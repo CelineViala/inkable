@@ -21,6 +21,7 @@ const {
     appointmentCreateSchema,
     appointmentUpdateSchema,
     loginCreateSchema,
+    messageCreateSchema,
 
 } = require('../validation/schemas');
 
@@ -78,6 +79,9 @@ router.route('/api/projet/:id')
 router.post('/api/projet', validate('body', projectCreateSchema), controllerHandler(projectController.createProject));
 router.get('/api/pro/:id/projet', controllerHandler(projectController.getAllProjectsByPro));
 router.get('/api/consumer/:id/projet', controllerHandler(projectController.getAllProjectsByConsumer));
+
+// Route pour un nouveau message dans projet
+router.post('/api/message', validate('body', messageCreateSchema), controllerHandler(projectController.createMessage));
 
 // Routes pour la partie search
 router.route('/api/styles')

@@ -1,6 +1,7 @@
 <template>
 
 <h1>{{this.user.role}}</h1>
+
 <!-- 1ere partie du header -->
 <div class="px-3 py-2 ">
   <div class="container">
@@ -164,4 +165,10 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+.bi {
+  color: white;
+
+}
+/* style="background-color: rgba(37, 117, 252, 1 */
 </style>

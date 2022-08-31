@@ -9,6 +9,7 @@ const tattooCreateSchema = require('./tattooCreateSchema');
 const tattooUpdateSchema = require('./tattooUpdateSchema');
 const appointmentCreateSchema = require('./appointmentCreateSchema');
 const appointmentUpdateSchema = require('./appointmentUpdateSchema');
+const messageCreateSchema = require('./messageCreateSchema');
 
 module.exports = {
     proCreateSchema,
@@ -22,4 +23,5 @@ module.exports = {
     tattooUpdateSchema,
     appointmentCreateSchema,
     appointmentUpdateSchema,
+    messageCreateSchema,
 };

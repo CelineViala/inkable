@@ -111,7 +111,7 @@
               <!-- Côté gauche -->
                <div class="flex-grow-1 ms-3">
                 <h4> Auteur : </h4>
-                <p> Nom de l'auteur</p>
+                <p> {{(message.consumer!==null)?`${message.consumer?.last_name}  ${message.consumer?.first_name}`:message.pro.studio_name}}</p>
 
                 <h4> Date : </h4>
                 <p> {{ this.format(message.createdAt) }}</p>
@@ -126,6 +126,18 @@
           </div>
         </div>
 
+        <div class="card-body">
+          <form>
+            <div class="form-outline form-white mb-4">
+              <label for="exampleFormControlTextarea1" class="form-label">Nouveau message</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+
+            <p class="text-success">{{this.messageSuccess}}</p>
+            <p class="text-danger">{{this.messageError}}</p>
+            <input @click="validForm" class="btn btn-primary btn-lg px-5" value="Envoyer" type="button"/>
+          </form>
+        </div>
 
       </div>
     </div>
