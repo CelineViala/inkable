@@ -148,8 +148,23 @@
           </div>
         </div>
 
+        <div class="card-body">
+          <form>
+            <div class="form-outline form-white mb-4">
+              <label for="exampleFormControlTextarea1" class="form-label">Nouveau message</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+
+              <p class="text-success">{{this.messageSuccess}}</p>
+             <p class="text-danger">{{this.messageError}}</p>
+             <input @click="validForm" class="btn btn-primary btn-lg px-5" value="Envoyer" type="button"/>
+          </form>
+        </div>
+
 
       </div>
+
+
     </div>
   </section>
 
