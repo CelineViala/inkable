@@ -10,7 +10,6 @@ module.exports = {
     async getAllPro(req, res) {
         const pros = await Pro.findAll({
             include: ['styles', 'tattoos', 'appointments', 'projects'],
-            
         });
         return res.json(pros);
     },

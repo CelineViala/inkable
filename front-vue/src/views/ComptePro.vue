@@ -12,7 +12,7 @@
                         <div class="card-body p-4 text-center">
 
                             <div class="flex-shrink-0">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                                <img :src="this.editPro.profile_picture_path_pro"
                                     alt="Generic placeholder image" class="img-fluid"
                                     style="width: 180px; border-radius: 10px;" />
                             </div>
@@ -184,6 +184,7 @@ export default {
           this.mail=response.data.email;
           this.editPro.description=response.data.description;
           this.editPro.instagram=response.data.instagram;
+          this.editPro.profile_picture_path_pro=response.data.profile_picture_path_pro;
           this.editPro.styles=response.data.styles.map((item)=> item.name)
           
           
@@ -206,11 +207,11 @@ export default {
 
         },
         handleFile:async function(e){
-        this.$store.dispatch('createRequestObjForCloudinary',e);
-        
-        this.picture=true
+            this.$store.dispatch('createRequestObjForCloudinary',e);
+            
+            this.picture=true
         },
-        editProfile(e){
+        async editProfile(e){
           e.preventDefault();
           console.log(this.editPro);
           // si le mail n'a pas été modifié il faut supprimer la donnée car sinon on aura une erreur d'utilisateur déjà existant côté back
@@ -223,22 +224,21 @@ export default {
           else{
             if(this.picture)
             {
-              let instance = this.axios.create();
-              delete instance.defaults.headers.common['Authorization'];
-              //envoi photo cloudinary
-              instance(this.$store.state.requestObj)
-                .then((response) => {
-                    this.editPro.profile_picture_path_pro=response.data.url; 
-
-                    //requete pour enregistrer le pro
-                    this.axios
+                try {
+                    let url=await this.$store.dispatch('handleUploadToCloudinary')
+                    this.editPro.profile_picture_path_pro=url;
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+                this.axios
                        .patch(`http://localhost:3000/api/pro/${this.$store.state.user.id}`,this.editPro)
                        .then((response) => {
                         console.log(response.data);
                         this.errorMessage=null;
                         this.successMessage="Vos informations ont bien été modifiées.";
+                        this.picture=false;
                         setTimeout(() => {
-
                           this.successMessage=null;
                         }, 2000);
                         this.editPro.email=this.mail;     
@@ -247,32 +247,7 @@ export default {
                             console.log(err);
                             this.errorMessage=err.response.data.message;
                             return
-                        })                               
                 })
-                .catch((err)=>{
-                    console.log(err);
-                    return
-                })
-
-            }else{
-            this.axios
-                  .patch(`http://localhost:3000/api/pro/${this.$store.state.user.id}`,this.editPro)
-                  .then((response) => {
-                      console.log(response.data);
-                      this.errorMessage=null;
-                      this.successMessage="Vos informations ont bien été modifiées.";
-                      setTimeout(() => {
-
-                        this.successMessage=null;
-                      }, 2000);
-                      this.editPro.email=this.mail;     
-                  })
-                  .catch((err)=>{
-                      console.log(err);
-                      this.errorMessage=err.response.data.message;
-                      return
-                  })
-            }
           }
         }
     }
