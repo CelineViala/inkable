@@ -350,7 +350,7 @@ return {
                 this.rdv.id = response.data.id;
                 //ajout sur le calendrier
                 this.calendar.apiCalendar.addEvent({
-                    id: idRdv,
+                    id: this.rdv.id,
                     title: this.rdv.title,
                     extendedProps: {
                         description: this.rdv.note!==undefined?this.rdv.note:'',
