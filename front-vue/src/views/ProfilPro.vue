@@ -33,7 +33,7 @@
                 <div class="d-flex justify-content-start rounded-3 p-2 mb-2">
 
                   <div v-for="style in this.pro.styles">
-                    <span class="badge text-bg-light">{{style.name}}</span>
+                    <span class="badge m-1 text-bg-light">{{style.name}}</span>
                   </div>
                   
                 </div>
@@ -55,7 +55,7 @@
                     </button>
                   </a>
 
-                  <router-link v-if="this.$store.state.role==='consumer'" :to="{name:'FormulaireProject',params:{proId:this.$route.params.id}}" class="btn btn-outline-dark text-light flex-grow-1" style="background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));">
+                  <router-link v-if="this.$store.state.user.role==='consumer'" :to="{name:'FormulaireProject',params:{proId:this.$route.params.id}}" class="btn btn-outline-dark text-light flex-grow-1" style="background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));">
                     Prendre rendez-vous
                   </router-link>
                 </div>
