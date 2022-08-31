@@ -146,6 +146,6 @@ export default {
 </script>
 <style>
   .container-card{
-    min-height: 500px;
+    min-height: 700px;
   }
 </style>
