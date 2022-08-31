@@ -3,6 +3,7 @@ const {
     Project,
     Pro,
     Consumer,
+    Message,
 } = require('../models');
 
 module.exports = {
@@ -84,7 +85,7 @@ module.exports = {
             where: {
                 pro_id: id,
             },
-            include: 'consumer'
+            include: 'consumer',
 
         });
         res.json(projects);
@@ -107,5 +108,8 @@ module.exports = {
         });
         res.json(projects);
     },
-
+    async createMessage(req, res) {
+        const newMessage = await Message.create(req.body);
+        return res.json(newMessage);
+    },
 };
