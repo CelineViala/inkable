@@ -29,9 +29,9 @@
                             <label class="mr-sm-2 form-label" for="inlineFormCustomSelect">Projet : </label>
                             <select v-model="rdv.project_id" class="custom - select mr - sm - 2 form-control form-control-lg"
                                 id="inlineFormCustomSelect">
-                                <option class="form-control form-control-lg" ref="accepted" value="accepté" selected>Projet truc</option>
-                                <option class="form-control form-control-lg" ref="waiting" value="en attente">En attente</option>
-                                <option class="form-control form-control-lg" ref="refused" value="refusé">Refusé</option>
+
+                                <option  v-for="project in this.projects" class="form-control form-control-lg" ref="accepted" :value="project.id" selected>{{`${project.consumer.first_name}  ${project.consumer.last_name} ${project.title}`}}</option>
+                               
                             </select>
                         </div>
 
@@ -67,38 +67,14 @@ export default {
     components: {
         FullCalendar // make the <FullCalendar> tag available
     },
-    async mounted() {
-        try {
-       
-          const rdvs = this.$store.state.user.appointments;
-                rdvs?.forEach(rdv => {
-                    console.log(rdv, this.$refs)
-                    this.$refs.fullCalendar.getApi().addEvent({
-                        id: rdv.id,
-                        title: rdv.title,
-                        extendedProps: {
-                            description: rdv.note,
-
-                        },
-                        start: new Date(rdv.beginning_hour),
-                        end: new Date(rdv.ending_hour)
-                    });
-                });
-          
-        } catch (error) {
-          console.log(error)
-        }    
-    },
-    computed:{
-    async user() {
-          return await this.$store.state.user
-        },
-    },
     data() {
-        return {
+return {
             id:null,
             calendar: {},
             rdv: {},
+            projects:null,
+            successMessage:null,
+            errorMessage:null,
             startRange: new Date(),
             endRange: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             calendarOptions: {
@@ -150,6 +126,42 @@ export default {
             }
         }
     },
+
+    async mounted() {
+        ///api/pro/:id/projet
+        try {
+            
+            const response=await this.axios.get(`http://localhost:3000/api/pro/${this.$store.state.user.id}/projet`)
+            this.projects=response.data;
+            console.log(this.projects)
+        } catch (error) {
+            console.log(error)
+        }
+        try {
+       
+          const rdvs = this.$store.state.user.appointments;
+                rdvs?.forEach(rdv => {
+                    this.$refs.fullCalendar.getApi().addEvent({
+                        id: rdv.id,
+                        title: rdv.title,
+                        extendedProps: {
+                            description: rdv.note,
+
+                        },
+                        start: new Date(rdv.beginning_hour),
+                        end: new Date(rdv.ending_hour)
+                    });
+                });
+          
+        } catch (error) {
+          console.log(error)
+        }    
+    },
+    computed:{
+    async user() {
+        return await this.$store.state.user
+    },
+},
     methods: {
         goToday: function () {
             this.startRange=new Date();
@@ -184,7 +196,7 @@ export default {
             // console.log(arg.event.extendedProps);
             let title = document.createElement('div')
             title.classList.add("titleRdv");
-            
+            successMessageElm.textContent="test";
             let description = document.createElement('div');
             description.classList.add("descriptionRdv");
             let del = document.createElement('div');
@@ -198,8 +210,8 @@ export default {
             del.textContent = "❌";
             let projet = document.createElement('a');
             projet.classList.add("classLink");
-            projet.setAttribute("href", "/project/1");
-            projet.textContent = "lien vers le projet"
+            projet.setAttribute("href", `/project/${this.rdv.project_id}`);
+            projet.textContent = "lien vers le projet";
             // projet.href = "https://www.google.fr"
             edit.textContent = "✎";
             edit.id=event.id;
@@ -210,7 +222,7 @@ export default {
             description.innerHTML = arg.event.extendedProps.description;
             del.addEventListener("click", this.deleteRdv);
             seeMore.addEventListener("click",this.displayMore);
-            let arrayOfDomNodes = [title, description, projet, del, edit,seeMore]
+            let arrayOfDomNodes = [title, description, projet, del, edit,seeMore,successMessageElm,errorMessageElm]
             return {
                 domNodes: arrayOfDomNodes
             }
@@ -226,10 +238,10 @@ export default {
 
             this.$refs.buttonValid.setAttribute("hidden","hidden");
             const rdvElm=e.target.parentNode;
-            const event=this.$refs.fullCalendar.getApi().getEventById(e.target.id)._instance.range
-            console.log(event.start,event.end)
+            const event=this.$refs.fullCalendar.getApi().getEventById(e.target.id)._instance.range;
+            console.log(event.start,event.end);
            
-            this.$refs.dataElm.textContent = `${this.format(event.start)} - ${this.format(event.end)}`
+            this.$refs.dataElm.textContent = `${this.format(event.start)} - ${this.format(event.end)}`;
             this.rdv.title=rdvElm.querySelector(".titleRdv").textContent;
             this.rdv.note=rdvElm.querySelector(".descriptionRdv").textContent;
        
@@ -314,33 +326,35 @@ export default {
         },
 
         async valid(e) {
-            this.$refs.formElm.style.display = 'none';
+            
             this.rdv.pro_id = this.$store.state.user.id;
             let idRdv;
-
+            console.log(this.rdv)
+            
 
             //enregistrement bdd
             try {
                 const response = await this.axios.post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv`, this.rdv);
                 console.log("rdv enregistré", response);
                 this.rdv.id = response.data.id;
+                //ajout sur le calendrier
+                this.calendar.apiCalendar.addEvent({
+                    id: idRdv,
+                    title: this.rdv.title,
+                    extendedProps: {
+                        description: this.rdv.note,
+                    },
+                    start: this.rdv.beginning_hour,
+                    end: this.rdv.ending_hour,
+                })
+                this.$refs.formElm.style.display = 'none';
+            this.rdv = {};
 
             } catch (error) {
-               console.log(this.$store.state.user.id)
                 console.log(error)
             }
-            //ajout sur le calendrier
-            this.calendar.apiCalendar.addEvent({
-                id: idRdv,
-                title: this.rdv.title,
-                extendedProps: {
-                    description: this.rdv.note,
-                },
-
-                start: this.rdv.beginning_hour,
-                end: this.rdv.ending_hour,
-            })
-            this.rdv = {};
+            
+            
         },
         async modify(e){
             this.$refs.formElm.style.display = 'none';
@@ -363,6 +377,7 @@ export default {
         async getListRdv() {
           const userId=await this.user
           console.log(userId)
+          
             try {
                 let calendarApi = this.$refs.fullCalendar.getApi()
                 const response = await this.axios.get(`http://localhost:3000/api/pro/${this.id}/rdv`, this.rdv);
