@@ -30,7 +30,7 @@
                             <select v-model="rdv.project_id" class="custom - select mr - sm - 2 form-control form-control-lg"
                                 id="inlineFormCustomSelect">
 
-                                <option  v-for="project in this.projects" class="form-control form-control-lg" ref="accepted" :value="project.id" selected>{{`${project.consumer.first_name}  ${project.consumer.last_name} ${project.title}`}}</option>
+                                <option  v-for="project in this.projects" class="form-control form-control-lg" ref="accepted" :value="project.id">{{`${project.consumer.first_name}  ${project.consumer.last_name} ${project.title}`}}</option>
                                
                             </select>
                         </div>
@@ -47,6 +47,9 @@
                         <input @click="valid" ref="buttonValid" type="button" class="btn btn-outline-light btn-lg px-5" value="VALIDER" hidden>
 
                         <input @click="modify" ref="buttonEdit" type="button" class="btn btn-outline-light btn-lg px-5" value="MODIFIER" hidden>
+
+                        <p class="text-success">{{this.successMessage}}</p>
+                        <p class="text-danger">{{this.errorMessage}}</p>
 
                     </form>
                 </div>
@@ -76,6 +79,7 @@ return {
             successMessage:null,
             errorMessage:null,
             startRange: new Date(),
+
             endRange: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             calendarOptions: {
                 plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
@@ -133,9 +137,9 @@ return {
             
             const response=await this.axios.get(`http://localhost:3000/api/pro/${this.$store.state.user.id}/projet`)
             this.projects=response.data;
-            console.log(this.projects)
+            console.log(this.projects);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
         try {
        
@@ -146,7 +150,7 @@ return {
                         title: rdv.title,
                         extendedProps: {
                             description: rdv.note,
-
+                            project_id:rdv.project_id
                         },
                         start: new Date(rdv.beginning_hour),
                         end: new Date(rdv.ending_hour)
@@ -196,7 +200,7 @@ return {
             // console.log(arg.event.extendedProps);
             let title = document.createElement('div')
             title.classList.add("titleRdv");
-            successMessageElm.textContent="test";
+            
             let description = document.createElement('div');
             description.classList.add("descriptionRdv");
             let del = document.createElement('div');
@@ -210,7 +214,7 @@ return {
             del.textContent = "❌";
             let projet = document.createElement('a');
             projet.classList.add("classLink");
-            projet.setAttribute("href", `/project/${this.rdv.project_id}`);
+            projet.setAttribute("href", `/project/${arg.event.extendedProps.project_id}`);
             projet.textContent = "lien vers le projet";
             // projet.href = "https://www.google.fr"
             edit.textContent = "✎";
@@ -222,7 +226,7 @@ return {
             description.innerHTML = arg.event.extendedProps.description;
             del.addEventListener("click", this.deleteRdv);
             seeMore.addEventListener("click",this.displayMore);
-            let arrayOfDomNodes = [title, description, projet, del, edit,seeMore,successMessageElm,errorMessageElm]
+            let arrayOfDomNodes = [title, description, projet, del, edit,seeMore]
             return {
                 domNodes: arrayOfDomNodes
             }
@@ -233,17 +237,19 @@ return {
         },
         editInfoRdv(e){
             this.$refs.formElm.style.display = "block";
+            this.errorMessage=null;
             this.$refs.buttonEdit.removeAttribute("hidden");
             this.$refs.buttonEdit.id=e.target.id;
 
             this.$refs.buttonValid.setAttribute("hidden","hidden");
             const rdvElm=e.target.parentNode;
-            const event=this.$refs.fullCalendar.getApi().getEventById(e.target.id)._instance.range;
-            console.log(event.start,event.end);
+            const event=this.$refs.fullCalendar.getApi().getEventById(e.target.id)._instance.range
+            console.log(event.start,event.end)
            
-            this.$refs.dataElm.textContent = `${this.format(event.start)} - ${this.format(event.end)}`;
+            this.$refs.dataElm.textContent = `${this.format(event.start)} - ${this.format(event.end)}`
             this.rdv.title=rdvElm.querySelector(".titleRdv").textContent;
             this.rdv.note=rdvElm.querySelector(".descriptionRdv").textContent;
+
        
         },
         deleteRdv(e) {//route :/api/pro/:idPro/rdv/:idRdv'
@@ -256,6 +262,7 @@ return {
                 })
                 .catch((err) => {
                     console.log(err)
+                    alert("erreur lors de la suppression du message.")
                 });
 
         },
@@ -270,10 +277,11 @@ return {
             })
             if (!isFree)
                 alert("chevauchement");
+            this.errorMessage=null;
             this.$refs.formElm.style.display = "block"
             this.$refs.buttonValid.removeAttribute("hidden")
             this.$refs.buttonEdit.setAttribute("hidden","hidden");
-            console.log(info.start)
+           
             // this.$refs.formElm.style.top = info.jsEvent.y+ "px";
             // this.$refs.formElm.style.left = info.jsEvent.x+ "px";
 
@@ -295,9 +303,11 @@ return {
                 .patch(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv/${idRdv}`, requestObj)
                 .then((response) => {
                     console.log(response.data)
+
                 })
                 .catch((err) => {
                     console.log(err)
+                    this.errorMessage="Votre RDV n'a pas pu être modifié"
                 });}
 
 
@@ -335,14 +345,16 @@ return {
             //enregistrement bdd
             try {
                 const response = await this.axios.post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv`, this.rdv);
-                console.log("rdv enregistré", response);
+                
+                console.log("rdv enregistré", this.rdv);
                 this.rdv.id = response.data.id;
                 //ajout sur le calendrier
                 this.calendar.apiCalendar.addEvent({
                     id: idRdv,
                     title: this.rdv.title,
                     extendedProps: {
-                        description: this.rdv.note,
+                        description: this.rdv.note!==undefined?this.rdv.note:'',
+                        project_id:this.rdv.project_id!==undefined?this.rdv.project_id:null
                     },
                     start: this.rdv.beginning_hour,
                     end: this.rdv.ending_hour,
@@ -352,6 +364,7 @@ return {
 
             } catch (error) {
                 console.log(error)
+                this.errorMessage=error.response.data.message;
             }
             
             
@@ -367,10 +380,12 @@ return {
 
             } catch (error) {
                 console.log(error)
+                this.errorMessage=error.message
             }
             const event=this.$refs.fullCalendar.getApi().getEventById(e.target.id);
             event.setProp("title",this.rdv.title);
             event.setExtendedProp("description",this.rdv.note)
+            event.setExtendedProp("project_id",this.rdv.project_id)
             this.rdv={}
 
         },
@@ -382,6 +397,7 @@ return {
                 let calendarApi = this.$refs.fullCalendar.getApi()
                 const response = await this.axios.get(`http://localhost:3000/api/pro/${this.id}/rdv`, this.rdv);
                 const rdvs = response.data;
+                console.log(rdvs);
                 rdvs.forEach(rdv => {
                     console.log(rdv)
                     calendarApi.addEvent({
@@ -389,8 +405,7 @@ return {
                         title: rdv.title,
                         extendedProps: {
                             description: rdv.note,
-
-
+                            project_id:rdv.project_id
                         },
                         start: new Date(rdv.beginning_hour),
                         end: new Date(rdv.ending_hour)
@@ -398,7 +413,7 @@ return {
                 });
 
             } catch (error) {
-                console.log(error)
+                console.log(error.message)
                 console.log(`${this.$store.state.user.id}`)
             }
         }

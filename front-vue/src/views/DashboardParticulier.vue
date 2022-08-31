@@ -46,10 +46,10 @@ export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
   },
-  async created() {
+  async mounted() {
     // await this.$store.dispatch('getUser');
     this.addEvents();
-     console.log("<<<<<<<<<<<<<<<<<<", this.$store.state.user);
+   
   },
   data() {
 
@@ -91,18 +91,21 @@ export default {
     addEvents(){
       const rdvs=[];
       const projects=this.$store.state.user.projects;
-      console.log(projects)
       projects?.forEach(project => {
+        console.log(project.appointments)
         const rdvsProject=project.appointments;
         rdvsProject?.forEach(rdv => {
+          console.log(rdv)
           rdv.pro=project.pro.studio_name;
           rdv.nameProject=project.title;
+          rdvs.push(rdv);
           if (new Date(rdv.beginning_hour).getDay()>=new Date().getDay())
             rdvs.push(rdv);
         });
         
       });
-      rdvs?.forEach(rdv => {
+      console.log(rdvs)
+      rdvs.forEach(rdv => {
                     console.log(rdv)
                     this.$refs.fullCalendar.getApi().addEvent({
                         id: rdv.id,
