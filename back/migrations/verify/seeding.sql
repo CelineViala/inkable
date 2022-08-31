@@ -1,4 +1,4 @@
--- Verify inkable:function_search on pg
+-- Verify inkable:seeding on pg
 
 BEGIN;
 
