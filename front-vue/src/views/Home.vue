@@ -5,6 +5,7 @@
       <!-- Partie recherche -->
       <div class="card bg-dark text-white" style="border-radius: 1rem;">
         <div class="card-body p-4 text-center">
+          
           <!-- Formulaire de recherche -->
           <form>
             <!-- Ville -->

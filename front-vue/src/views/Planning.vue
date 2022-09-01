@@ -1,4 +1,11 @@
 <template>
+    <!-- Vertically centered modal -->
+
+
+    <!-- Vertically centered scrollable modal -->
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        ...
+    </div>
     <section class=" gradient-custom">
         <div class="container py-5 h-10">
             <div class="container py-5 h-10">
@@ -27,11 +34,15 @@
                         </div>
                         <div class="form-outline form-white mb-4">
                             <label class="mr-sm-2 form-label" for="inlineFormCustomSelect">Projet : </label>
-                            <select v-model="rdv.project_id" class="custom - select mr - sm - 2 form-control form-control-lg"
+                            <select v-model="rdv.project_id"
+                                class="custom - select mr - sm - 2 form-control form-control-lg"
                                 id="inlineFormCustomSelect">
 
-                                <option  v-for="project in this.projects" class="form-control form-control-lg" ref="accepted" :value="project.id">{{`${project.consumer.first_name}  ${project.consumer.last_name} ${project.title}`}}</option>
-                               
+                                <option v-for="project in this.projects" class="form-control form-control-lg"
+                                    ref="accepted" :value="project.id">{{ `${project.consumer.first_name}
+                                                                        ${project.consumer.last_name} ${project.title}`
+                                    }}</option>
+
                             </select>
                         </div>
 
@@ -44,12 +55,14 @@
 
                         <input @click="cancel" type="button" class="btn btn-outline-light btn-lg px-5" value="ANNULER">
 
-                        <input @click="valid" ref="buttonValid" type="button" class="btn btn-outline-light btn-lg px-5" value="VALIDER" hidden>
+                        <input @click="valid" ref="buttonValid" type="button" class="btn btn-outline-light btn-lg px-5"
+                            value="VALIDER" hidden>
 
-                        <input @click="modify" ref="buttonEdit" type="button" class="btn btn-outline-light btn-lg px-5" value="MODIFIER" hidden>
+                        <input @click="modify" ref="buttonEdit" type="button" class="btn btn-outline-light btn-lg px-5"
+                            value="MODIFIER" hidden>
 
-                        <p class="text-success">{{this.successMessage}}</p>
-                        <p class="text-danger">{{this.errorMessage}}</p>
+                        <p class="text-success">{{ this.successMessage }}</p>
+                        <p class="text-danger">{{ this.errorMessage }}</p>
 
                     </form>
                 </div>
@@ -71,15 +84,14 @@ export default {
         FullCalendar // make the <FullCalendar> tag available
     },
     data() {
-return {
-            id:null,
+        return {
+            id: null,
             calendar: {},
             rdv: {},
-            projects:null,
-            successMessage:null,
-            errorMessage:null,
+            projects: null,
+            successMessage: null,
+            errorMessage: null,
             startRange: new Date(),
-
             endRange: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             calendarOptions: {
                 plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
@@ -101,7 +113,6 @@ return {
                         text: '◀',
                         click: this.moveBackOneDay
                     }
-
                 },
                 headerToolbar: {
                     start: 'title', // will normally be on the left. if RTL, will be on the right
@@ -114,7 +125,6 @@ return {
                     month: 'long',
                     year: 'numeric',
                     day: '2-digit',
-
                 },
                 locale: 'fr-FR',
                 selectable: true,
@@ -132,51 +142,51 @@ return {
     },
 
     async mounted() {
-        ///api/pro/:id/projet
+        if (this.$route.params.projectId)
+            this.rdv.project_id = this.$route.params.projectId;
         try {
-            
-            const response=await this.axios.get(`http://localhost:3000/api/pro/${this.$store.state.user.id}/projet`)
-            this.projects=response.data;
+
+            const response = await this.axios.get(`http://localhost:3000/api/pro/${this.$store.state.user.id}/projet`)
+            this.projects = response.data;
             console.log(this.projects);
         } catch (error) {
             console.log(error);
         }
         try {
-       
-          const rdvs = this.$store.state.user.appointments;
-                rdvs?.forEach(rdv => {
-                    this.$refs.fullCalendar.getApi().addEvent({
-                        id: rdv.id,
-                        title: rdv.title,
-                        extendedProps: {
-                            description: rdv.note,
-                            project_id:rdv.project_id
-                        },
-                        start: new Date(rdv.beginning_hour),
-                        end: new Date(rdv.ending_hour)
-                    });
+
+            const rdvs = this.$store.state.user.appointments;
+            rdvs?.forEach(rdv => {
+                this.$refs.fullCalendar.getApi().addEvent({
+                    id: rdv.id,
+                    title: rdv.title,
+                    extendedProps: {
+                        description: rdv.note,
+                        project_id: rdv.project_id
+                    },
+                    start: new Date(rdv.beginning_hour),
+                    end: new Date(rdv.ending_hour)
                 });
-          
+            });
         } catch (error) {
-          console.log(error)
-        }    
+            console.log(error)
+        }
     },
-    computed:{
-    async user() {
-        return await this.$store.state.user
+    computed: {
+        async user() {
+            return await this.$store.state.user
+        },
     },
-},
     methods: {
         goToday: function () {
-            this.startRange=new Date();
-            this.endRange=new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+            this.startRange = new Date();
+            this.endRange = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
             this.$refs.fullCalendar.getApi().setOption('visibleRange', {
                 start: this.startRange,
                 end: this.endRange
             });
         },
         moveBackOneDay: function () {
-            console.log(this.startRange,this.endRange);
+            console.log(this.startRange, this.endRange);
             this.startRange.setDate(this.startRange.getDate() - 1);
             this.endRange.setDate(this.endRange.getDate() - 1);
             this.$refs.fullCalendar.getApi().setOption('visibleRange', {
@@ -185,72 +195,89 @@ return {
             });
         },
         moveForwardOneDay: function (e) {
-            console.log(this.startRange, this.endRange)
             this.startRange.setDate(this.startRange.getDate() + 1);
             this.endRange.setDate(this.endRange.getDate() + 1);
-
             this.$refs.fullCalendar.getApi().setOption('visibleRange', {
                 start: this.startRange,
                 end: this.endRange
             });
-        
         },
         formateEvent: function (arg) {
             var event = arg.event;
             // console.log(arg.event.extendedProps);
             let title = document.createElement('div')
             title.classList.add("titleRdv");
-            
             let description = document.createElement('div');
             description.classList.add("descriptionRdv");
             let del = document.createElement('div');
-            let edit = document.createElement('div');
+            let edit = document.createElement('i');
             let seeMore = document.createElement('div');
             del.classList.add("btn-del");
             seeMore.classList.add("btn-seeMore");
-            seeMore.id=event.id;
-            seeMore.textContent="+"
+            seeMore.classList.add("plus");
+            seeMore.id = event.id;
+            seeMore.textContent = "+"
             del.id = event.id;
             del.textContent = "❌";
             let projet = document.createElement('a');
             projet.classList.add("classLink");
             projet.setAttribute("href", `/project/${arg.event.extendedProps.project_id}`);
-            projet.textContent = "lien vers le projet";
-            // projet.href = "https://www.google.fr"
-            edit.textContent = "✎";
-            edit.id=event.id;
+            projet.textContent = arg.event.extendedProps.project_id ? "lien vers le projet" : "";
+            edit.id = event.id;
             edit.classList.add("btn-edit");
-            // projet.innerHTML = arg.event.extendedProps.projet
-            edit.addEventListener("click",this.editInfoRdv);
-            title.innerHTML = arg.event.title;
-            description.innerHTML = arg.event.extendedProps.description;
+            edit.classList.add("bi");
+            edit.classList.add("bi-pencil-fill");
+            edit.classList.add("btn-outline-secondary");
+            edit.addEventListener("click", this.editInfoRdv);
+
+            //----------------------------------------------gestion de l'affichage des rdv dans une pop up
+            seeMore.setAttribute("data-bs-toggle", "popover");
+            seeMore.setAttribute(
+                "data-bs-content",
+                `   <h4>${arg.event.title}</h4>
+                    <p> ${arg.event.extendedProps.description} </p>
+                    <a href="/project/${`${arg.event.extendedProps.project_id}`}">Lien vers le projet</a>
+                `
+            );
+            seeMore.setAttribute("data-bs-placement", "top");
+            seeMore.setAttribute("data-triger", "hover");
+            seeMore.setAttribute("data-bs-title", "RDV");
+            new bootstrap.Popover(seeMore, {
+                container: 'body',
+                html: true
+            })
+            seeMore.addEventListener("click", this.displayMore)
+            //----------------------------------------------------
+            title.textContent = arg.event.title;
+            description.textContent = arg.event.extendedProps.description;
             del.addEventListener("click", this.deleteRdv);
-            seeMore.addEventListener("click",this.displayMore);
-            let arrayOfDomNodes = [title, description, projet, del, edit,seeMore]
+            seeMore.addEventListener("click", this.displayMore);
+            let arrayOfDomNodes = [title, description, projet, del, edit, seeMore]
             return {
                 domNodes: arrayOfDomNodes
             }
-
         },
-        displayMore(e){
-            
+        displayMore(e) {
+            e.target.classList.toggle("moins");
+            e.target.classList.toggle("plus");
+            if (e.target.classList.contains("moins")) e.target.textContent = "-";
+            else if (e.target.classList.contains("plus")) e.target.textContent = "+";
         },
-        editInfoRdv(e){
+        editInfoRdv(e) {
             this.$refs.formElm.style.display = "block";
-            this.errorMessage=null;
+            this.errorMessage = null;
             this.$refs.buttonEdit.removeAttribute("hidden");
-            this.$refs.buttonEdit.id=e.target.id;
+            this.$refs.buttonEdit.id = e.target.id;
+            this.$refs.buttonValid.setAttribute("hidden", "hidden");
+            const rdvElm = e.target.parentNode;
+            const event = this.$refs.fullCalendar.getApi().getEventById(e.target.id)._instance.range
+            console.log(event.start, event.end)
 
-            this.$refs.buttonValid.setAttribute("hidden","hidden");
-            const rdvElm=e.target.parentNode;
-            const event=this.$refs.fullCalendar.getApi().getEventById(e.target.id)._instance.range
-            console.log(event.start,event.end)
-           
             this.$refs.dataElm.textContent = `${this.format(event.start)} - ${this.format(event.end)}`
-            this.rdv.title=rdvElm.querySelector(".titleRdv").textContent;
-            this.rdv.note=rdvElm.querySelector(".descriptionRdv").textContent;
+            this.rdv.title = rdvElm.querySelector(".titleRdv").textContent;
+            this.rdv.note = rdvElm.querySelector(".descriptionRdv").textContent;
 
-       
+
         },
         deleteRdv(e) {//route :/api/pro/:idPro/rdv/:idRdv'
             console.log(e.target.id);
@@ -277,11 +304,11 @@ return {
             })
             if (!isFree)
                 alert("chevauchement");
-            this.errorMessage=null;
+            this.errorMessage = null;
             this.$refs.formElm.style.display = "block"
             this.$refs.buttonValid.removeAttribute("hidden")
-            this.$refs.buttonEdit.setAttribute("hidden","hidden");
-           
+            this.$refs.buttonEdit.setAttribute("hidden", "hidden");
+
             // this.$refs.formElm.style.top = info.jsEvent.y+ "px";
             // this.$refs.formElm.style.left = info.jsEvent.x+ "px";
 
@@ -297,9 +324,9 @@ return {
             requestObj.ending_hour = new Date(info.event._instance.range.end);
             console.log("changement rdv")
             const idRdv = info.event._def.publicId
-            const isOk=confirm("Voulez vous valider la modification de rdv?");
-            if (isOk)
-            {this.axios
+            const isOk = confirm("Voulez vous valider la modification de rdv?");
+            if (isOk) {
+                this.axios
                 .patch(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv/${idRdv}`, requestObj)
                 .then((response) => {
                     console.log(response.data)
@@ -307,8 +334,9 @@ return {
                 })
                 .catch((err) => {
                     console.log(err)
-                    this.errorMessage="Votre RDV n'a pas pu être modifié"
-                });}
+                    this.errorMessage = "Votre RDV n'a pas pu être modifié"
+                });
+            }
 
 
         },
@@ -336,16 +364,16 @@ return {
         },
 
         async valid(e) {
-            
+
             this.rdv.pro_id = this.$store.state.user.id;
             let idRdv;
             console.log(this.rdv)
-            
+
 
             //enregistrement bdd
             try {
                 const response = await this.axios.post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv`, this.rdv);
-                
+
                 console.log("rdv enregistré", this.rdv);
                 this.rdv.id = response.data.id;
                 //ajout sur le calendrier
@@ -353,23 +381,23 @@ return {
                     id: this.rdv.id,
                     title: this.rdv.title,
                     extendedProps: {
-                        description: this.rdv.note!==undefined?this.rdv.note:'',
-                        project_id:this.rdv.project_id!==undefined?this.rdv.project_id:null
+                        description: this.rdv.note !== undefined ? this.rdv.note : '',
+                        project_id: this.rdv.project_id !== undefined ? this.rdv.project_id : null
                     },
                     start: this.rdv.beginning_hour,
                     end: this.rdv.ending_hour,
                 })
                 this.$refs.formElm.style.display = 'none';
-            this.rdv = {};
+                this.rdv = {};
 
             } catch (error) {
                 console.log(error)
-                this.errorMessage=error.response.data.message;
+                this.errorMessage = error.response.data.message;
             }
-            
-            
+
+
         },
-        async modify(e){
+        async modify(e) {
             this.$refs.formElm.style.display = 'none';
             console.log(this.rdv);
             //enregistrement bdd
@@ -380,19 +408,19 @@ return {
 
             } catch (error) {
                 console.log(error)
-                this.errorMessage=error.message
+                this.errorMessage = error.message
             }
-            const event=this.$refs.fullCalendar.getApi().getEventById(e.target.id);
-            event.setProp("title",this.rdv.title);
-            event.setExtendedProp("description",this.rdv.note)
-            event.setExtendedProp("project_id",this.rdv.project_id)
-            this.rdv={}
+            const event = this.$refs.fullCalendar.getApi().getEventById(e.target.id);
+            event.setProp("title", this.rdv.title);
+            event.setExtendedProp("description", this.rdv.note)
+            event.setExtendedProp("project_id", this.rdv.project_id)
+            this.rdv = {}
 
         },
         async getListRdv() {
-          const userId=await this.user
-          console.log(userId)
-          
+            const userId = await this.user
+            console.log(userId)
+
             try {
                 let calendarApi = this.$refs.fullCalendar.getApi()
                 const response = await this.axios.get(`http://localhost:3000/api/pro/${this.id}/rdv`, this.rdv);
@@ -400,16 +428,17 @@ return {
                 console.log(rdvs);
                 rdvs.forEach(rdv => {
                     console.log(rdv)
-                    calendarApi.addEvent({
+                    const rd = calendarApi.addEvent({
                         id: rdv.id,
                         title: rdv.title,
                         extendedProps: {
                             description: rdv.note,
-                            project_id:rdv.project_id
+                            project_id: rdv.project_id
                         },
                         start: new Date(rdv.beginning_hour),
                         end: new Date(rdv.ending_hour)
                     });
+
                 });
 
             } catch (error) {
@@ -447,17 +476,29 @@ return {
 .btn-del {
     width: 20px;
     height: 20px;
-    background-color: crimson;
+
+    background-color: rgb(255, 255, 255);
+    color: rgb(242, 6, 53);
     position: absolute;
+    border-radius: 5px;
+    margin-bottom: 1px;
+    margin-right: 1px;
+    text-align: center;
     right: 0;
     bottom: 0;
 }
+
 .btn-seeMore {
     width: 20px;
     height: 20px;
-    background-color: rgb(51, 11, 180);
+    background-color: rgb(255, 255, 255);
+    color: rgb(71, 87, 229);
     position: absolute;
-    right: 40px;
+    margin-bottom: 1px;
+    border-radius: 5px;
+    margin-right: 1px;
+    text-align: center;
+    right: 50px;
     bottom: 0;
 }
 
@@ -469,9 +510,14 @@ return {
 .btn-edit {
     width: 20px;
     height: 20px;
-    background-color: rgb(24, 125, 10);
+    background-color: #fff;
+    color: rgb(41, 205, 33);
     position: absolute;
-    right: 20px;
+    border-radius: 5px;
+    margin-right: 1px;
+    margin-bottom: 1px;
+    text-align: center;
+    right: 25px;
     bottom: 0;
 }
 
@@ -486,7 +532,4 @@ body {
 #calendar-listview {
     width: 30%;
 }
-
-
-
 </style>
