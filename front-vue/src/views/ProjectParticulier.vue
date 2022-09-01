@@ -106,21 +106,19 @@
         <div v-for="message in this.project.messages" class="container_messages py-3 h-100">
           <div class="card-body">
 
-            <div class="d-flex justify-content-start rounded-3 text-black" style="background-color: #efefef;">
+            <div class="d-flex rounded-3 text-black" style="background-color: #efefef;">
               
               <!-- Côté gauche -->
-               <div class="flex-grow-1 ms-3" style="min-width:300px">
-                <h4> Auteur : </h4>
-                <p> {{(message.consumer!==null)?`${message.consumer?.last_name}  ${message.consumer?.first_name}`:message.pro.studio_name}}</p>
+               <div class="flex-grow-0 ms-3 mt-3 " style="min-width:300px">
+            
+                <p class="text-start"> <strong> De : </strong>{{(message.consumer!==null)?`${message.consumer?.last_name}  ${message.consumer?.first_name}`:message.pro.studio_name}}</p>
 
-                <h4> Date : </h4>
-                <p> {{ new Date(message.createdAt).toLocaleTimeString('fr-FR',{ weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour:'numeric',minute:'numeric'})}}</p>
+                <p class="text-start"><strong> Le : </strong> {{ new Date(message.createdAt).toLocaleTimeString('fr-FR',{ weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour:'numeric',minute:'numeric'})}}</p>
               </div>
 
               <!-- Côté droit -->
-              <div class="flex-grow-1 ms-3">
-                <h4> Message : </h4>
-                <p>{{ message.content }} </p>
+              <div class="flex-grow-1 ms-3 rounded-3" style="background-color:white;">
+                <p class="text-start ms-3 mt-3">{{ message.content }} </p>
               </div>
             </div>
           </div>
