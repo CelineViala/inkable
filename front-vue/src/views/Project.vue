@@ -132,21 +132,18 @@
         <!-- Conteneur des messages à dupplique en cas de nouveau message-->
         <div v-for="message in this.editProject.messages" lass="container_messages py-3 h-100">
           <div class="card-body">
-
-            <div class="d-flex justify-content-start rounded-3 text-black" style="background-color: #efefef;">
+ 
+            <div class="d-flex rounded-3 text-black" style="background-color: #efefef;">
               
-              <div class="flex-grow-1 ms-3" style="min-width:300px">
-                <h4> Auteur : </h4>
-                <p> {{(message.consumer!==undefined && message.consumer!==null)?`${message.consumer?.last_name}  ${message.consumer?.first_name}`:message.pro.studio_name}}</p>
+              <div class="flex-grow-0 ms-3 mt-3  " style="min-width:300px">
+                <p class="text-start"> <strong> De : </strong> {{(message.consumer!==undefined && message.consumer!==null)?`${message.consumer?.last_name}  ${message.consumer?.first_name}`:message.pro.studio_name}}</p>
 
-                <h4> Date : </h4>
-                <p>{{new Date(message.createdAt).toLocaleTimeString('fr-FR',{ weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour:'numeric',minute:'numeric'})}}</p>
+                <p class="text-start" style="background-color: ;"><strong> Le : </strong>{{new Date(message.createdAt).toLocaleTimeString('fr-FR',{ weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour:'numeric',minute:'numeric'})}}</p>
               </div>
 
               
-              <div class="flex-grow-1 ms-3">
-                <h4> Message : </h4>
-                <p>{{ message.content }} </p>
+              <div class="flex-grow-1 ms-3 rounded-3" style="background-color:white;">
+                <p class="text-start ms-3 mt-3">{{ message.content }} </p>
               </div>
             </div>
           </div>
@@ -348,6 +345,10 @@ export default {
 .gradient-custom {
   /* fallback for old browsers */
   background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
+};
+
+.flex-row {
+  padding-right:500px
 }
 
 ;
