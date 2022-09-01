@@ -132,7 +132,7 @@
 
             <div class="d-flex justify-content-start rounded-3 text-black" style="background-color: #efefef;">
               
-              <div class="flex-grow-1 ms-3">
+              <div class="flex-grow-1 ms-3" style="min-width:300px">
                 <h4> Auteur : </h4>
                 <p> {{(message.consumer!==undefined && message.consumer!==null)?`${message.consumer?.last_name}  ${message.consumer?.first_name}`:message.pro.studio_name}}</p>
 
