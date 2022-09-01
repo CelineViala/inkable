@@ -136,8 +136,9 @@ export default {
           else {
               // si le mail n'a pas été modifié il faut supprimer la donnée car sinon on aura une erreur d'utilisateur déjà existant côté back
               if (this.editConsumer.email === this.mail)
-                  delete this.editConsumer.email;
-
+                delete this.editConsumer.email;
+              else
+                this.mail=this.editConsumer.email;
               if (this.picture) {
                   try {
                       let url = await this.$store.dispatch('handleUploadToCloudinary')
