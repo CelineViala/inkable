@@ -112,8 +112,8 @@ export default {
     validForm:function(){ 
       if(this.newProject.color!==undefined)   
         this.newProject.color=this.newProject.color==='color'?true:false;
-      this.newProject.pro_id=1; //ATTENTION rendre dynamique
-      this.newProject.consumer_id=this.$store.state.user.id; //ATTENTION rendre dynamique
+      this.newProject.pro_id=this.$route.params.proId;
+      this.newProject.consumer_id=this.$store.state.user.id; 
       
       this.axios
       .post('http://localhost:3000/api/projet',this.newProject) 
