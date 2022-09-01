@@ -1,11 +1,10 @@
-import {createStore, createstore} from 'vuex';
+import {createStore} from 'vuex';
 import axios from 'axios';
-import {CloudinaryImage} from '@cloudinary/url-gen';
 import { Cloudinary } from "@cloudinary/url-gen";
-import { thumbnail,scale } from "@cloudinary/url-gen/actions/resize";
-import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
-import {focusOn} from "@cloudinary/url-gen/qualifiers/gravity";
-import {FocusOn} from "@cloudinary/url-gen/qualifiers/focusOn";
+import { fill} from "@cloudinary/url-gen/actions/resize";
+// import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
+// import {focusOn} from "@cloudinary/url-gen/qualifiers/gravity";
+// import {FocusOn} from "@cloudinary/url-gen/qualifiers/focusOn";
 const router=require('../router')
 export default createStore({
     state:{
@@ -84,7 +83,6 @@ export default createStore({
             })
         },
         async transformImg({commit},img){
-            console.log("!!!!!!!!!!!!!!!!!!!!",img)
             const cld = new Cloudinary({
                 cloud: {
                   cloudName: process.env.VUE_APP_ENV_CLOUDINARY_CLOUDNAME,
@@ -93,13 +91,8 @@ export default createStore({
                 }
               }); 
             const myImage = cld.image(img.public_id);
-            
             myImage
-                // .resize(thumbnail().width(150).height(200).gravity(focusOn(FocusOn.face())))  // Crop the image, focusing on the face.
-                // .roundCorners(byRadius(20))
-                .resize(scale().height(400).width(300))
-              
-            
+                .resize(fill().width(300).height(300));
             const url=myImage.toURL();
             await commit('transformImg',url);
 

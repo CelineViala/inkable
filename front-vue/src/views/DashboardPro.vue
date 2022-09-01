@@ -15,6 +15,7 @@
                                 <input @click="sendPicture" type="button" class="btn btn-primary m-3" value="Ajouter"/>
                                 <p class="text-success">{{this.successMessage}}</p>
                                 <p class="text-danger">{{this.errorMessage}}</p>
+                                <p class="fst-italic">Conseil : Pour un affichage optimal, choisissez des photos 300 * 300 pixels</p>
                             </div>
                         </div>
                     </div>
