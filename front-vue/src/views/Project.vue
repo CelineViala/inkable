@@ -135,10 +135,10 @@
  
             <div class="d-flex rounded-3 text-black" style="background-color: #efefef;">
               
-              <div class="flex-grow-0 ms-3 mt-3  " style="min-width:300px">
+              <div class="flex-grow-0 ms-3 mt-3" style="min-width:300px">
                 <p class="text-start"> <strong> De : </strong> {{(message.consumer!==undefined && message.consumer!==null)?`${message.consumer?.last_name}  ${message.consumer?.first_name}`:message.pro.studio_name}}</p>
 
-                <p class="text-start" style="background-color: ;"><strong> Le : </strong>{{new Date(message.createdAt).toLocaleTimeString('fr-FR',{ weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour:'numeric',minute:'numeric'})}}</p>
+                <p class="text-start"><strong> Le : </strong>{{new Date(message.createdAt).toLocaleTimeString('fr-FR',{ weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour:'numeric',minute:'numeric'})}}</p>
               </div>
 
               
