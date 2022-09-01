@@ -12,14 +12,13 @@
                         <div class="card-body p-4 text-center">
 
                             <div class="flex-shrink-0">
-                                <img :src="this.editPro.profile_picture_path_pro"
-                                    alt="Generic placeholder image" class="img-fluid"
-                                    style="width: 180px; border-radius: 10px;" />
+                                <img :src="this.editPro.profile_picture_path_pro" alt="Generic placeholder image"
+                                    class="img-fluid" style="width: 180px; border-radius: 10px;" />
                             </div>
 
-                            <h3>{{this.editPro.studio_name}}</h3>
+                            <h3>{{ this.editPro.studio_name }}</h3>
 
-                            <h3>{{this.editPro.city}}</h3>
+                            <h3>{{ this.editPro.city }}</h3>
 
                         </div>
 
@@ -108,11 +107,11 @@
                                         <input v-model="editPro.styles" class="form-check-input" type="checkbox"
                                             :value="style" :id="style">
                                         <label class="form-check-label-inline" :for="style">
-                                            {{style}}
+                                            {{ style }}
                                         </label>
                                     </div>
                                 </div>
-                                
+
 
                                 <button @click="editProfile" type="submit" class="btn btn-primary">Modifier mes
                                     informations</button>
@@ -126,8 +125,8 @@
                             <button type="button" class="btn btn-danger">Supprimer mon compte</button>
                         </div>
 
-                        <p class="text-success">{{this.successMessage}}</p>
-                        <p class="text-danger">{{this.errorMessage}}</p>
+                        <p class="text-success">{{ this.successMessage }}</p>
+                        <p class="text-danger">{{ this.errorMessage }}</p>
 
                     </div>
 
@@ -150,105 +149,110 @@
 
 <script>
 export default {
-    name:'ComptePro',
-    data(){
+    name: 'ComptePro',
+    data() {
         return {
-            mail:null,
-            picture:false,
-            editPro:{
-              styles:[],
-              color:false,
-              black_and_white:false
+            mail: null,
+            picture: false,
+            editPro: {
+                styles: [],
+                color: false,
+                black_and_white: false
             },
-            pro:{},
-            successMessage:null,
-            errorMessage:null
+            pro: {},
+            successMessage: null,
+            errorMessage: null
         }
     },
-    async created(){
-      
-      
-     
-      this.axios
-        .get(`http://localhost:3000/api/pro/${this.$store.state.user.id}`)
-        .then((response) => {
-          console.log(response.data)
-         
-          this.editPro.studio_name=response.data.studio_name;
-          this.editPro.black_and_white=response.data.black_and_white;
-          this.editPro.color=response.data.color;
-          this.editPro.city=response.data.city;
-          // this.editPro.password=response.data.password;
-          // this.editPro.passwordConfirm=this.editPro.password;
-          this.editPro.email=response.data.email;
-          this.mail=response.data.email;
-          this.editPro.description=response.data.description;
-          this.editPro.instagram=response.data.instagram;
-          this.editPro.profile_picture_path_pro=response.data.profile_picture_path_pro;
-          this.editPro.styles=response.data.styles.map((item)=> item.name)
-          
-          
-        })
-        .catch((err)=>{
-          console.log(err);       
-          return
-        })
+    async created() {
 
-   },
-    methods:{
-        addInputPicture:function(){
-          const parentElm=this.$refs.containerInputs;
-          const inputElm=document.createElement('input');
-          inputElm.setAttribute("type","file");
-          inputElm.classList.add("form-control");
-          inputElm.addEventListener("change",this.handleFile);
-          parentElm.appendChild(inputElm);
+
+
+        this.axios
+            .get(`http://localhost:3000/api/pro/${this.$store.state.user.id}`)
+            .then((response) => {
+                console.log(response.data)
+
+                this.editPro.studio_name = response.data.studio_name;
+                this.editPro.black_and_white = response.data.black_and_white;
+                this.editPro.color = response.data.color;
+                this.editPro.city = response.data.city;
+                // this.editPro.password=response.data.password;
+                // this.editPro.passwordConfirm=this.editPro.password;
+                this.editPro.email = response.data.email;
+                this.mail = response.data.email;
+                this.editPro.description = response.data.description;
+                this.editPro.instagram = response.data.instagram;
+                this.editPro.profile_picture_path_pro = response.data.profile_picture_path_pro;
+                this.editPro.styles = response.data.styles.map((item) => item.name)
+
+
+            })
+            .catch((err) => {
+                console.log(err);
+                return
+            })
+
+    },
+    methods: {
+        addInputPicture: function () {
+            const parentElm = this.$refs.containerInputs;
+            const inputElm = document.createElement('input');
+            inputElm.setAttribute("type", "file");
+            inputElm.classList.add("form-control");
+            inputElm.addEventListener("change", this.handleFile);
+            parentElm.appendChild(inputElm);
 
 
         },
-        handleFile:async function(e){
-            this.$store.dispatch('createRequestObjForCloudinary',e);
-            
-            this.picture=true
+        handleFile: async function (e) {
+            this.$store.dispatch('createRequestObjForCloudinary', e);
+
+            this.picture = true
         },
-        async editProfile(e){
-          e.preventDefault();
-          console.log(this.editPro);
-          // si le mail n'a pas été modifié il faut supprimer la donnée car sinon on aura une erreur d'utilisateur déjà existant côté back
-          if(this.editPro.email===this.mail)
-            delete this.editPro.email;
-          if(this.editPro.password!==undefined && this.editPro.passwordConfirm===undefined) 
-          {  
-            this.errorMessage=" Vous devez  confirmer votre mot de passe" 
-          }
-          else{
-            if(this.picture)
-            {
-                try {
-                    let url=await this.$store.dispatch('handleUploadToCloudinary')
-                    this.editPro.profile_picture_path_pro=url;
-                } catch (error) {
-                    console.log(error)
-                }
+        async editProfile(e) {
+            e.preventDefault();
+            console.log(this.editPro);
+            if (this.editPro.password === '')
+                delete this.editPro.password;
+            if (this.editPro.passwordConfirm === '')
+                delete this.editPro.passwordConfirm;
+            if (this.editPro.password !== undefined && this.editPro.passwordConfirm === undefined) {
+                this.errorMessage = " Vous devez  confirmer votre mot de passe"
             }
+            else {
+                // si le mail n'a pas été modifié il faut supprimer la donnée car sinon on aura une erreur d'utilisateur déjà existant côté back
+                if (this.editPro.email === this.mail)
+                    delete this.editPro.email;
+                if (this.picture) {
+                    try {
+                        let url = await this.$store.dispatch('handleUploadToCloudinary')
+                        this.editPro.profile_picture_path_pro = url;
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
                 this.axios
-                       .patch(`http://localhost:3000/api/pro/${this.$store.state.user.id}`,this.editPro)
-                       .then((response) => {
+                    .patch(`http://localhost:3000/api/pro/${this.$store.state.user.id}`, this.editPro)
+                    .then((response) => {
                         console.log(response.data);
-                        this.errorMessage=null;
-                        this.successMessage="Vos informations ont bien été modifiées.";
-                        this.picture=false;
+                        this.errorMessage = null;
+                        this.successMessage = "Vos informations ont bien été modifiées.";
+                        this.picture = false;
+                        this.editPro.email = this.mail;
                         setTimeout(() => {
-                          this.successMessage=null;
+                            this.successMessage = null;
                         }, 2000);
-                        this.editPro.email=this.mail;     
-                        })
-                        .catch((err)=>{
-                            console.log(err);
-                            this.errorMessage=err.response.data.message;
-                            return
-                })
-          }
+
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        console.log(this.mail)
+                        this.editPro.email = this.mail;
+                        this.errorMessage = err.response.data.message;
+
+                    })
+            }
         }
     }
 }
