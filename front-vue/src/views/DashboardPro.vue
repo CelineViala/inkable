@@ -18,7 +18,7 @@
                             </div>
                         </div>
                     </div>
-                    <button @click="displayGallery" ref="btnGallery" class="btn btn-primary m-5">Afficher les images de la galerie</button>
+                    <button @click="displayGallery" ref="btnGallery" class="btn btn-primary m-3">Afficher la galerie</button>
                 </div>
                 <div ref="gallery" class="container visually-hidden">
     <div class="row">
@@ -148,7 +148,6 @@ export default {
   },
   methods:{
   displayGallery(){
-    console.log(this.$refs.gallery);
     this.$refs.gallery.classList.toggle("visually-hidden");
     if(this.$refs.gallery.classList.contains("visually-hidden"))
       this.$refs.btnGallery.textContent="Afficher la galerie";
@@ -189,7 +188,7 @@ export default {
               //envoi photo cloudinary
               instance(this.$store.state.requestObj)
                 .then( (response) => {
-                  console.log("<<<<<<<<<<<<<<<<<",response.data);
+                 
                  this.$store.dispatch('transformImg',response.data);
                   console.log(this.$store.state.url)
                   this.axios
