@@ -1,6 +1,4 @@
 <template>
-  <h1>Project Particulier</h1>
-
 <section class=" gradient-custom">
     <div class="container py-5 h-100">
 

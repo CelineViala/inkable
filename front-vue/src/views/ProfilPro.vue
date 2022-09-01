@@ -1,10 +1,8 @@
 <template>
-<h1>Pro</h1>
-    
+  
 
  <!-- Premier système de rows et colonnes pour l'image de prfils , le nom et la ville du tatoueur -->
-
-     
+   
       
 <section class="gradient-custom">
   <div class="container py-4">

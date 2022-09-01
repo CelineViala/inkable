@@ -2,8 +2,8 @@
 <template>
   
   <section class=" gradient-custom">
-    <h3>Bienvenue sur votre dashboard {{this.pro.studio_name}}</h3>
     <div class="container py-5 h-10">
+      <h3 class="text-white mb-4">Bienvenue sur votre dashboard {{this.pro.studio_name}}</h3>
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-8">
 

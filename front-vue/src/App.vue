@@ -1,7 +1,4 @@
 <template>
-
-<h1 class="text-center">{{this.user.role}}</h1>
-
 <!-- Création de ligne -->
 <div class="row d-flex align-items-center h-100 mx-4 ">
 
