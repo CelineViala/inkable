@@ -37,10 +37,9 @@
                             <select v-model="rdv.project_id"
                                 class="custom - select mr - sm - 2 form-control form-control-lg"
                                 id="inlineFormCustomSelect">
-
+                                <option value="null">Aucun Projet associé au RDV</option>
                                 <option v-for="project in this.projects" class="form-control form-control-lg"
-                                    ref="accepted" :value="project.id">{{ `${project.consumer.first_name}
-                                                                        ${project.consumer.last_name} ${project.title}`
+                                    ref="accepted" :value="project.id">{{ `${project.consumer.first_name} ${project.consumer.last_name} ${project.title}`
                                     }}</option>
 
                             </select>
@@ -232,13 +231,15 @@ export default {
 
             //----------------------------------------------gestion de l'affichage des rdv dans une pop up
             seeMore.setAttribute("data-bs-toggle", "popover");
-            seeMore.setAttribute(
-                "data-bs-content",
-                `   <h4>${arg.event.title}</h4>
-                    <p> ${arg.event.extendedProps.description} </p>
-                    <a href="/project/${`${arg.event.extendedProps.project_id}`}">Lien vers le projet</a>
+            let popoverContent=`   <h4>${arg.event.title}</h4>
+                    <p> ${arg.event.extendedProps.description} </p>    
                 `
-            );
+            if(arg.event.extendedProps.project_id)
+            {
+                popoverContent+=`<a href="/project/${`${arg.event.extendedProps.project_id}`}">Lien vers le projet</a>`
+            }
+
+            seeMore.setAttribute("data-bs-content",popoverContent);
             seeMore.setAttribute("data-bs-placement", "top");
             seeMore.setAttribute("data-triger", "hover");
             seeMore.setAttribute("data-bs-title", "RDV");
@@ -366,10 +367,11 @@ export default {
         async valid(e) {
 
             this.rdv.pro_id = this.$store.state.user.id;
-            let idRdv;
-            console.log(this.rdv)
-
-
+          
+           
+            if(this.rdv.project_id==="null")
+                delete this.rdv.project_id;
+           
             //enregistrement bdd
             try {
                 const response = await this.axios.post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv`, this.rdv);
