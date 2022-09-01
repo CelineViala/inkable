@@ -115,10 +115,7 @@ export default {
         this.picture=true; 
       },
       addConsumer:async function(){
-            //requete pour enregistrer la photo sur cloudinary
-
-            let instance = this.axios.create();
-            delete instance.defaults.headers.common['Authorization'];
+            
             if(this.picture){
               try {
                     let img=await this.$store.dispatch('handleUploadToCloudinary')

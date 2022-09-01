@@ -46,15 +46,15 @@
             </div>
         </div>
 
-    <div class="container py-5 h-10">
-
-      <div class="container py-5 h-10">
+        <div class="container py-1 h-10">
+          
+          <div class="container py-1 h-10">
+        <router-link :to="{name:'Planning'}" class="btn btn-primary my-3">Vue d'ensemble de votre planning</router-link>
         <div class="card" style="border-radius: 1rem;">
           <FullCalendar ref="list" :options="calendarOptions"/>
           <p> Si vous souhaitez modifier ou annuler un rendez-vous, rendez-vous sur la page du projet en question</p>
           <p> Pensez à prévenir votre client</p>
         </div>
-        <!-- <router-link :to="{name:'Planning'}" class="btn btn-primary m-5">Vue d'ensemble de votre planning</router-link> -->
       </div>
       <!-- Lien ves le planning du pro -->
       
@@ -178,21 +178,21 @@ export default {
       this.$store.dispatch('createRequestObjForCloudinary',e);
       this.picture=true;
     },
-    sendPicture(){
+    async sendPicture(){
       
 
       //si une photo a été ajoutée
       if(this.picture)
             {
-              let instance = this.axios.create();
-              delete instance.defaults.headers.common['Authorization'];
-              //envoi photo cloudinary
-              instance(this.$store.state.requestObj)
-                .then( (response) => {
-                 
-                 this.$store.dispatch('transformImg',response.data);
-                  console.log(this.$store.state.url)
-                  this.axios
+              let img;
+              try {
+                  img = await this.$store.dispatch('handleUploadToCloudinary')
+                  this.pro.profile_picture_path_pro = img.url;
+              } catch (error) {
+                this.errorMessage="Erreur d'envoi de la photo"; 
+              }
+              await this.$store.dispatch('transformImg',img);
+              this.axios
                     .post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages`,{pro_id:this.$store.state.user.id,tattoo_picture_path:this.$store.state.url})
                     .then(async (res)=>{
                        this.errorMessage=null;
@@ -214,15 +214,6 @@ export default {
                        this.errorMessage="Erreur serveur";
                        console.log(this.$store.state.url)
                     })
-
-                })
-                .catch((err)=>{
-                    this.successMessage=null;
-                    console.log(err)
-                    this.errorMessage="Erreur envoi photo";
-                    return;
-                })
-
             }else{
               this.successMessage=null;
               this.errorMessage="Vous n'avez pas ajouté de photo";
@@ -254,31 +245,6 @@ export default {
   }
 }
 }
-
-// premier export qui été dans le fichier de base
-
-// export default {
-//   name:'DashboardPro',
-//   data(){
-//     return{
-       
-//     }
-//   },
-//   created(){
-    
-//     this.$store.dispatch('check');
-  
-//     // this.role="pro"
-//     // console.log("test",this.role)
-//     // this.axios
-//     //   .get('http://localhost:3000/api/pro')
-//     //   .then((response) => {
-//     //     console.log(response.data);
-//     //     this.pro=response.data;
-//     //   })
-//   }
-    
-// }
 </script>
 <style>
 
