@@ -95,7 +95,7 @@
                   </div>
                     
                   <div class="mb-3">
-                    <label for="address" class="form-label">Instagram</label>
+                    <label for="address" class="form-label">URL de votre compte Instagram</label>
                     <input v-model="newPro.instagram" type="text" class="form-control" id="instagram">
                   </div>
 
