@@ -197,9 +197,10 @@ export default {
       this.axios
         .get(`http://localhost:3000/api/projet/${this.$route.params.id}`)
         .then((response) => {
-          console.log(response.data);
+          console.log('response data',response.data);
           this.project=response.data;
           this.pro_name=response.data.pro.studio_name;
+          this.statusColor();
           
 
           if (response.data.color)
@@ -227,6 +228,7 @@ export default {
         })
         .catch(err=>console.log(err)); 
   },
+
   methods: {
     validFormMessage() {
       console.log(this.newMessage);
@@ -256,6 +258,19 @@ export default {
         this.messageError=err.response.data.message;
       })
     },
+
+    statusColor(){
+      const statut = this.project.status;
+      console.log('statut',statut)
+      if(statut==='accepté') {
+      document.querySelector(".text-bg-light").classList.add("text-bg-success");
+      document.querySelector(".text-bg-light").classList.remove("text-bg-light");
+      }
+      if(statut==='refusé') {
+      document.querySelector(".text-bg-light").classList.add("text-bg-danger");
+      document.querySelector(".text-bg-light").classList.remove("text-bg-light");
+      }
+    }
   },
 }
 </script>
