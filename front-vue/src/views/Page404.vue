@@ -23,17 +23,8 @@
           <div class="card-body">
              <div class="<row d-flex">
                <div class="col-sm">
-                 <button type="button" class="btn btn-light">Retourner sur la page d'accueil</button>
+                <a class="btn btn-primary" href="/" role="button">Retourner sur la page d'accueil</a>
                </div>
-
-               <div class="col-sm">
-                 <button type="button" class="btn btn-light">Dashboard</button>
-               </div>
-
-                <div class="col-sm">
-                 <button type="button" class="btn btn-light">Compte</button>
-               </div>
-
 
              </div>
             

@@ -123,8 +123,8 @@ const routes=[
         }
     },
     {
-        name:'404',
-        path:'/page404',
+        name:'NotFound',
+        path:'/:pathMatch(.*)*',
         component:Page404,
         meta:{
             roles:['pro', 'consumer','anonyme']
