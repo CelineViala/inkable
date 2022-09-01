@@ -298,8 +298,8 @@ export default {
       })
       .catch((err)=>{
         console.log(err)
-        this.successMessage=null;
-        this.errorMessage=err.response.data.message;
+        this.messageOk=null;
+        this.messageNotOk=err.response.data.message;
       })
     },
 
