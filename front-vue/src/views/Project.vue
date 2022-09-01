@@ -85,8 +85,11 @@
           <!-- Bouton modifier -->
           <div class="form-outline form-white mb-4">
             <input @click="editProjectForm" class="btn btn-outline-light btn-lg px-5" value="Modifier" type="button"/>
+          </div>
+          <div class="form-outline form-white mb-4">
             <router-link :to="{name:'Planning',params:{projectId:editProject.id}}" class="btn btn-outline-light btn-lg px-5">Fixer un RDV</router-link>
           </div>
+
           <p class="text-success">{{ this.successMessage }}</p>
           <p class="text-danger">{{ this.errorMessage }}</p>
         </form>
