@@ -20,6 +20,14 @@
     <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
 
       <li>
+        <router-link class="text-decoration-none" v-if="this.$store.state.user.role==='pro'" :to="{name :'ProfilPro', params: {id:this.$store.state.user.id}}">
+          <div class="nav-link text-dark">
+            Mon profil
+          </div>
+        </router-link>
+      </li>
+
+      <li>
         <router-link to="/dashbord-pro" class="text-decoration-none" v-if="this.$store.state.user.role==='pro'">
           <div class="nav-link text-dark">
             Dashboard
