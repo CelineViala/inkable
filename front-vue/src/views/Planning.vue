@@ -525,7 +525,7 @@ export default {
 
 .fc-timegrid-event-harness {
     overflow: hidden;
-    border: fff 1px solid;
+    border: #fff 1px solid;
 }
 
 body {
