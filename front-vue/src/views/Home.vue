@@ -27,7 +27,7 @@
             <!-- Checkbox -->
             <div class="mb-3">
               <div class="form-check-inline">
-                <input v-model="searchForm.color" class="form-check-input" type="checkbox" id="colorTatoo">
+                <input v-model="searchForm.color" class="form-check-input me-2" type="checkbox" id="colorTatoo">
                 <label class="form-check-label" for="flexCheckDefault">
                   Couleur
                 </label>
@@ -36,7 +36,7 @@
 
             <div class="mb-3">
               <div class="form-check-inline">
-                <input v-model="searchForm.black_and_white" class="form-check-input" type="checkbox" id="bAndWTatto">
+                <input v-model="searchForm.black_and_white" class="form-check-input me-2" type="checkbox" id="bAndWTatto">
                 <label class="form-check-label" for="flexCheckChecked">
                   Noir et Blanc
                 </label>
