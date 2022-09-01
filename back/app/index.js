@@ -4,6 +4,8 @@ const cors = require('cors');
 const app = express();
 const router = require('./routers');
 
+//! A supprimer?
+
 // process.on('unhandledRejection', (err) => {
 //     throw err;
 // });

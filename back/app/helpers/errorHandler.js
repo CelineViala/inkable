@@ -1,3 +1,11 @@
+/**
+ *
+ * @param {object} err error class
+ * @param {void} _ just need a 4th parameter to handle errors
+ * @param {object} res Express response object
+ * @param {*} next
+ */
+
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, _, res, next) => {
     let { message } = err;
