@@ -148,17 +148,14 @@ export default createStore({
             delete instance.defaults.headers.common['Authorization'];
             console.log(this.state.requestObj)
             
-            let url=instance(this.state.requestObj)
+            let img=instance(this.state.requestObj)
                 .then((response) => {
-                    url=response.data.url;
-                    return url
-                    
-                    
+                    return response.data; 
                 })
                 .catch(err=>{
                     return err;
                 })
-            return url
+            return img;
             
         }
 

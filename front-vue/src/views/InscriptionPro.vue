@@ -144,8 +144,8 @@ export default {
             e.preventDefault()
             if(this.picture){
               try {
-                    let url=await this.$store.dispatch('handleUploadToCloudinary')
-                    this.newPro.profile_picture_path_pro=url;
+                    let img=await this.$store.dispatch('handleUploadToCloudinary')
+                    this.newPro.profile_picture_path_pro=img.url;
                 } catch (error) {
                     console.log(error)
                 }
