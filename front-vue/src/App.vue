@@ -151,11 +151,15 @@ export default {
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+  
 }
 
 .bi {
   color: white;
 
 }
+
+
 /* style="background-color: rgba(37, 117, 252, 1 */
 </style>
