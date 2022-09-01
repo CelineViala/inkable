@@ -85,7 +85,7 @@
   </section>
 </template>
 <script>
-const api="http://localhost:3000/api/pro"
+
 export default {
   name:'Home',
   data(){
@@ -101,7 +101,7 @@ export default {
   },
   async mounted(){
     try {
-      const response=await this.axios.get('http://localhost:3000/api/pro')
+      const response=await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro`);
       console.log(response.data)
       this.pros=response.data;
     } catch (error) {
