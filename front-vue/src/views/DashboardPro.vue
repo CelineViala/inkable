@@ -1,8 +1,8 @@
 
 <template>
-  <h1>Bienvenue sur votre dashboard {{this.pro.studio_name}}</h1>
-
-    <section class=" gradient-custom">
+  
+  <section class=" gradient-custom">
+    <h3>Bienvenue sur votre dashboard {{this.pro.studio_name}}</h3>
     <div class="container py-5 h-10">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-8">
@@ -12,13 +12,36 @@
                             <div class="mb-3">
                                 <label for="file" class="form-label">Ajouter une photo dans ma galerie </label>
                                 <input @change="handleFile" ref="pictureInput" class="form-control" type="file">
-                                <input @click="sendPicture" type="button" class="btn btn-primary" value="Ajouter"/>
+                                <input @click="sendPicture" type="button" class="btn btn-primary m-3" value="Ajouter"/>
                                 <p class="text-success">{{this.successMessage}}</p>
                                 <p class="text-danger">{{this.errorMessage}}</p>
                             </div>
                         </div>
                     </div>
+                    <button @click="displayGallery" ref="btnGallery" class="btn btn-primary m-5">Afficher les images de la galerie</button>
                 </div>
+                <div ref="gallery" class="container visually-hidden">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="page-title">Ma Galerie</h1>
+        
+        <div class="row">
+            <div v-for="tattoo in pro.tattoos" class="col-lg-3 col-md-4 col-6 my-3">
+
+              <a :href="tattoo.tattoo_picture_path" data-toggle="lightbox" data-gallery="example-gallery" >
+                <img :src="tattoo.tattoo_picture_path" class="img-fluid card"  >
+              </a>
+              <button @click="deletePictureGallery" class="btn btn-danger m-2" :id="tattoo.id">Supprimer</button>
+            </div>
+            
+              
+
+            
+        </div>
+    </div>
+    </div>
+
+              </div>
             </div>
         </div>
 
@@ -30,14 +53,14 @@
           <p> Si vous souhaitez modifier ou annuler un rendez-vous, rendez-vous sur la page du projet en question</p>
           <p> Pensez à prévenir votre client</p>
         </div>
+        <!-- <router-link :to="{name:'Planning'}" class="btn btn-primary m-5">Vue d'ensemble de votre planning</router-link> -->
       </div>
-<!-- Lien ves le planning du pro -->
-  
-      <router-link :to="{name:'Planning'}" class="btn btn-primary">Vue d'ensemble de votre planning</router-link>
-
-<!-- Première carte projet -->
+      <!-- Lien ves le planning du pro -->
+      
+      
+      <!-- Première carte projet -->
       <div class="container py-5 h-10">
-        <h4 class="text-white">Projets en cours</h4>
+        <h4 class="text-white text-center" >Projets en cours</h4>
         <div v-for="projet in this.pro.projects"  class="container py-4">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-8">
@@ -124,6 +147,32 @@ export default {
     }
   },
   methods:{
+  displayGallery(){
+    console.log(this.$refs.gallery);
+    this.$refs.gallery.classList.toggle("visually-hidden");
+    if(this.$refs.gallery.classList.contains("visually-hidden"))
+      this.$refs.btnGallery.textContent="Afficher la galerie";
+    else
+      this.$refs.btnGallery.textContent="Masquer la galerie";
+
+  },
+  async deletePictureGallery(e){
+      //route: /api/pro/:idPro/tatouages/:idTattoo
+      try {
+        const response= await this.axios.delete(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages/${e.target.id}`);
+        console.log(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        const response= await this.axios.get(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages`);
+        this.pro.tattoos=response.data;
+      } catch (error) {
+        console.log(error)
+      }
+      
+    },
+    
     handleFile(e){
       this.$store.dispatch('resetRequestObj');
       this.$store.dispatch('createRequestObjForCloudinary',e);
@@ -145,7 +194,7 @@ export default {
                   console.log(this.$store.state.url)
                   this.axios
                     .post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages`,{pro_id:this.$store.state.user.id,tattoo_picture_path:this.$store.state.url})
-                    .then((res)=>{
+                    .then(async (res)=>{
                        this.errorMessage=null;
                        this.successMessage="Votre photo a bien été envoyée";
                        setTimeout(() => {
@@ -153,6 +202,12 @@ export default {
                        }, 1000);
                        this.$refs.pictureInput.value=null;
                        this.picture=false;
+                       try {
+                        const response= await this.axios.get(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages`);
+                        this.pro.tattoos=response.data;
+                      } catch (error) {
+                        console.log(error)
+                      }
                     })
                     .catch((err)=>{
                       this.successMessage=null;
