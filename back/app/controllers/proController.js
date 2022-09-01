@@ -4,55 +4,49 @@ const {
 } = require('../models');
 const authService = require('../services/checkForms');
 const client = require('../config/db');
+// suppression addPro car géré dans AuthController (cf route /signupPro)
+//! modèle Project jamais utilisé
 
 module.exports = {
-    // suppression addPro car géré dans AuthController (cf route /signupPro)
+
+    /**
+     * Pro controller to get all pros
+     * ExpressMiddleware signature
+     * @param {object} req Express request object
+     * @param {object} res Express response object
+     * @returns Route API JSON response
+     */
+
     async getAllPro(req, res) {
+        // Récupérer les pros
         const pros = await Pro.findAll({
             include: ['styles', 'tattoos', 'appointments', 'projects'],
         });
+        // Renvoyer la réponse
         return res.json(pros);
     },
 
+    /**
+     * Pro controller to filter pros with a form
+     * ExpressMiddleware signature
+     * @param {object} req Express request object
+     * @param {object} res Express response object
+     * @returns Route API JSON response
+     */
+
     async CreateSearch(req, res) {
-        // ! a continuer plus tard et à tester !
-        // try {
-        // const searchCity = req.body.city;
-        //     const searchColor = req.body.color;
-        //     const searchBw = req.body.black_and_white;
-        //     const searchStyle = req.body.styles;
-
-        //     if (searchCity) {
-        //         const sqlCity = await client.query('SELECT city FROM "pro" WHERE city = searchCity');
-        //         return res.json(sqlCity);
-        //     }
-        //     if (searchColor) {
-        //         const sqlColor = await client.query('SELECT color FROM "pro" WHERE color = searchColor');
-        //         return res.json(sqlColor);
-        //     }
-        //     if (searchBw) {
-        //         const sqlBW = await client.query('SELECT black_and_white FROM "pro" WHERE black_and_white = searchBw');
-        //         return res.json(sqlBW);
-        //     }
-        //     if (searchStyle) {
-        //         const sqlStyle = await client.query('SELECT name FROM "style" WHERE name = searchStyle');
-        //         return res.json(sqlStyle);
-        //     }
-        // } catch (error) {
-        //     console.log(error);
-        //     res.status(500).json({
-        //         message: 'Erreur lors de la récupération des filtres',
-        //     });
-        // }
-
+        // Rquête sql pour avoir tous les pros
         let query = `SELECT DISTINCT pro.* FROM pro
         LEFT OUTER JOIN categorise ON pro_id=pro.id
         LEFT OUTER JOIN style on categorise.style_id=style.id
         WHERE `;
+        // Ici on va stocker les données rentrées dans le formulaire pour la requête SQL
         let conditions = [];
+        // Et ici les infos avec lesquelles nous allons intéroger la BDD
         const args = [];
         let count = 1;
 
+        // Si un champs est défini, pusher la condition dans le tableau
         if (req.body.city !== undefined) {
             conditions.push(`city = $${count}`);
             args.push(req.body.city);
@@ -72,6 +66,7 @@ module.exports = {
             conditions.push(`style.name= $${count}`);
             args.push(req.body.style);
         }
+        // Ajouter toutes conditions du tableau sur la requête pour la filter
         conditions = conditions.join(' AND ');
         query += conditions;
         const filteredPros = await client.query(query, {
@@ -80,11 +75,21 @@ module.exports = {
         res.json(filteredPros[0]);
     },
 
+    /**
+     * Pro controller to get one pro
+     * ExpressMiddleware signature
+     * @param {object} req Express request object
+     * @param {object} res Express response object
+     * @returns Route API JSON response
+     */
+
     async getOnePro(req, res) {
+        // Récupérer l'id et le pro
         const { id } = req.params;
         const findOnePro = await Pro.findByPk(id, {
             include: ['styles', 'tattoos', 'appointments', 'projects'],
         });
+        // Renvoyer la réponse si on trouve
         if (findOnePro) {
             res.json(findOnePro);
         } else {
@@ -92,10 +97,21 @@ module.exports = {
         }
     },
 
+    /**
+     * Pro controller to modify one pro
+     * ExpressMiddleware signature
+     * @param {object} req Express request object
+     * @param {object} res Express response object
+     * @returns Route API JSON response
+     */
+
+    //! Utilité de next dans cette fonnction?
+
     async modifyPro(req, res, next) {
+        // Récupérer l'id et le pro
         const { id } = req.params;
-        console.log('>>>>>>>>', id);
         const pro = await Pro.findByPk(id);
+        // Modifier le pro avec les infos du body
         if (pro) {
             if (req.body.studio_name) {
                 pro.studio_name = req.body.studio_name;
@@ -139,7 +155,7 @@ module.exports = {
                     await pro.addStyle(oneStyle);
                 });
             }
-            // on sauvegarde dans le BDD
+            // Sauvegarder dans la BDD et renvoyer le JSON
             const proSaved = await pro.save();
             res.json(proSaved);
         } else {
@@ -147,10 +163,19 @@ module.exports = {
         }
     },
 
-    async deletePro(req, res) {
-        const { id } = req.params;
+    /**
+     * Pro controller to delete one pro
+     * ExpressMiddleware signature
+     * @param {object} req Express request object
+     * @param {object} res Express response object
+     * @returns Route API JSON response
+     */
 
+    async deletePro(req, res) {
+        // Récupérer l'id et le pro
+        const { id } = req.params;
         const pro = await Pro.findByPk(id);
+        // Supprimer le pro si trouvé et renvoyer une réponse
         if (pro) {
             await pro.destroy();
             res.json('Pro supprimé');
@@ -159,38 +184,70 @@ module.exports = {
         }
     },
 
+    /**
+     * Pro controller to get all tatoos from a pro
+     * ExpressMiddleware signature
+     * @param {object} req Express request object
+     * @param {object} res Express response object
+     * @returns Route API JSON response
+     */
+
     async getAllTattoosByPro(req, res) {
+        // Récupérer le pro
         const { id } = req.params;
         const pro = await Pro.findByPk(id);
         if (!pro) { throw new Error(`Aucun pro à l'id ${id}`, { statusCode: 404 }); }
 
+        // Récupérer les tatoos
         const tattoos = await Tattoo.findAll({
             where: {
                 pro_id: id,
             },
         });
+        // Renvoyer la réponse
         res.json(tattoos);
     },
 
+    /**
+     * Pro controller to add a tatoo to one pro
+     * ExpressMiddleware signature
+     * @param {object} req Express request object
+     * @param {object} res Express response object
+     * @returns Route API JSON response
+     */
+
     async addTattoo(req, res) {
+        // Récupérer le pro
         const { id } = req.params;
         const findOnePro = await Pro.findByPk(id);
         if (findOnePro) {
+            // Créer le nouveau tatoo
             const newTattoo = await Tattoo.create({
                 tattoo_picture_path: req.body.tattoo_picture_path,
                 pro_id: id,
             });
+            // Envoyer la réponse
             res.json(newTattoo);
         } else {
             throw new Error(`Aucun pro à l'id ${id}`, { statusCode: 404 });
         }
     },
 
+    /**
+     * Pro controller to delete a tatoo to one pro
+     * ExpressMiddleware signature
+     * @param {object} req Express request object
+     * @param {object} res Express response object
+     * @returns Route API JSON response
+     */
+
     async deleteTattoo(req, res) {
+        // Récupérer le pro et le tatoo
         const { idPro, idTattoo } = req.params;
         const pro = await Pro.findByPk(idPro);
         if (!pro) throw new Error(`Aucun pro à l'id ${idPro}`, { statusCode: 404 });
         const tattoo = await Tattoo.findByPk(idTattoo);
+        // Supprimer le tatoo et renvoyer la réponse
         if (tattoo) {
             await tattoo.destroy();
             res.json('Tatouage supprimé');
