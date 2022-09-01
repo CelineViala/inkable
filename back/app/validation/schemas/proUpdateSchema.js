@@ -8,9 +8,9 @@ module.exports = Joi.object({
         .valid(Joi.ref('password'))
         .error(() => new Error('Erreur liée à la confirmation du mot de passe')),
     styles: Joi.array(),
-    profile_picture_path_pro: Joi.string(),
-    description: Joi.string(),
-    instagram: Joi.string(),
+    profile_picture_path_pro: Joi.string().allow(null),
+    description: Joi.string().allow(null),
+    instagram: Joi.string().allow(null),
     color: Joi.boolean(),
     black_and_white: Joi.boolean(),
     role: Joi.string(),

@@ -119,16 +119,19 @@ export default {
         async editProfile(e){
           e.preventDefault();
           
-          // si le mail n'a pas été modifié il faut supprimer la donnée car sinon on aura une erreur d'utilisateur déjà existant côté back
-          if(this.editConsumer.email===this.mail)
-            delete this.editConsumer.email;
-          else
-            this.mail=this.editConsumer.email;
+          if (this.editConsumer.password === '')
+            delete this.editConsumer.password;
+          if (this.editConsumer.passwordConfirm === '')
+            delete this.editConsumer.passwordConfirm;
           if(this.editConsumer.password!==undefined && this.editConsumer.passwordConfirm===undefined) 
           {  
             this.errorMessage=" Vous devez  confirmer votre mot de passe" 
           }
           else{
+            // si le mail n'a pas été modifié il faut supprimer la donnée car sinon on aura une erreur d'utilisateur déjà existant côté back
+            if(this.editConsumer.email===this.mail)
+              delete this.editConsumer.email;
+            
             if(this.picture)
             {
                 try {
@@ -153,6 +156,7 @@ export default {
               })
               .catch((err)=>{
                   console.log(err);
+                  this.editConsumer.email=this.mail;  
                   this.errorMessage=err.response.data.message;
                   return
               })     
