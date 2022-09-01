@@ -114,7 +114,7 @@
                 <p> {{(message.consumer!==null)?`${message.consumer?.last_name}  ${message.consumer?.first_name}`:message.pro.studio_name}}</p>
 
                 <h4> Date : </h4>
-                <p> {{ this.format(message.createdAt) }}</p>
+                <p> {{ new Date(message.createdAt).toLocaleTimeString('fr-FR',{ weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour:'numeric',minute:'numeric'})}}</p>
               </div>
 
               <!-- Côté droit -->
@@ -232,26 +232,14 @@ export default {
         .catch(err=>console.log(err)); 
   },
   methods: {
-    format(date) {
-      return this.calendarApi.formatDate(date, {
-        weekday: 'short',
-        month: 'short',
-        year: 'numeric',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit'
-      })
-    },
-
     validFormMessage() {
       console.log(this.newMessage);
       const idProject=this.$route.params.id;
-      const proId=this.$store.state.user.id;
-      console.log(idProject,proId);
+      const consumerId=this.$store.state.user.id;
       const requestObj={
         content: this.newMessage.content,
         project_id: idProject,
-        pro_id: proId,
+        consumer_id: consumerId,
       };
     
     this.axios

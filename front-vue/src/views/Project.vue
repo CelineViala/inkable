@@ -84,7 +84,8 @@
 
           <!-- Bouton modifier -->
           <div class="form-outline form-white mb-4">
-            <input @click="editProjectForm" class="btn btn-outline-light btn-lg px-5" value="Modifier" type="button" />
+            <input @click="editProjectForm" class="btn btn-outline-light btn-lg px-5" value="Modifier" type="button"/>
+            <router-link :to="{name:'Planning',params:{projectId:editProject.id}}" class="btn btn-outline-light btn-lg px-5">Fixer un RDV</router-link>
           </div>
           <p class="text-success">{{ this.successMessage }}</p>
           <p class="text-danger">{{ this.errorMessage }}</p>
@@ -136,7 +137,7 @@
                 <p> {{(message.consumer!==undefined && message.consumer!==null)?`${message.consumer?.last_name}  ${message.consumer?.first_name}`:message.pro.studio_name}}</p>
 
                 <h4> Date : </h4>
-                <p> {{ this.format(new Date(message.createdAt)) }}</p>
+                <p>{{new Date(message.createdAt).toLocaleTimeString('fr-FR',{ weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour:'numeric',minute:'numeric'})}}</p>
               </div>
 
               
@@ -265,17 +266,7 @@ export default {
        
   },
   methods: {
-    format(date) {
-      return this.calendarApi.formatDate(date, {
-        weekday: 'short',
-        month: 'short',
-        year: 'numeric',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit'
-      })
-    },
-
+    
     validFormMessage() {
       console.log(this.newMessage);
       const idProject=this.$route.params.id;

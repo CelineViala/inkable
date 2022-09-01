@@ -116,7 +116,7 @@ const routes=[
 
     {
         name:'Planning',
-        path:'/planning',
+        path:'/planning/:projectId?',
         component:Planning,
         meta:{
             roles:['pro']
