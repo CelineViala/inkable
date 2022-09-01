@@ -159,8 +159,8 @@
               <textarea v-model="this.newMessage.content" class="form-control" id="exampleFormControlTextarea1" rows="3">test</textarea>
             </div>
             
-            <p class="text-success">{{this.successMessage}}</p>
-           <p class="text-danger">{{this.errorMessage}}</p>
+            <p class="text-success">{{this.messageOk}}</p>
+           <p class="text-danger">{{this.messageNotOk}}</p>
             <input @click="validFormMessage" class="btn btn-primary btn-lg px-5" value="Envoyer" type="button"/>
           </form>
         </div>
@@ -192,6 +192,8 @@ export default {
       newMessage: {
 
       },
+      messageOk:null,
+      messageNotOk:null,
       successMessage: null,
       errorMessage: null,
       calendarApi: null,
@@ -287,8 +289,8 @@ export default {
       .then((response) => {
 
         this.newMessage={};
-        this.successMessage="Votre message a bien été envoyé";
-        this.errorMessage=null;
+        this.messageOk="Votre message a bien été envoyé";
+        this.messageNotOk=null;
         response.data.pro=this.$store.state.user;
         console.log('response data', response.data)
         this.editProject.messages.push(response.data);
