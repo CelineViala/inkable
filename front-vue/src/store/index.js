@@ -87,9 +87,9 @@ export default createStore({
             console.log("!!!!!!!!!!!!!!!!!!!!",img)
             const cld = new Cloudinary({
                 cloud: {
-                  cloudName: 'dmoacy4yl',
-                  apiKey:'488459514946562',
-                  apiSecret:'1Yb7F1TRgKOX0hIUdgrA4JXlmLM'
+                  cloudName: process.env.VUE_APP_ENV_CLOUDINARY_CLOUDNAME,
+                  apiKey:process.env.VUE_APP_ENV_CLOUDINARY_APIKEY,
+                  apiSecret:process.env.VUE_APP_ENV_CLOUDINARY_APISECRET
                 }
               }); 
             const myImage = cld.image(img.public_id);
@@ -123,9 +123,9 @@ export default createStore({
             clientFile=reader.result;
             console.log(clientFile);
             let requestObj={
-                url:'https://api.cloudinary.com/v1_1/dmoacy4yl/image/upload',
+                url:process.env.VUE_APP_ENV_CLOUDINARY_UPLOAD_URL,
                 method:"POST",
-                data:{upload_preset:"preset",file:clientFile}
+                data:{upload_preset:process.env.VUE_APP_ENV_CLOUDINARY_PRESET,file:clientFile}
             }
             commit('createRequestObjForCloudinary',requestObj); 
             })
