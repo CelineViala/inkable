@@ -48,6 +48,8 @@
             </div>
 
           </form>
+          <br>
+          <h4 style="color:red"> {{this.message}}</h4>
         </div>
       </div>
 
@@ -96,7 +98,8 @@ export default {
         },
         cities:[],
         styles:[],
-        pros:undefined
+        pros:[],
+        message: null   
     }
   },
   async mounted(){
@@ -113,6 +116,7 @@ export default {
   methods:{
     async search(e){
       e.preventDefault();
+      this.message=null
       const requestObj={}
       if( this.searchForm.city!='default')
         requestObj.city=this.searchForm.city;
@@ -126,7 +130,7 @@ export default {
       if(!Object.keys(requestObj).length){
         try {
           const response=await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro`)
-          console.log(response.data);
+          console.log('response data', response.data);
           this.pros=response.data;
           return
         } catch (error) {
@@ -135,11 +139,18 @@ export default {
       }
       try {
         const response= await this.axios.post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/search`,requestObj);
-        console.log(response);
+        console.log('response', response);
         this.pros=response.data;
+        console.log('TEST', this.pros.length);
+        if(this.pros.length === 0){
+            this.message="Pas de résultats, relancez votre recherche";
+          }
       } catch (error) {
         console.log(error);
+        
       }
+
+      
     }
   }
     
@@ -149,4 +160,5 @@ export default {
   .container-card{
     min-height: 600px;
   }
+
 </style>
