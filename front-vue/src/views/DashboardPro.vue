@@ -187,13 +187,12 @@ export default {
               let img;
               try {
                   img = await this.$store.dispatch('handleUploadToCloudinary')
-                  this.pro.profile_picture_path_pro = img.url;
-              } catch (error) {
-                this.errorMessage="Erreur d'envoi de la photo"; 
-              }
-              //await this.$store.dispatch('transformImg',img);
+                } catch (error) {
+                  this.errorMessage="Erreur d'envoi de la photo"; 
+                }
+              await this.$store.dispatch('transformImg',img);
               this.axios
-                    .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/tatouages`,{pro_id:this.$store.state.user.id,tattoo_picture_path:img.url})
+                    .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/tatouages`,{pro_id:this.$store.state.user.id,tattoo_picture_path:this.$store.state.url})
                     .then(async (res)=>{
                        this.errorMessage=null;
                        this.successMessage="Votre photo a bien été envoyée";
