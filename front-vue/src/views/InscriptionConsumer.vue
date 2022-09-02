@@ -18,7 +18,7 @@
 
             <div class="col-sm-6">
               <label for="firstName" class="form-label">Prénom</label>
-              <input v-model="newConsumer.first_name" type="text" class="form-control" id="firstName" placeholder="" required>
+              <input v-model="newConsumer.first_name" type="text" class="form-control" id="firstName" placeholder="Votre prénom" required>
               <div class="invalid-feedback">
                 Prénom requis.
               </div>
@@ -26,9 +26,9 @@
 
             <div class="col-sm-6">
               <label for="lastName" class="form-label">Nom</label>
-              <input v-model="newConsumer.last_name" type="text" class="form-control" id="lastName" placeholder="" required>
+              <input v-model="newConsumer.last_name" type="text" class="form-control" id="lastName" placeholder="Votre nom" required>
               <div class="invalid-feedback">
-                Nom requise.
+                Nom requis.
               </div>
             </div>
 
@@ -57,11 +57,11 @@
 
             <div class="col-12">
               <label for="password" class="form-label">Mot de passe</label>
-              <input v-model="newConsumer.password" type="password" class="form-control" id="password" required>
+              <input v-model="newConsumer.password" type="password" class="form-control" id="password" placeholder="8 caractères obligatoires" required>
             </div>
             <div class="col-12">
               <label for="confirmedPassword" class="form-label">Confirmer le mot de passe</label>
-              <input v-model="newConsumer.passwordConfirm" type="password" class="form-control" id="confirmedPassword" required>
+              <input v-model="newConsumer.passwordConfirm" type="password" class="form-control" id="confirmedPassword" placeholder="8 caractères obligatoires" required>
               <div class="invalid-feedback">
                   Mot de passe requis.
               </div> 
