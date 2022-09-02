@@ -140,12 +140,14 @@ export default {
               else
                 this.mail=this.editConsumer.email;
               if (this.picture) {
-                  try {
-                      let img = await this.$store.dispatch('handleUploadToCloudinary')
-                      this.editConsumer.profile_picture_path_consumer = img.url;
-                  } catch (error) {
+                let img;
+                try {
+                img = await this.$store.dispatch('handleUploadToCloudinary')
+                await this.$store.dispatch('transformImg',img);
+                this.editConsumer.profile_picture_path_consumer = this.$store.state.url;
+                } catch (error) {
                       console.log(error)
-                  }
+                }
               }
               this.axios
                   .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/consumer/${this.$store.state.user.id}`, this.editConsumer)

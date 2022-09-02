@@ -227,9 +227,11 @@ export default {
                 else
                     this.mail=this.editPro.email;
                 if (this.picture) {
+                    let img;
                     try {
-                        let img = await this.$store.dispatch('handleUploadToCloudinary')
-                        this.editPro.profile_picture_path_pro = img.url;
+                        img = await this.$store.dispatch('handleUploadToCloudinary')
+                        await this.$store.dispatch('transformImg',img);
+                        this.editPro.profile_picture_path_pro = this.$store.state.url;
                     } catch (error) {
                         console.log(error)
                     }

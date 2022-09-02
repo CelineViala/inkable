@@ -119,14 +119,15 @@ export default {
             if(this.picture){
               try {
                     let img=await this.$store.dispatch('handleUploadToCloudinary')
-                    this.newConsumer.profile_picture_path_consumer=img.url;
+                    await this.$store.dispatch('transformImg',img);
+                    this.newConsumer.profile_picture_path_consumer=this.$store.state.url;
                 } catch (error) {
                     console.log(error)
                 }
             }
             else{
               //image par défaut
-              this.newConsumer.profile_picture_path_consumer='https://res.cloudinary.com/dmoacy4yl/image/upload/v1662106981/tzej7b3tf3sixfdfyqbe.jpg'
+              this.newConsumer.profile_picture_path_consumer='https://res.cloudinary.com/dmoacy4yl/image/upload/c_fill,h_300,w_300/g1yyeusdp7vh82ibpcf3?_a=ATO2BAA0'
             }
             this.axios
                       .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}signupConsumer`,this.newConsumer)

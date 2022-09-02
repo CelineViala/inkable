@@ -90,7 +90,9 @@ export default createStore({
                   apiSecret:process.env.VUE_APP_ENV_CLOUDINARY_APISECRET
                 }
               }); 
+            
             const myImage = cld.image(img.public_id);
+            
             myImage
                 .resize(fill().width(300).height(300));
             const url=myImage.toURL();
