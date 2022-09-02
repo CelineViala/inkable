@@ -300,14 +300,6 @@ export default {
 
     editProjectForm() {
 
-      //       area: "dos"
-      // color: false
-      // consumer_id: 1
-      //description: "cover bras"
-      // pro_id: 1
-      // status: "accepté"
-      // title: "Projet cover"
-      console.log(this.editProject)
       const reqProject = {
         area: this.editProject.area,
         description: this.editProject.description,
