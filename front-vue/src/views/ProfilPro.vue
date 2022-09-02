@@ -47,8 +47,8 @@
 
 
                 <div class="d-flex pt-1">
-                  <a class="link-insta" :href="this.pro.instagram" target="_blank">
-                    <button type="button" class="btn btn-outline-light me-1 flex-grow-1">
+                  <a class="link-insta" v-if="this.pro.instagram" :href="this.pro.instagram" target="_blank">
+                    <button  type="button" class="btn btn-outline-light me-1 flex-grow-1">
                       Instagram
                     </button>
                   </a>
