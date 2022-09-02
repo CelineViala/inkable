@@ -228,8 +228,8 @@ export default {
                     this.mail=this.editPro.email;
                 if (this.picture) {
                     try {
-                        let url = await this.$store.dispatch('handleUploadToCloudinary')
-                        this.editPro.profile_picture_path_pro = url;
+                        let img = await this.$store.dispatch('handleUploadToCloudinary')
+                        this.editPro.profile_picture_path_pro = img.url;
                     } catch (error) {
                         console.log(error)
                     }

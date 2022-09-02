@@ -231,9 +231,9 @@ export default {
 
             //----------------------------------------------gestion de l'affichage des rdv dans une pop up
             seeMore.setAttribute("data-bs-toggle", "popover");
-            let popoverContent=`   <h4>${arg.event.title}</h4>
-                    <p> ${arg.event.extendedProps.description} </p>    
-                `
+            let popoverContent=`<p>${arg.event.title}</p>`
+            if(arg.event.extendedProps.description)
+                popoverContent+=`<p> ${arg.event.extendedProps.description} </p>`  
             if(arg.event.extendedProps.project_id)
             {
                 popoverContent+=`<a href="/project/${`${arg.event.extendedProps.project_id}`}">Lien vers le projet</a>`
@@ -280,17 +280,17 @@ export default {
 
 
         },
-        deleteRdv(e) {//route :/api/pro/:idPro/rdv/:idRdv'
-            console.log(e.target.id);
+        deleteRdv(e) {
             this.$refs.fullCalendar.getApi().getEventById(e.target.id).remove();
             this.axios
                 .delete(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv/${e.target.id}`)
                 .then((response) => {
                     console.log(response.data)
+                    document.querySelector(".bs-popover-auto").remove();
                 })
                 .catch((err) => {
-                    console.log(err)
-                    alert("erreur lors de la suppression du message.")
+                    console.log(err);
+                    alert("erreur lors de la suppression du message.");
                 });
 
         },
@@ -525,6 +525,7 @@ export default {
 
 .fc-timegrid-event-harness {
     overflow: hidden;
+    border: #fff 1px solid;
 }
 
 body {

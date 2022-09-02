@@ -109,13 +109,12 @@ export default {
     }
   },
   async mounted(){
-    console.log(CloudinaryImage)
     try {
       const response=await this.axios.get(`http://localhost:3000/api/pro/${this.$route.params.id}`);
       this.pro=response.data;
-      console.log(this.pro)
+      console.log(this.pro);
     } catch (error) {
-      
+      console.log("error")
     }
   },
  

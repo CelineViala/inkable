@@ -141,8 +141,8 @@ export default {
                 this.mail=this.editConsumer.email;
               if (this.picture) {
                   try {
-                      let url = await this.$store.dispatch('handleUploadToCloudinary')
-                      this.editConsumer.profile_picture_path_consumer = url;
+                      let img = await this.$store.dispatch('handleUploadToCloudinary')
+                      this.editConsumer.profile_picture_path_consumer = img.url;
                   } catch (error) {
                       console.log(error)
                   }
