@@ -67,7 +67,7 @@
           
             <div class="card bg-dark text-white container-card">
             
-            <img :src="p.profile_picture_path_pro!==null?p.profile_picture_path_pro:'https://res.cloudinary.com/dmoacy4yl/image/upload/v1661849691/srak0p28tzkfot53ei9u.jpg'" class="card-img-top" alt="image tatoueur">
+            <img :src="p.profile_picture_path_pro" class="card-img-top" alt="image tatoueur">
             
             <div class="card-body">
               <h5 class="card-title">{{p.studio_name}}</h5>

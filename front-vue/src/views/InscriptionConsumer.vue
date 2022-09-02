@@ -124,6 +124,10 @@ export default {
                     console.log(error)
                 }
             }
+            else{
+              //image par défaut
+              this.newConsumer.profile_picture_path_consumer='https://res.cloudinary.com/dmoacy4yl/image/upload/v1662106981/tzej7b3tf3sixfdfyqbe.jpg'
+            }
             this.axios
                       .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}signupConsumer`,this.newConsumer)
                       .then((response) => {
