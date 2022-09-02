@@ -149,6 +149,9 @@ export default {
                 } catch (error) {
                     console.log(error)
                 }
+            }else{
+              //image par défaut
+              this.newPro.profile_picture_path_pro='https://res.cloudinary.com/dmoacy4yl/image/upload/v1662106981/tzej7b3tf3sixfdfyqbe.jpg'
             }
                 this.axios
                 .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}signupPro`,this.newPro)
