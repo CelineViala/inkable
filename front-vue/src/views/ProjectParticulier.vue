@@ -170,6 +170,11 @@ export default {
         plugins: [listPlugin, dayGridPlugin, interactionPlugin],
         initialView: 'listYear',
         height: 300,
+        headerToolbar: {
+            start: '', // will normally be on the left. if RTL, will be on the right
+            center: '',
+            end: ''
+        },
         titleFormat: // will produce something like "Tuesday, September 18, 2018"
         {
           weekday: 'long',

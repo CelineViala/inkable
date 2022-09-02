@@ -3,9 +3,34 @@
 
 
     <!-- Vertically centered scrollable modal -->
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        ...
+    <div
+      ref="modal"
+      class="modal fade"
+      :class="{show, 'd-block': active}"
+      tabindex="-1"
+      role="dialog"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{modalTitle}}</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              @click="toggleModal"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>{{modalText}}</p>
+          </div>
+        </div>
+      </div>
     </div>
+    <div v-if="active" class="modal-backdrop fade show"></div>
     <section class=" gradient-custom">
         <div class="container py-5 h-10">
             <div class="container py-5 h-10">
@@ -88,6 +113,10 @@ export default {
             calendar: {},
             rdv: {},
             projects: null,
+            modalTitle:null,
+            modalText:null,
+            active: false,
+            show: false,
             successMessage: null,
             errorMessage: null,
             startRange: new Date(),
@@ -176,6 +205,14 @@ export default {
         },
     },
     methods: {
+        toggleModal() {
+      const body = document.querySelector("body");
+      this.active = !this.active;
+      this.active
+        ? body.classList.add("modal-open")
+        : body.classList.remove("modal-open");
+      setTimeout(() => (this.show = !this.show), 10);
+    },
         goToday: function () {
             this.startRange = new Date();
             this.endRange = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
@@ -286,7 +323,7 @@ export default {
                 .delete(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/rdv/${e.target.id}`)
                 .then((response) => {
                     console.log(response.data)
-                    document.querySelector(".bs-popover-auto").remove();
+                    document.querySelector(".bs-popover-auto")?.remove();
                 })
                 .catch((err) => {
                     console.log(err);
@@ -304,7 +341,11 @@ export default {
                     new Date(info.end));
             })
             if (!isFree)
-                alert("chevauchement");
+            {    
+                this.modalTitle="Attention"
+                this.modalText="Chevauchement de rdv détecté."
+                this.toggleModal();
+            }
             this.errorMessage = null;
             this.$refs.formElm.style.display = "block"
             this.$refs.buttonValid.removeAttribute("hidden")
