@@ -151,7 +151,7 @@ export default {
                 }
             }
                 this.axios
-                .post('http://localhost:3000/signupPro',this.newPro)
+                .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}signupPro`,this.newPro)
                 .then((response) => {
                     console.log(response.data);
                     this.newPro={};

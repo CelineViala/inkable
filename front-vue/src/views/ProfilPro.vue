@@ -110,7 +110,7 @@ export default {
   },
   async mounted(){
     try {
-      const response=await this.axios.get(`http://localhost:3000/api/pro/${this.$route.params.id}`);
+      const response=await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$route.params.id}`);
       this.pro=response.data;
       console.log(this.pro);
     } catch (error) {

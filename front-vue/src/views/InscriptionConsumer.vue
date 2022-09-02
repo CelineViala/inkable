@@ -125,7 +125,7 @@ export default {
                 }
             }
             this.axios
-                      .post('http://localhost:3000/signupConsumer',this.newConsumer)
+                      .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}signupConsumer`,this.newConsumer)
                       .then((response) => {
                           console.log(response.data);
                           this.newConsumer={};

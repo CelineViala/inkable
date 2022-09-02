@@ -195,7 +195,7 @@ export default {
     
     // console.log("<<<<<<<<<<<<<<<",this.$route.params.id)
       this.axios
-        .get(`http://localhost:3000/api/projet/${this.$route.params.id}`)
+        .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/projet/${this.$route.params.id}`)
         .then((response) => {
           console.log('response data',response.data);
           this.project=response.data;
@@ -241,7 +241,7 @@ export default {
       };
     
     this.axios
-      .post('http://localhost:3000/api/message', requestObj)
+      .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/message`, requestObj)
       .then((response) => {
 
         this.newMessage={};

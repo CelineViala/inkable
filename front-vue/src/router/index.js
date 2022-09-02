@@ -15,7 +15,22 @@ import Page404 from '@/views/Page404.vue';
 import ProjectParticulier from '@/views/ProjectParticulier';
 import Createurs from '@/views/Createurs.vue';
 const store = require('../store')
-
+function checkAuthorization(user,id)
+{
+    
+    let isAuthorized=false;
+      
+    for (let i = 0; i <user.projects.length; i++) {
+        const project = user.projects[i];
+      
+        if(project.id===id)
+        {
+            isAuthorized=true;
+            break;
+        }   
+    }
+    return isAuthorized;
+}
 const routes=[
     {
         name:'Home',
@@ -149,23 +164,41 @@ const router=createRouter({
 
 
 router.beforeEach(async (to,from,next)=>{
-    
     try {
         await store.default.dispatch('getUser');    
     } catch (error) {
         console.log(error);
     }
-
-
+    
+    
+    if(to.name==='Project'||to.name==='ProjectParticulier')
+    {
+        const isAuthorized=checkAuthorization(store.default._state.data.user,Number(to.params.id));
+        if(!isAuthorized)
+        {
+            return next({
+                path:'/404',
+            })
+        }
+    }
+    else if(to.name==='Planning')
+    {
+        let isAuthorized=true;
+        if(to.params.projectId!== '')
+            isAuthorized=checkAuthorization(store.default._state.data.user,Number(to.params.projectId));
+        if(!isAuthorized)
+        {
+            return next({
+                path:'/404',
+            })
+        }
+    }
     if(to.meta.roles && !to.meta.roles.includes(store.default._state.data.user.role)){
-        next({
+        return next({
         path:'/connexion',
     })   
     }
-      
-
-
-    else next();
+    return next();
    
 })
 
