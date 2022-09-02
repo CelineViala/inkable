@@ -10,7 +10,7 @@
             <div class="mb-md-5 mt-md-4 pb-5">
 
               <h2 class="fw-bold mb-2 text-uppercase">Votre projet tatouage</h2>
-
+            <p class="text-warning m-5">Une fois le formulaire envoyé, le tatoueur vous contactera pour fixer un RDV s'il accepte votre projet.</p>
             <form>
               <div class="form-outline form-white mb-4">
                 <input v-model="newProject.title" type="text" id="typeText" class="form-control form-control-lg" />
@@ -54,46 +54,6 @@
     </div>
   </div>
 </section>
-
-
-<!-- 
-    <div class="container">
-        <h5 class="modal-title">Votre projet de tatouage</h5>
-                
-                <form>
-                    <div class="mb-3">
-                        <label for="formGroupExampleInput" class="form-label">Titre du projet</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput">
-                    </div>
-
-
-                    <div class="mb-3">
-                        <label for="exampleFormControlTextarea1" class="form-label">Description du projet</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="formGroupExampleInput" class="form-label">Zone à tatouer</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput">
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                        <label class="form-check-label" for="flexRadioDefault1">
-                            Couleur
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                        <label class="form-check-label" for="flexRadioDefault2">
-                            Noir et blanc
-                        </label>
-                    </div>
-                    <br>
-                    <button type="submit" class="btn btn-primary">Prendre rendez-vous</button>
-
-                </form>
-    </div> -->
 </template>
 <script>
 export default {
@@ -118,9 +78,12 @@ export default {
       this.axios
       .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/projet`,this.newProject) 
       .then((response) => {
-        
+
         this.newProject={};
-        this.messageSuccess="Votre projet a bien été enregistré";
+        this.messageSuccess="Votre projet a bien été enregistré, vous allez être redirigé vers votre page de projet.";
+        setTimeout(() => {
+          this.$router.push(`/project-particulier/${response.data.id}`)
+        }, 1500);
         this.messageError=null;
       })
       .catch((err)=>{

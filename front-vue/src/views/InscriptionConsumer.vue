@@ -129,6 +129,8 @@ export default {
               //image par défaut
               this.newConsumer.profile_picture_path_consumer='https://res.cloudinary.com/dmoacy4yl/image/upload/c_fill,h_300,w_300/g1yyeusdp7vh82ibpcf3?_a=ATO2BAA0'
             }
+            if(new Date(this.newConsumer.date_of_birth)> new Date()||(new Date().getFullYear()-new Date(this.newConsumer.date_of_birth).getFullYear()<18))
+            alert("majeur")
             this.axios
                       .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}signupConsumer`,this.newConsumer)
                       .then((response) => {

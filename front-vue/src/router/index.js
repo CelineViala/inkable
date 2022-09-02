@@ -98,7 +98,7 @@ const routes=[
     },
     {
         name:'ProfilPro',
-        path:'/profil-pro/:id',
+        path:'/profil-pro/:id(\\d+)',
         component:ProfilPro,
         meta:{
             roles:['pro', 'consumer','anonyme']
