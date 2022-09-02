@@ -9,7 +9,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns One consumer - Route API JSON response
      */
 
     async getOneConsumer(req, res) {
@@ -35,7 +35,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Modified consumer -  Route API JSON response
      */
 
     async modifyConsumer(req, res) {
@@ -77,7 +77,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Sucess Message -  Route API JSON response
      */
 
     async deleteConsumer(req, res) {

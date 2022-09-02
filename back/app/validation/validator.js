@@ -8,7 +8,7 @@ const ApiError = require('../errors/apiError');
  * @param {Joi.object} schema - Le schema de validation du module Joi
  * @returns
  * Renvoi un middleware pour express qui valide
- * le corp de la requête en utilisant le schema passé en paramètre.
+ * le corps de la requête en utilisant le schema passé en paramètre.
  * Renvoi une erreur 400 si la validation échoue.
  */
 

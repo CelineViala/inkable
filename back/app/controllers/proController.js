@@ -1,11 +1,10 @@
 /* eslint-disable object-shorthand */
 const {
-    Pro, Tattoo, Project, Style,
+    Pro, Tattoo, Style,
 } = require('../models');
 const authService = require('../services/checkForms');
 const client = require('../config/db');
 // suppression addPro car géré dans AuthController (cf route /signupPro)
-//! modèle Project jamais utilisé
 
 module.exports = {
 
@@ -14,7 +13,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns All pros - Route API JSON response
      */
 
     async getAllPro(req, res) {
@@ -31,7 +30,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Filtred pros - Route API JSON response
      */
 
     async CreateSearch(req, res) {
@@ -80,7 +79,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns One pro - Route API JSON response
      */
 
     async getOnePro(req, res) {
@@ -102,12 +101,10 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Modified pro - Route API JSON response
      */
 
-    //! Utilité de next dans cette fonnction?
-
-    async modifyPro(req, res, next) {
+    async modifyPro(req, res) {
         // Récupérer l'id et le pro
         const { id } = req.params;
         const pro = await Pro.findByPk(id);
@@ -168,7 +165,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Sucess response - Route API JSON response
      */
 
     async deletePro(req, res) {
@@ -189,7 +186,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns All tatoos of a pro - Route API JSON response
      */
 
     async getAllTattoosByPro(req, res) {
@@ -213,7 +210,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Added tatoo - Route API JSON response
      */
 
     async addTattoo(req, res) {
@@ -238,7 +235,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Sucess response - Route API JSON response
      */
 
     async deleteTattoo(req, res) {

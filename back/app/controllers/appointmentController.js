@@ -7,7 +7,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns All appointments - Route API JSON response
      */
 
     async getAllApointmentsByPro(req, res) {
@@ -30,7 +30,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Added appointment - Route API JSON response
      */
 
     async addAppointement(req, res) {
@@ -57,7 +57,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Modified appointment - Route API JSON response
      */
 
     async modifyAppointement(req, res) {
@@ -94,7 +94,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Sucess response - Route API JSON response
      */
 
     async deleteAppointement(req, res) {

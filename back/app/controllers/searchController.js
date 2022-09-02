@@ -12,7 +12,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns All styles for the filter - Route API JSON response
      */
 
     async getAllStyles(req, res) {
@@ -25,7 +25,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns All the cities for the filter - Route API JSON response
      */
 
     async getAllCities(req, res) {

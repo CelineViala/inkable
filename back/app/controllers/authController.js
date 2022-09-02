@@ -13,7 +13,7 @@ const authController = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns New pro - Route API JSON response
      */
 
     async signupPro(req, res) {
@@ -28,15 +28,7 @@ const authController = {
         req.body.password = await serviceAuth.hashPassword(req.body.password);
         req.body.city = req.body.city.toUpperCase();
 
-        // ! A supprimer ?
-        // transformation du tableau req.body.styles pour pouvoir faire l'insertion du pro dans la
-        // bdd tout en remplissant la table "Style" (association manyTomany)
-        // if (req.body.styles) {
-        //     const styles = req.body.styles.map((style) => ({ name: style }));
-        //     req.body.styles = styles;
-        // }
-
-        // Créer le nouveau pro
+        // Créer le nouveau pro et remplir la table categorize (many to many)
         const newPro = await Pro.create(req.body);
         req.body.styles.forEach(async (style) => {
             const oneStyle = await Style.findOne({ where: { name: style } });
@@ -52,7 +44,7 @@ const authController = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns New consumer - Route API JSON response
      */
 
     async signupConsumer(req, res) {
@@ -70,15 +62,22 @@ const authController = {
         return res.status(200).json(newConsumer);
     },
 
-    // Fonctions de vérifications
+    // ########## Fonctions de vérifications ##########
     testConsumer(req, res) {
         if (req.user.role === 'consumer') { res.json('Vous pouvez accéder à votre dashboard Consumer'); } else { res.sendStatus(403); }
     },
-    verifyToken(req, res) {
-        res.json(req.user);
-    },
     testPro(req, res) {
         if (req.user.role === 'pro') { res.json('Vous pouvez accéder à votre dashboard Pro'); } else { res.sendStatus(403); }
+    },
+
+    /**
+     * AuthController to send the loged user on the front
+     * @param {Object} req Express request object
+     * @param {Object} res Express request object
+     * @returns Send user on front-vue - Route API JSON response
+     */
+    verifyToken(req, res) {
+        res.json(req.user);
     },
 
     /**
@@ -86,10 +85,10 @@ const authController = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Acess token - Route API JSON response
      */
-    // ! next à supprimer?
-    async login(req, res, next) {
+
+    async login(req, res) {
         // Récupérer les mails
         const pro = await serviceAuth.findUser(Pro, req.body.email);
         const consumer = await serviceAuth.findUser(Consumer, req.body.email);
@@ -109,11 +108,6 @@ const authController = {
         );
         // Renvoyer la réponse avec le token pour que le front connaisse le role de l'utilisateur
         return res.json({ accessToken });
-    },
-
-    // ! fonction logout pas encore faite
-    logout(req, res) {
-        // le TOKEN doit être supprimé des cookies
     },
 
 };
