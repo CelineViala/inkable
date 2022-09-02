@@ -13,7 +13,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Selected project - Route API JSON response
      */
 
     async getOneProject(req, res) {
@@ -40,7 +40,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Created project - Route API JSON response
      */
 
     async createProject(req, res) {
@@ -54,7 +54,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Modified project - Route API JSON response
      */
 
     async modifyProject(req, res) {
@@ -82,7 +82,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns Sucess response - Route API JSON response
      */
 
     async deleteProject(req, res) {
@@ -104,7 +104,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns All projects of a pro - Route API JSON response
      */
 
     async getAllProjectsByPro(req, res) {
@@ -132,7 +132,7 @@ module.exports = {
      * ExpressMiddleware signature
      * @param {object} req Express request object
      * @param {object} res Express response object
-     * @returns Route API JSON response
+     * @returns All projects of a consumer - Route API JSON response
      */
 
     async getAllProjectsByConsumer(req, res) {
@@ -152,6 +152,15 @@ module.exports = {
         // Envoyer la réponse
         res.json(projects);
     },
+
+    /**
+     * Project controller to create a message in a project
+     * ExpressMiddleware signature
+     * @param {object} req Express request object
+     * @param {object} res Express response object
+     * @returns New message - Route API JSON response
+     */
+
     async createMessage(req, res) {
         const newMessage = await Message.create(req.body);
         return res.json(newMessage);

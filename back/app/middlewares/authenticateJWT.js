@@ -1,5 +1,12 @@
 const jwt = require('jsonwebtoken');
 
+/**
+ * Token to identify visitors
+ * @param {object} req
+ * @param {object} res
+ * @param {_} next
+ */
+
 const authenticateJWT = (req, res, next) => {
     const authHeader = req.headers.authorization;
 

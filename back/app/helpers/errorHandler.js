@@ -3,7 +3,7 @@
  * @param {object} err error class
  * @param {void} _ just need a 4th parameter to handle errors
  * @param {object} res Express response object
- * @param {*} next
+ * @param {_} next
  */
 
 // eslint-disable-next-line no-unused-vars

@@ -2,9 +2,10 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const router = require('./routers');
 
-//! A supprimer?
+require('./helpers/apiDocs')(app);
+
+//! Permet de récupérer les erreurs, à décommenter
 
 // process.on('unhandledRejection', (err) => {
 //     throw err;
@@ -14,6 +15,10 @@ const router = require('./routers');
 //     console.log(err);
 //     process.exit(0);
 // });
+
+// const swaggerUi = require('swagger-ui-express');
+// const swaggerJsDoc = require('swagger-jsdoc');
+const router = require('./routers');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
