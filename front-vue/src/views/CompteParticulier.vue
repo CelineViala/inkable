@@ -102,7 +102,7 @@ export default {
   },
   mounted() {
       this.axios
-          .get(`http://localhost:3000/api/consumer/${this.$store.state.user.id}`)
+          .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/consumer/${this.$store.state.user.id}`)
           .then((response) => {
               this.consumer = response.data;
               this.editConsumer.email = response.data.email;
@@ -148,7 +148,7 @@ export default {
                   }
               }
               this.axios
-                  .patch(`http://localhost:3000/api/consumer/${this.$store.state.user.id}`, this.editConsumer)
+                  .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/consumer/${this.$store.state.user.id}`, this.editConsumer)
                   .then((response) => {
                       console.log(response.data);
                       this.errorMessage = null;

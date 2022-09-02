@@ -103,7 +103,7 @@ export default {
     
     //récupération du pro en bdd;
     this.axios
-        .get(`http://localhost:3000/api/pro/${this.$store.state.user.id}`)
+        .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}`)
         .then((response) => {
           this.pro=response.data;   
           console.log(response.data);
@@ -159,13 +159,13 @@ export default {
   async deletePictureGallery(e){
       //route: /api/pro/:idPro/tatouages/:idTattoo
       try {
-        const response= await this.axios.delete(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages/${e.target.id}`);
+        const response= await this.axios.delete(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/tatouages/${e.target.id}`);
         console.log(response.data)
       } catch (error) {
         console.log(error)
       }
       try {
-        const response= await this.axios.get(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages`);
+        const response= await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/tatouages`);
         this.pro.tattoos=response.data;
       } catch (error) {
         console.log(error)
@@ -193,7 +193,7 @@ export default {
               }
               await this.$store.dispatch('transformImg',img);
               this.axios
-                    .post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages`,{pro_id:this.$store.state.user.id,tattoo_picture_path:this.$store.state.url})
+                    .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/tatouages`,{pro_id:this.$store.state.user.id,tattoo_picture_path:this.$store.state.url})
                     .then(async (res)=>{
                        this.errorMessage=null;
                        this.successMessage="Votre photo a bien été envoyée";
@@ -203,7 +203,7 @@ export default {
                        this.$refs.pictureInput.value=null;
                        this.picture=false;
                        try {
-                        const response= await this.axios.get(`http://localhost:3000/api/pro/${this.$store.state.user.id}/tatouages`);
+                        const response= await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/tatouages`);
                         this.pro.tattoos=response.data;
                       } catch (error) {
                         console.log(error)
@@ -224,7 +224,7 @@ export default {
       try {
         console.log(this.$refs)
         let calendarApi = this.$refs.list.getApi()
-        const response=await this.axios.get(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv`,this.rdv);
+        const response=await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/rdv`,this.rdv);
         const rdvs = response.data;
         rdvs.forEach(rdv => {
                 console.log(rdv)

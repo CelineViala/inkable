@@ -145,7 +145,7 @@ export default {
             this.rdv.project_id = this.$route.params.projectId;
         try {
 
-            const response = await this.axios.get(`http://localhost:3000/api/pro/${this.$store.state.user.id}/projet`)
+            const response = await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/projet`)
             this.projects = response.data;
             console.log(this.projects);
         } catch (error) {
@@ -283,7 +283,7 @@ export default {
         deleteRdv(e) {
             this.$refs.fullCalendar.getApi().getEventById(e.target.id).remove();
             this.axios
-                .delete(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv/${e.target.id}`)
+                .delete(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/rdv/${e.target.id}`)
                 .then((response) => {
                     console.log(response.data)
                     document.querySelector(".bs-popover-auto").remove();
@@ -328,7 +328,7 @@ export default {
             const isOk = confirm("Voulez vous valider la modification de rdv?");
             if (isOk) {
                 this.axios
-                .patch(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv/${idRdv}`, requestObj)
+                .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/rdv/${idRdv}`, requestObj)
                 .then((response) => {
                     console.log(response.data)
 
@@ -374,7 +374,7 @@ export default {
            
             //enregistrement bdd
             try {
-                const response = await this.axios.post(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv`, this.rdv);
+                const response = await this.axios.post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/rdv`, this.rdv);
 
                 console.log("rdv enregistré", this.rdv);
                 this.rdv.id = response.data.id;
@@ -404,7 +404,7 @@ export default {
             console.log(this.rdv);
             //enregistrement bdd
             try {
-                const response = await this.axios.patch(`http://localhost:3000/api/pro/${this.$store.state.user.id}/rdv/${e.target.id}`, this.rdv);
+                const response = await this.axios.patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/rdv/${e.target.id}`, this.rdv);
                 console.log("rdv enregistré", response);
 
 
@@ -425,7 +425,7 @@ export default {
 
             try {
                 let calendarApi = this.$refs.fullCalendar.getApi()
-                const response = await this.axios.get(`http://localhost:3000/api/pro/${this.id}/rdv`, this.rdv);
+                const response = await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.id}/rdv`, this.rdv);
                 const rdvs = response.data;
                 console.log(rdvs);
                 rdvs.forEach(rdv => {

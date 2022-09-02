@@ -228,7 +228,7 @@ export default {
     mounted() { 
       
       this.axios
-        .get(`http://localhost:3000/api/projet/${this.$route.params.id}`)
+        .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/projet/${this.$route.params.id}`)
         .then((response) => {
           console.log(">>>>>>>>>>>>>>>>>",response.data);
           this.project_id=response.data.id;
@@ -280,7 +280,7 @@ export default {
        
 
       this.axios
-      .post('http://localhost:3000/api/message', requestObj)
+      .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/message`, requestObj)
       .then((response) => {
 
         this.newMessage={};
@@ -319,7 +319,7 @@ export default {
       reqProject.color = this.editProject.color === "color" ? true : false;
 
       this.axios
-        .patch(`http://localhost:3000/api/projet/${this.project_id}`, reqProject)
+        .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/projet/${this.project_id}`, reqProject)
         .then((response) => {
           console.log(response.data);
           this.errorMessage = null;

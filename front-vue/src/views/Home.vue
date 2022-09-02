@@ -125,7 +125,7 @@ export default {
       console.log(this.searchForm,requestObj)
       if(!Object.keys(requestObj).length){
         try {
-          const response=await this.axios.get('http://localhost:3000/api/pro')
+          const response=await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro`)
           console.log(response.data);
           this.pros=response.data;
           return
@@ -134,7 +134,7 @@ export default {
         }
       }
       try {
-        const response= await this.axios.post('http://localhost:3000/api/pro/search',requestObj);
+        const response= await this.axios.post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/search`,requestObj);
         console.log(response);
         this.pros=response.data;
       } catch (error) {

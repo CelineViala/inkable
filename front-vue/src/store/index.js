@@ -52,7 +52,7 @@ export default createStore({
             commit('setAnonymous')
         },
         async check({commit}){
-            const response=await axios.get('http://localhost:3000/checkRole');
+            const response=await axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}checkRole`);
             commit('check',response.data)        
         },
         async getUser({dispatch,commit}){
@@ -60,9 +60,9 @@ export default createStore({
                 await dispatch('check');
                 let response;
                 if(this.state.dataToken.role==='pro')
-                    response=await axios.get(`http://localhost:3000/api/pro/${this.state.dataToken.id}`);
+                    response=await axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.state.dataToken.id}`);
                 else if(this.state.dataToken.role==='consumer')
-                    response=await axios.get(`http://localhost:3000/api/consumer/${this.state.dataToken.id}`);
+                    response=await axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/consumer/${this.state.dataToken.id}`);
                 
                 commit('getUser',response.data)
             } catch (error) {
@@ -74,7 +74,7 @@ export default createStore({
             
             //récupération des styles a afficher dans les balises select
             axios
-            .get('http://localhost:3000/api/styles')
+            .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/styles`)
             .then((response)=>{ 
                 commit('getAllStyles',response.data.map((item)=> item.name).sort());
             })
@@ -100,7 +100,7 @@ export default createStore({
         getAllCities({commit}){
             //récupération des styles a afficher dans les balises select
             axios
-            .get('http://localhost:3000/api/cities')
+            .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/cities`)
             .then((response)=>{ 
                 commit('getAllCities',this.cities=response.data[0].map((item)=> item.city).sort());
 

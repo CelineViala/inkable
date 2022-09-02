@@ -169,7 +169,7 @@ export default {
 
 
         this.axios
-            .get(`http://localhost:3000/api/pro/${this.$store.state.user.id}`)
+            .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}`)
             .then((response) => {
                 console.log(response.data)
 
@@ -235,7 +235,7 @@ export default {
                     }
                 }
                 this.axios
-                    .patch(`http://localhost:3000/api/pro/${this.$store.state.user.id}`, this.editPro)
+                    .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}`, this.editPro)
                     .then((response) => {
                         console.log(response.data);
                         this.errorMessage = null;
