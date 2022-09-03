@@ -132,9 +132,16 @@
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-8">
               <div
-                class="card bg-dark text-white"
+                class="card bg-dark text-white position-relative"
                 style="border-radius: 1rem;"
               >
+                <span
+                  v-if="projet.status==='en attente'"
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger p-2"
+                >
+                  NEW
+                  <span class="visually-hidden">unread messages</span>
+                </span>
                 <div class="card-body p-4">
                   <h5>{{ projet.title }}</h5>
                   <p>Zone de tatouage : {{ projet.area }} </p>
@@ -233,6 +240,19 @@ export default {
         this.getListRdv();
     },
     methods:{
+        formateEvent: function (arg) {
+            const rdvElm=document.createElement('div');
+            const linkElm=document.createElement('a');
+            linkElm.classList.add('link-project');
+            
+            linkElm.textContent="lien vers le projet";
+            linkElm.setAttribute("href",`project/${arg.event.extendedProps.project_id}`)
+            rdvElm.textContent=`${arg.event.title} ${arg.event.extendedProps.description}`;
+            let arrayOfDomNodes = [rdvElm,linkElm]
+            return {
+                domNodes: arrayOfDomNodes
+            }
+        },
         setDay(){
             this.$refs.list.getApi().setOption('initialView','listDay');
             console.log(this.$refs.list.getApi().getOption('initialView'));
@@ -334,6 +354,7 @@ export default {
                         title: rdv.title,
                         extendedProps: {
                             description: rdv.note,
+                            project_id: rdv.project_id
                         },
                         start: new Date(rdv.beginning_hour),
                         end: new Date(rdv.ending_hour)
@@ -348,5 +369,7 @@ export default {
 }
 </script>
 <style>
-
+.link-project{
+  text-decoration: underline !important;
+}
 </style>

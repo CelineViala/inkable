@@ -155,6 +155,7 @@
             <router-link
               :to="{name:'Planning',params:{projectId:editProject.id}}"
               class="btn btn-outline-light btn-lg px-5"
+              @click="editProjectForm"
             >
               Fixer un RDV
             </router-link>
