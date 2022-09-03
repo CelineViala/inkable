@@ -115,8 +115,7 @@ export default {
                     console.log(rdv)
                     rdv.pro=project.pro.studio_name;
                     rdv.nameProject=project.title;
-                    rdvs.push(rdv);
-                    if (new Date(rdv.beginning_hour).getDay()>=new Date().getDay())
+                    if (new Date(rdv.beginning_hour)>=new Date())
                         rdvs.push(rdv);
                 });
         
@@ -124,6 +123,7 @@ export default {
             console.log(rdvs)
             rdvs.forEach(rdv => {
                 console.log(rdv)
+                
                 this.$refs.fullCalendar.getApi().addEvent({
                     id: rdv.id,
                     title: `RDV avec "${rdv.pro}" pour le projet "${rdv.nameProject}"`,

@@ -91,11 +91,14 @@
                 </button>
               </form>
             </div>
-            <p class="text-success">
+            <p class="text-success m-3">
               {{ successMessage }}
             </p>
-            <p class="text-danger">
+            <p class="text-danger m-3">
               {{ errorMessage }}
+            </p>
+            <p class="text-warning m-3">
+              {{ waitingMessage }}
             </p>
             <!-- Bouton supprimer -->
             <div class="card-body p-4 text-center">
@@ -133,7 +136,8 @@ export default {
             },
             consumer: {},
             successMessage: null,
-            errorMessage: null
+            errorMessage: null,
+            waitingMessage: null,
         }
     },
     mounted() {
@@ -157,11 +161,12 @@ export default {
     methods: {
         handleFile: function (e) {
             this.$store.dispatch('createRequestObjForCloudinary', e);
-            this.picture = true
+            this.picture = true;
+            this.errorMessage=null;
         },
         async editProfile(e) {
+            this.waitingMessage="Veuillez patientez SVP ...";
             e.preventDefault();
-
             if (this.editConsumer.password === '')
                 delete this.editConsumer.password;
             if (this.editConsumer.passwordConfirm === '')
@@ -170,11 +175,7 @@ export default {
                 this.errorMessage = " Vous devez  confirmer votre mot de passe"
             }
             else {
-                // si le mail n'a pas été modifié il faut supprimer la donnée car sinon on aura une erreur d'utilisateur déjà existant côté back
-                if (this.editConsumer.email === this.mail)
-                    delete this.editConsumer.email;
-                else
-                    this.mail=this.editConsumer.email;
+                
                 if (this.picture) {
                     let img;
                     try {
@@ -185,13 +186,22 @@ export default {
                         console.log(error)
                     }
                 }
+                // si le mail n'a pas été modifié il faut supprimer la donnée car sinon on aura une erreur d'utilisateur déjà existant côté back
+                if (this.editConsumer.email === this.mail)
+                    delete this.editConsumer.email;
+                else
+                    this.mail=this.editConsumer.email;
                 this.axios
                     .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/consumer/${this.$store.state.user.id}`, this.editConsumer)
                     .then((response) => {
                         console.log(response.data);
                         this.errorMessage = null;
+                        this.waitingMessage = null;
                         this.successMessage = "Vos informations ont bien été modifiées.";
+                        if(this.picture)
+                            this.successMessage+="Mise à jour de votre page...";
                         this.picture = false;
+                        this.editConsumer.email = this.mail;
                         setTimeout(() => {
 
                             this.successMessage = null;
@@ -201,6 +211,8 @@ export default {
                     .catch((err) => {
                         console.log(err);
                         this.editConsumer.email = this.mail;
+                        this.successMessage=null;
+                        this.waitingMessage = null;
                         this.errorMessage = err.response.data.message;
                         return
                     })

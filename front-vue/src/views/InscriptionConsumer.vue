@@ -146,10 +146,10 @@
                   @click="addConsumer"
                 >
               </div>
-              <p class="text-success">
+              <p class="text-success m-5">
                 {{ successMessage }}
               </p>
-              <p class="text-danger">
+              <p class="text-danger m-5">
                 {{ errorMessage }}
               </p>
             </form>
@@ -218,9 +218,11 @@ export default {
                     console.log(response.data);
                     this.newConsumer={};
                     this.$store.dispatch('resetRequestObj');
-                    this.$router.push('/connexion');   
+                    this.successMessage= "Vous êtes bien inscrit! Vous allez être redirigé vers la page de connexion";	
                     this.errorMessage=null;
-                    this.successMessage= "Vous êtes bien inscrit!";
+                    setTimeout(() => {
+                        this.$router.push('/connexion');   
+                    }, 2000);
                     this.picture=false;
                 })
                 .catch((err)=>{

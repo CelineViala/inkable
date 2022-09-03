@@ -216,6 +216,12 @@
                 >
                   Valider l'inscription
                 </button>
+                <p class="text-success m-5">
+                  {{ successMessage }}
+                </p>
+                <p class="text-danger m-5">
+                  {{ errorMessage }}
+                </p>
               </div>
             </form>
           </div>
@@ -236,7 +242,8 @@ export default {
                 black_and_white:false,
                 styles:[]
             },
-            message:null,
+            successMessage:null,
+            errorMessage: null,
             picture:false
         }
     },
@@ -264,14 +271,16 @@ export default {
                 .then((response) => {
                     console.log(response.data);
                     this.newPro={};
-                    this.message="Vous êtes bien inscrit!";
-                    this.$router.push('/connexion');
+                    this.successMessage= "Vous êtes bien inscrit! Vous allez être redirigé vers la page de connexion";	
+                    setTimeout(() => {
+                        this.$router.push('/connexion');
+                    }, 2000);
             
                     
                 })
                 .catch((err)=>{
                     console.log(err);
-                    this.message=err.response.data.message;
+                    this.errorMessage=err.response.data.message;
                     return
                 })
             

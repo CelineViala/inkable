@@ -29,10 +29,13 @@
                   value="Ajouter"
                   @click="sendPicture"
                 >
-                <p class="text-success">
+                <p class="text-success m-3">
                   {{ successMessage }}
                 </p>
-                <p class="text-danger">
+                <p class="text-warning m-3">
+                  {{ waitingMessage }}
+                </p>
+                <p class="text-danger m-3">
                   {{ errorMessage }}
                 </p>
                 <p class="fst-italic">
@@ -163,6 +166,7 @@ export default {
         return {
             successMessage:null,
             errorMessage:null,
+            waitingMessage:null,
             picture:false,
             pro:{},
             calendar:{},
@@ -237,6 +241,7 @@ export default {
         handleFile(e){
             this.$store.dispatch('resetRequestObj');
             this.$store.dispatch('createRequestObjForCloudinary',e);
+            this.errorMessage=null;
             this.picture=true;
         },
         async sendPicture(){
@@ -245,6 +250,9 @@ export default {
             //si une photo a été ajoutée
             if(this.picture)
             {
+                this.errorMessage=null;
+                this.successMessage = null;
+                this.waitingMessage="Veuillez patientez SVP ...";
                 let img;
                 try {
                     img = await this.$store.dispatch('handleUploadToCloudinary')
@@ -256,6 +264,7 @@ export default {
                     .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/tatouages`,{pro_id:this.$store.state.user.id,tattoo_picture_path:this.$store.state.url})
                     .then(async (res)=>{
                         this.errorMessage=null;
+                        this.waitingMessage=null;
                         this.successMessage="Votre photo a bien été envoyée";
                         setTimeout(() => {
                             this.successMessage=null;
@@ -271,6 +280,7 @@ export default {
                     })
                     .catch((err)=>{
                         this.successMessage=null;
+                        this.waitingMessage=null;
                         this.errorMessage="Erreur serveur";
                         console.log(this.$store.state.url)
                     })

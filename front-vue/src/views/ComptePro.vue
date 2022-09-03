@@ -202,6 +202,16 @@
                   Modifier mes
                   informations
                 </button>
+
+                <p class="text-success m-3">
+                  {{ successMessage }}
+                </p>
+                <p class="text-danger m-3">
+                  {{ errorMessage }}
+                </p>
+                <p class="text-warning m-3">
+                  {{ waitingMessage }}
+                </p>
               </form>
             </div>
 
@@ -214,13 +224,6 @@
                 Supprimer mon compte
               </button>
             </div>
-
-            <p class="text-success">
-              {{ successMessage }}
-            </p>
-            <p class="text-danger">
-              {{ errorMessage }}
-            </p>
           </div>
         </div>
       </div>
@@ -249,7 +252,8 @@ export default {
             },
             pro: {},
             successMessage: null,
-            errorMessage: null
+            errorMessage: null,
+            waitingMessage: null
         }
     },
     async created() {
@@ -300,6 +304,9 @@ export default {
         },
         async editProfile(e) {
             e.preventDefault();
+            this.successMessage=null;
+            this.errorMessage=null;
+            this.waitingMessage="Veuillez patientez SVP ..."
             console.log(this.editPro);
             if (this.editPro.password === '')
                 delete this.editPro.password;
@@ -309,11 +316,7 @@ export default {
                 this.errorMessage = " Vous devez  confirmer votre mot de passe"
             }
             else {
-                // si le mail n'a pas été modifié il faut supprimer la donnée car sinon on aura une erreur d'utilisateur déjà existant côté back
-                if (this.editPro.email === this.mail)
-                    delete this.editPro.email;
-                else
-                    this.mail=this.editPro.email;
+               
                 if (this.picture) {
                     let img;
                     try {
@@ -324,12 +327,20 @@ export default {
                         console.log(error)
                     }
                 }
+                // si le mail n'a pas été modifié il faut supprimer la donnée car sinon on aura une erreur d'utilisateur déjà existant côté back
+                if (this.editPro.email === this.mail)
+                    delete this.editPro.email;
+                else
+                    this.mail=this.editPro.email;
                 this.axios
                     .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}`, this.editPro)
                     .then((response) => {
                         console.log(response.data);
                         this.errorMessage = null;
+                        this.waitingMessage=null;
                         this.successMessage = "Vos informations ont bien été modifiées.";
+                        if(this.picture)
+                            this.successMessage+="Mise à jour de votre page...";
                         this.picture = false;
                         this.editPro.email = this.mail;
                         setTimeout(() => {
@@ -341,6 +352,8 @@ export default {
                         console.log(err);
                         console.log(this.mail)
                         this.editPro.email = this.mail;
+                        this.successMessage=null;
+                        this.waitingMessage=null;
                         this.errorMessage = err.response.data.message;
 
                     })
