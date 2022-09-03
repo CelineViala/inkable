@@ -199,8 +199,19 @@ export default {
                 //image par défaut
                 this.newConsumer.profile_picture_path_consumer='https://res.cloudinary.com/dmoacy4yl/image/upload/c_fill,h_300,w_300/g1yyeusdp7vh82ibpcf3?_a=ATO2BAA0'
             }
-            if(new Date(this.newConsumer.date_of_birth)> new Date()||(new Date().getFullYear()-new Date(this.newConsumer.date_of_birth).getFullYear()<18))
-                alert("majeur")
+            if(new Date(this.newConsumer.date_of_birth)> new Date())
+            {	this.errorMessage='Date de naissance invalide';
+                return;
+            }
+               
+            const diff=new Date()-new Date(this.newConsumer.date_of_birth);
+            const dateDiff=new Date(diff);
+            if(Math.abs(dateDiff.getUTCFullYear()-1970)<18)
+            {	
+                this.errorMessage='Vous devez être majeur pour vous inscrire';
+                return;
+            }
+           
             this.axios
                 .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}signupConsumer`,this.newConsumer)
                 .then((response) => {
@@ -218,9 +229,6 @@ export default {
                     this.errorMessage=err.response.data.message;
                     return
                 })    
-            
-            
-            
         }
     }
 }

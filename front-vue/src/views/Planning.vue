@@ -1,7 +1,5 @@
 <template>
-  <!-- Vertically centered modal -->
-
-
+ 
   <!-- Vertically centered scrollable modal -->
   <div
     ref="modal"
