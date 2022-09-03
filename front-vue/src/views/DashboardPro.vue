@@ -62,6 +62,7 @@
               <div class="row">
                 <div
                   v-for="tattoo in pro.tattoos"
+                  :key="tattoo.id"
                   class="col-lg-3 col-md-4 col-6 my-3"
                 >
                   <a
@@ -119,6 +120,7 @@
         </h4>
         <div
           v-for="projet in pro.projects"
+          :key="projet.id"
           class="container py-4"
         >
           <div class="row d-flex justify-content-center align-items-center h-100">
