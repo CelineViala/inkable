@@ -1,99 +1,186 @@
 <template>
-    <!-- Vertically centered modal -->
+  <!-- Vertically centered modal -->
 
 
-    <!-- Vertically centered scrollable modal -->
+  <!-- Vertically centered scrollable modal -->
+  <div
+    ref="modal"
+    class="modal fade"
+    :class="{show, 'd-block': active}"
+    tabindex="-1"
+    role="dialog"
+  >
     <div
-      ref="modal"
-      class="modal fade"
-      :class="{show, 'd-block': active}"
-      tabindex="-1"
-      role="dialog"
+      class="modal-dialog"
+      role="document"
     >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{{modalTitle}}</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              @click="toggleModal"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>{{modalText}}</p>
-          </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{ modalTitle }}
+          </h5>
+        </div>
+        <div class="modal-body">
+          <p>{{ modalText }}</p>
+          <button
+            type="button"
+            class="close ok btn btn-primary m-1"
+            data-dismiss="modal"
+            aria-label="Close"
+            @click="edit"
+          >
+            Ok
+          </button>
+          <button
+            v-if="confirm"
+            type="button"
+            class="close cancel btn btn-primary m-1"
+            data-dismiss="modal"
+            aria-label="Close"
+            @click="toggleModal"
+          >
+            Annuler
+          </button>
         </div>
       </div>
     </div>
-    <div v-if="active" class="modal-backdrop fade show"></div>
-    <section class=" gradient-custom">
-        <div class="container py-5 h-10">
-            <div class="container py-5 h-10">
-                <div class="card" style="border-radius: 1rem;">
-                    <FullCalendar ref="fullCalendar" :options="calendarOptions" />
+  </div>
+  <div
+    v-if="active"
+    class="modal-backdrop fade show"
+  />
+  <section class=" gradient-custom">
+    <div class="container py-5 h-10">
+      <div class="container py-5 h-10">
+        <div
+          class="card"
+          style="border-radius: 1rem;"
+        >
+          <FullCalendar
+            ref="fullCalendar"
+            :options="calendarOptions"
+          />
 
 
-                    <form ref="formElm" class="form-rdv card bg-dark text-white">
-
-                        <p ref="dataElm" class="data-rdv">
-                            Date
-                        </p>
-                        <div class="form-outline form-white mb-4">
-                            <input v-model="rdv.title" id="titre" name="titre" type="text"
-                                class="form-control form-control-lg">
-                            <label for="titre" class="form-label">
-                                Titre du rdv
-                            </label>
-                        </div>
-                        <div class="form-outline form-white mb-4">
-                            <input v-model="rdv.note" id="description" name="description" type="text"
-                                class="form-control form-control-lg">
-                            <label for="titre" class="form-label">
-                                Description du rdv
-                            </label>
-                        </div>
-                        <div class="form-outline form-white mb-4">
-                            <label class="mr-sm-2 form-label" for="inlineFormCustomSelect">Projet : </label>
-                            <select v-model="rdv.project_id"
-                                class="custom - select mr - sm - 2 form-control form-control-lg"
-                                id="inlineFormCustomSelect">
-                                <option value="null">Aucun Projet associé au RDV</option>
-                                <option v-for="project in this.projects" class="form-control form-control-lg"
-                                    ref="accepted" :value="project.id">{{ `${project.consumer.first_name} ${project.consumer.last_name} ${project.title}`
-                                    }}</option>
-
-                            </select>
-                        </div>
-
-
-
-
-                        <input v-model="rdv.beginning_hour" id="startInput" name="start" type="hidden">
-
-                        <input v-model="rdv.ending_hour" id="endInput" name="end" type="hidden">
-
-                        <input @click="cancel" type="button" class="btn btn-outline-light btn-lg px-5" value="ANNULER">
-
-                        <input @click="valid" ref="buttonValid" type="button" class="btn btn-outline-light btn-lg px-5"
-                            value="VALIDER" hidden>
-
-                        <input @click="modify" ref="buttonEdit" type="button" class="btn btn-outline-light btn-lg px-5"
-                            value="MODIFIER" hidden>
-
-                        <p class="text-success">{{ this.successMessage }}</p>
-                        <p class="text-danger">{{ this.errorMessage }}</p>
-
-                    </form>
-                </div>
+          <form
+            ref="formElm"
+            class="form-rdv card bg-dark text-white"
+          >
+            <p
+              ref="dataElm"
+              class="data-rdv"
+            >
+              Date
+            </p>
+            <div class="form-outline form-white mb-4">
+              <input
+                id="titre"
+                v-model="rdv.title"
+                name="titre"
+                type="text"
+                class="form-control form-control-lg"
+              >
+              <label
+                for="titre"
+                class="form-label"
+              >
+                Titre du rdv
+              </label>
+            </div>
+            <div class="form-outline form-white mb-4">
+              <input
+                id="description"
+                v-model="rdv.note"
+                name="description"
+                type="text"
+                class="form-control form-control-lg"
+              >
+              <label
+                for="titre"
+                class="form-label"
+              >
+                Description du rdv
+              </label>
+            </div>
+            <div class="form-outline form-white mb-4">
+              <label
+                class="mr-sm-2 form-label"
+                for="inlineFormCustomSelect"
+              >Projet : </label>
+              <select
+                id="inlineFormCustomSelect"
+                v-model="rdv.project_id"
+                class="custom - select mr - sm - 2 form-control form-control-lg"
+              >
+                <option value="null">
+                  Aucun Projet associé au RDV
+                </option>
+                <option
+                  v-for="project in projects"
+                  :key="project.id"
+                  ref="accepted"
+                  class="form-control form-control-lg"
+                  :value="project.id"
+                >
+                  {{ `${project.consumer.first_name} ${project.consumer.last_name} ${project.title}`
+                  }}
+                </option>
+              </select>
             </div>
 
+
+
+
+            <input
+              id="startInput"
+              v-model="rdv.beginning_hour"
+              name="start"
+              type="hidden"
+            >
+
+            <input
+              id="endInput"
+              v-model="rdv.ending_hour"
+              name="end"
+              type="hidden"
+            >
+
+            <input
+              type="button"
+              class="btn btn-outline-light btn-lg px-5"
+              value="ANNULER"
+              @click="cancel"
+            >
+
+            <input
+              ref="buttonValid"
+              type="button"
+              class="btn btn-outline-light btn-lg px-5"
+              value="VALIDER"
+              hidden
+              @click="valid"
+            >
+
+            <input
+              ref="buttonEdit"
+              type="button"
+              class="btn btn-outline-light btn-lg px-5"
+              value="MODIFIER"
+              hidden
+              @click="modify"
+            >
+
+            <p class="text-success">
+              {{ successMessage }}
+            </p>
+            <p class="text-danger">
+              {{ errorMessage }}
+            </p>
+          </form>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -102,6 +189,7 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import { end } from '@cloudinary/url-gen/qualifiers/textAlignment'
 
 export default {
     components: {
@@ -115,8 +203,12 @@ export default {
             projects: null,
             modalTitle:null,
             modalText:null,
+            confirm:false,
             active: false,
+            requestObj : {},
             show: false,
+            idrdv:null,
+            rdvConfirm:false,
             successMessage: null,
             errorMessage: null,
             startRange: new Date(),
@@ -168,6 +260,11 @@ export default {
             }
         }
     },
+    computed: {
+        user() {
+            return this.$store.state.user
+        },
+    },
 
     async mounted() {
         if (this.$route.params.projectId)
@@ -199,20 +296,39 @@ export default {
             console.log(error)
         }
     },
-    computed: {
-        async user() {
-            return await this.$store.state.user
-        },
-    },
     methods: {
-        toggleModal() {
-      const body = document.querySelector("body");
-      this.active = !this.active;
-      this.active
-        ? body.classList.add("modal-open")
-        : body.classList.remove("modal-open");
-      setTimeout(() => (this.show = !this.show), 10);
-    },
+        edit(e){
+            console.log(e)
+            if(e?.target.classList.contains('ok')){
+                console.log("rdv enregistrement");
+                this.axios
+                    .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/rdv/${this.idRdv}`, this.requestObj)
+                    .then((response) => {
+                        console.log(response.data)
+                        this.toggleModal();
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        this.errorMessage = "Votre RDV n'a pas pu être modifié"
+                        this.toggleModal();
+                    });
+            }
+
+
+        },
+        toggleModal(e) {
+            console.log(e?.target)
+            
+            const body = document.querySelector("body");
+            this.active = !this.active;
+            this.active
+                ? body.classList.add("modal-open")
+                : body.classList.remove("modal-open");
+            setTimeout(() => (this.show = !this.show), 10);
+            
+            
+            
+        },
         goToday: function () {
             this.startRange = new Date();
             this.endRange = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
@@ -337,8 +453,8 @@ export default {
             this.calendar.apiCalendar.getEvents().forEach(e => {
                 isFree = !isFree ? false : this.free(new Date(this.calendar.apiCalendar.getEventById(e._def.publicId)._instance
                     .range.start), new Date(info.start), this.calendar.apiCalendar
-                        .getEventById(e._def.publicId)._instance.range.end,
-                    new Date(info.end));
+                    .getEventById(e._def.publicId)._instance.range.end,
+                new Date(info.end));
             })
             if (!isFree)
             {    
@@ -358,28 +474,22 @@ export default {
             this.rdv.beginning_hour = info.start
             this.rdv.ending_hour = info.end;
         },
-        handleEditEvent(info) {
+        async handleEditEvent(info) {
 
             console.log(info)
-            let requestObj = {}
-            requestObj.beginning_hour = new Date(info.event._instance.range.start);
-            requestObj.ending_hour = new Date(info.event._instance.range.end);
+            this.requestObj = {}
+            this.requestObj.beginning_hour = new Date(info.event._instance.range.start);
+            this.requestObj.ending_hour = new Date(info.event._instance.range.end);
             console.log("changement rdv")
-            const idRdv = info.event._def.publicId
-            const isOk = confirm("Voulez vous valider la modification de rdv?");
-            if (isOk) {
-                this.axios
-                .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/rdv/${idRdv}`, requestObj)
-                .then((response) => {
-                    console.log(response.data)
-
-                })
-                .catch((err) => {
-                    console.log(err)
-                    this.errorMessage = "Votre RDV n'a pas pu être modifié"
-                });
-            }
-
+            this.idRdv = info.event._def.publicId
+            this.modalTitle="Confirmation"
+            this.modalText="Voulez vous valider la modification de rdv?"
+            this.confirm=true
+            this.toggleModal()
+            
+            //const isOk = confirm("Voulez vous valider la modification de rdv?");
+           
+            
 
         },
         free(dateStart, dateEventStart, dateEnd, dateEventEnd) {

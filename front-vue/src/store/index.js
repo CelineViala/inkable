@@ -74,22 +74,22 @@ export default createStore({
             
             //récupération des styles a afficher dans les balises select
             axios
-            .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/styles`)
-            .then((response)=>{ 
-                commit('getAllStyles',response.data.map((item)=> item.name).sort());
-            })
-            .catch(err=>{
+                .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/styles`)
+                .then((response)=>{ 
+                    commit('getAllStyles',response.data.map((item)=> item.name).sort());
+                })
+                .catch(err=>{
                 
-            })
+                })
         },
         async transformImg({commit},img){
             const cld = new Cloudinary({
                 cloud: {
-                  cloudName: process.env.VUE_APP_ENV_CLOUDINARY_CLOUDNAME,
-                  apiKey:process.env.VUE_APP_ENV_CLOUDINARY_APIKEY,
-                  apiSecret:process.env.VUE_APP_ENV_CLOUDINARY_APISECRET
+                    cloudName: process.env.VUE_APP_ENV_CLOUDINARY_CLOUDNAME,
+                    apiKey:process.env.VUE_APP_ENV_CLOUDINARY_APIKEY,
+                    apiSecret:process.env.VUE_APP_ENV_CLOUDINARY_APISECRET
                 }
-              }); 
+            }); 
             
             const myImage = cld.image(img.public_id);
             
@@ -102,27 +102,27 @@ export default createStore({
         getAllCities({commit}){
             //récupération des styles a afficher dans les balises select
             axios
-            .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/cities`)
-            .then((response)=>{ 
-                commit('getAllCities',this.cities=response.data[0].map((item)=> item.city).sort());
+                .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/cities`)
+                .then((response)=>{ 
+                    commit('getAllCities',this.cities=response.data[0].map((item)=> item.city).sort());
 
-            })
-            .catch(err=>{
+                })
+                .catch(err=>{
 
-            })
+                })
         },
         createRequestObjForCloudinary({commit},event){   
             let reader=new FileReader();
             let clientFile;
             reader.addEventListener("load", ()=>{
-            clientFile=reader.result;
-            console.log(clientFile);
-            let requestObj={
-                url:process.env.VUE_APP_ENV_CLOUDINARY_UPLOAD_URL,
-                method:"POST",
-                data:{upload_preset:process.env.VUE_APP_ENV_CLOUDINARY_PRESET,file:clientFile}
-            }
-            commit('createRequestObjForCloudinary',requestObj); 
+                clientFile=reader.result;
+                console.log(clientFile);
+                let requestObj={
+                    url:process.env.VUE_APP_ENV_CLOUDINARY_UPLOAD_URL,
+                    method:"POST",
+                    data:{upload_preset:process.env.VUE_APP_ENV_CLOUDINARY_PRESET,file:clientFile}
+                }
+                commit('createRequestObjForCloudinary',requestObj); 
             })
 
             reader.readAsDataURL(event.target.files[0]);
