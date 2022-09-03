@@ -20,10 +20,14 @@
       <!-- Première carte projet -->
       <div class="container py-5 h-10">
         <h4 class="text-white">
-          Projets en cours
+          Projets
         </h4>
+        <p v-if="!$store.state.user.projects.length">
+          Vous n'avez pas encore de projets en cours.
+        </p> 
         <div
           v-for="project in $store.state.user.projects"
+          :key="project.id"
           class="container py-4"
         >
           <div class="row d-flex justify-content-center align-items-center h-100">

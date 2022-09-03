@@ -119,8 +119,11 @@
       <!-- Première carte projet -->
       <div class="container py-5 h-10">
         <h4 class="text-white text-center">
-          Projets en cours
+          Projets
         </h4>
+        <p v-if="!$store.state.user.projects.length">
+          Vous n'avez pas encore de projets en cours
+        </p> 
         <div
           v-for="projet in pro.projects"
           :key="projet.id"
@@ -176,12 +179,29 @@ export default {
                 initialView: 'listDay',
                 height: 300,
                 titleFormat: // will produce something like "Tuesday, September 18, 2018"
-        {
-            weekday: 'long',
-            month: 'long',
-            year: 'numeric',
-            day: '2-digit'
-        },
+                {
+                    weekday: 'long',
+                    month: 'long',
+                    year: 'numeric',
+                    day: '2-digit'
+                },
+                views: {
+                    listDay: { buttonText: 'Journée' },
+                    listWeek: { buttonText: 'Semaine' },
+                    listMonth: { buttonText: 'Mois' }
+                },
+                headerToolbar: {
+                    start: 'listDay listWeek listMonth',
+                    center: 'title'
+                   
+                },
+                titleFormat: // will produce something like "Tuesday, September 18, 2018"
+                {
+                    weekday: 'short',
+                    month: 'long',
+                    year: 'numeric',
+                    day: '2-digit',
+                },
                 locale: 'fr-FR',
                 selectable: true,
                 timeZone: 'locale',
@@ -213,6 +233,17 @@ export default {
         this.getListRdv();
     },
     methods:{
+        setDay(){
+            this.$refs.list.getApi().setOption('initialView','listDay');
+            console.log(this.$refs.list.getApi().getOption('initialView'));
+        },
+        setMonth(){
+            this.$refs.list.getApi().setOption('initialView','listMonth');
+            console.log(this.$refs.list.getApi().getOption('initialView'));
+        },
+        setWeek(){
+            this.$refs.list.getApi().setOption('initialView','listWeek');
+        },
         displayGallery(){
             this.$refs.gallery.classList.toggle("visually-hidden");
             if(this.$refs.gallery.classList.contains("visually-hidden"))
