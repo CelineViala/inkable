@@ -42,6 +42,7 @@ export default createStore({
         },
         setAnonymous(state){
             state.user.role="anonyme";
+            state.dataToken=null;
         },
         transformImg(state,url){
             state.url=url;
