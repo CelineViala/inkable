@@ -116,7 +116,7 @@
             <select
               id="inlineFormCustomSelect"
               v-model="editProject.status"
-              class="custom - select mr - sm - 2"
+              class="w-50 m-auto form-select"
             >
               <option
                 ref="accepted"
