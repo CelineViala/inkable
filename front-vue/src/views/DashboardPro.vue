@@ -157,8 +157,10 @@
                   
                   <!-- ce boutton amène sur la page de projet modifiable ATTENTION Penser à dynamyser avec un params id du projet-->
                   <router-link
+                    :data-projectId="projet.id"
                     :to="{name:'Project', params:{id:projet.id}}"
                     class="btn btn-primary"
+                    @click="deleteNotif"
                   >
                     Détail du projet
                   </router-link>
@@ -256,14 +258,26 @@ export default {
         this.getListRdv();
     },
     methods:{
+        async deleteNotif(e){
+            console.log("test")
+            try {
+                const projectId=e.target.getAttribute('data-projectId');
+                await this.axios.post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/projet/${projectId}/notifs`,{role:'pro'});   
+            } catch (error) {
+                console.log(error);
+            }
+        },
         formateEvent: function (arg) {
             const rdvElm=document.createElement('div');
             const linkElm=document.createElement('a');
-            linkElm.classList.add('link-project');
-            
-            linkElm.textContent="lien vers le projet";
-            linkElm.setAttribute("href",`project/${arg.event.extendedProps.project_id}`)
             rdvElm.textContent=`${arg.event.title} ${arg.event.extendedProps.description}`;
+            if(arg.event.extendedProps.project_id)
+            {
+                linkElm.classList.add('link-project');
+              
+                linkElm.textContent="lien vers le projet";
+                linkElm.setAttribute("href",`project/${arg.event.extendedProps.project_id}`)
+            }
             let arrayOfDomNodes = [rdvElm,linkElm]
             return {
                 domNodes: arrayOfDomNodes

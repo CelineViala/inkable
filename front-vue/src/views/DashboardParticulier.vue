@@ -51,8 +51,10 @@
                   <!-- Ce bouton amène sur la page de projet non modifiable, seul le pro peut le faire -->
                   <router-link
                     class="btn btn-primary"
+                    :data-projectId="project.id"
                     :to="{ name:'ProjectParticulier', params: {id:project.id} }"
                     role="button"
+                    @click="deleteNotif"
                   >
                     Détails du projet
                   </router-link>
@@ -118,6 +120,15 @@ export default {
    
     },
     methods:{
+        async deleteNotif(e){
+            console.log("test")
+            try {
+                const projectId=e.target.getAttribute('data-projectId');
+                console.log(await this.axios.post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/projet/${projectId}/notifs`,{role:'consumer'}));   
+            } catch (error) {
+                console.log(error);
+            }
+        },
         addEvents(){
             const rdvs=[];
             const projects=this.$store.state.user.projects;

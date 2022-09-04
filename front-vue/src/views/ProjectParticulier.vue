@@ -2,13 +2,37 @@
   <section class=" gradient-custom">
     <div class="container py-5 h-100">
       <div
+        v-if="notif"
+        ref="notifs"
+        class=" top-0 badge m-1"
+      >
+        <button
+          type="button"
+          class="btn-close m-1 bg-light"
+          aria-label="Close"
+          @click="deleteNotif"
+        />
+          
+        <p
+          v-for="n in project.notifs"
+          :key="n.id"
+          class="d-block"
+        >
+          <span
+            v-if="n.name!=='Nouveau(x) message(s) client'"
+            class="badge bg-danger m-1 fs-6"
+          >{{ n.name }}</span>
+        </p>
+      </div>
+      <div
         class="card bg-dark text-white"
         style="border-radius: 1rem;"
       >
         <div class="card-body">
           <h3><strong>Tatoueur : </strong>{{ pro_name }}</h3>
         </div>
-
+        
+        
         <div class="card-body">
           <h1 class="card-title">
             {{ project.title }}
@@ -98,7 +122,7 @@
 
   <section class="gradient-custom">
     <div class="container py-5 h-100">
-      <div class="card bg-dark text-white ">
+      <div class="card bg-dark text-white messages">
         <div class="card-body">
           <!-- Titre -->
           <h1 class="card-title">
@@ -197,6 +221,7 @@ export default {
             newMessage: {
 
             },
+            notif:false,
             messageSuccess: null,
             messageError: null,
             calendarApi: null,
@@ -233,15 +258,19 @@ export default {
         }
     },
 
-    async created() {
+    async mounted() {
+        setTimeout(() => {
+            this.scrollToBottom()
+        
+        }, 100);
         this.axios
             .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/projet/${this.$route.params.id}`)
             .then((response) => {
-                console.log('response data',response.data);
                 this.project=response.data;
                 this.pro_name=response.data.pro.studio_name;
                 this.statusColor();
-          
+                console.log(this.project)
+                if(this.project.notifs.length) this.notif=true;
 
                 if (response.data.color)
                     this.project.color = "Couleur";
@@ -257,7 +286,7 @@ export default {
                 rdvs.forEach(rdv => {
                     this.calendarApi.addEvent({
                         id: rdv.id,
-                        title: rdv.title,
+                        title: `RDV avec "${this.project.pro.studio_name}" pour : ${rdv.note}`,
                         extendedProps: {
                             description: rdv.note,
                         },
@@ -270,6 +299,20 @@ export default {
     },
 
     methods: {
+        async deleteNotif(e){
+            try {
+                
+                await this.axios.post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/projet/${this.$route.params.id}/notifs`,{role:'consumer'});   
+                this.notif=false;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        scrollToBottom(){
+            let messageElm = document.querySelector(".messages");
+            messageElm.scrollTop+=messageElm.scrollHeight
+            console.log(messageElm.scrollTop)
+        },
         validFormMessage() {
             console.log(this.newMessage);
             const idProject=this.$route.params.id;
@@ -286,6 +329,9 @@ export default {
 
                     this.newMessage={};
                     this.messageSuccess="Votre message a bien été envoyé";
+                    setTimeout(() => {
+                        this.scrollToBottom()
+                    }, 100);
                     this.messageError=null;
                     response.data.consumer=this.$store.state.user;
                     console.log('response data', response.data)
@@ -320,5 +366,8 @@ export default {
 /* fallback for old browsers */
 background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
 };
-
+.messages{
+  max-height: 600px;
+  overflow-y: scroll;
+}
 </style>

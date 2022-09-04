@@ -314,8 +314,7 @@ export default {
 
         },
         toggleModal(e) {
-            console.log(e?.target)
-            
+           
             const body = document.querySelector("body");
             this.active = !this.active;
             this.active
@@ -370,6 +369,7 @@ export default {
             del.textContent = "❌";
             let projet = document.createElement('a');
             projet.classList.add("classLink");
+            projet.setAttribute("data-projectId",arg.event.extendedProps.project_id);
             projet.setAttribute("href", `/project/${arg.event.extendedProps.project_id}`);
             projet.textContent = arg.event.extendedProps.project_id ? "lien vers le projet" : "";
             edit.id = event.id;
@@ -422,11 +422,12 @@ export default {
             this.$refs.buttonValid.setAttribute("hidden", "hidden");
             const rdvElm = e.target.parentNode;
             const event = this.$refs.fullCalendar.getApi().getEventById(e.target.id)._instance.range
-            console.log(event.start, event.end)
+            console.log(rdvElm)
 
             this.$refs.dataElm.textContent = `${this.format(event.start)} - ${this.format(event.end)}`
             this.rdv.title = rdvElm.querySelector(".titleRdv").textContent;
             this.rdv.note = rdvElm.querySelector(".descriptionRdv").textContent;
+            this.rdv.project_id=rdvElm.querySelector('.classLink').getAttribute("data-projectId");
 
 
         },
@@ -550,6 +551,8 @@ export default {
         async modify(e) {
             this.$refs.formElm.style.display = 'none';
             console.log(this.rdv);
+            if(this.rdv.project_id==='null'||this.rdv.project_id===undefined)
+                this.rdv.project_id=null;
             //enregistrement bdd
             try {
                 const response = await this.axios.patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/rdv/${e.target.id}`, this.rdv);

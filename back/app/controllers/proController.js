@@ -97,7 +97,6 @@ module.exports = {
                 include: ['notifs'],
             }],
         });
-        console.log(findOnePro.projects[0].notifs[0]);
         // Renvoyer la réponse si on trouve
         if (findOnePro) {
             res.json(findOnePro);

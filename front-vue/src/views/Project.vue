@@ -2,6 +2,29 @@
   <section class=" gradient-custom">
     <div class="container py-5 h-100">
       <div
+        v-if="notif"
+        ref="notifs"
+        class="top-0 badge m-1"
+      >
+        <button
+          type="button"
+          class="btn-close m-1 bg-light"
+          aria-label="Close"
+          @click="deleteNotif"
+        />
+          
+        <p
+          v-for="n in editProject.notifs"
+          :key="n.id"
+          class=" d-block"
+        >
+          <span
+            v-if="n.name==='Nouveau(x) message(s) client'"
+            class="badge bg-danger fs-6 m-1"
+          >{{ n.name }}</span>
+        </p>
+      </div>
+      <div
         class="card bg-dark text-white"
         style="border-radius: 1rem;"
       >
@@ -19,8 +42,10 @@
               <input
                 id="typeText"
                 v-model="editProject.title"
+                data-field="title"
                 type="text"
                 class="form-control form-control-lg"
+                @change="handleChange"
               >
             </div>
           </div>
@@ -35,8 +60,10 @@
               <textarea
                 id="typeText"
                 v-model="editProject.description"
+                data-field="description"
                 type="text"
                 class="form-control form-control-lg"
+                @change="handleChange"
               />
             </div>
           </div>
@@ -56,8 +83,10 @@
                   <input
                     id="typeText"
                     v-model="editProject.area"
+                    data-field="area"
                     type="text"
                     class="form-control form-control-lg"
+                    @change="handleChange"
                   >
                 </div>
               </div>
@@ -72,14 +101,16 @@
                 <div class="flex-grow-1 ms-3">
                   <!-- Coloration -->
                   <div class="form-outline form-white mb-4 form-check-inline">
-                    <input
+                    <input 
                       id="flexRadioDefault1"
                       ref="inputTest"
                       v-model="editProject.color"
                       class="form-check-input m-1"
                       type="radio"
+                      data-field="color"
                       name="flexRadioDefault"
                       value="black_and_white"
+                      @change="handleChange"
                     >
                     <label
                       class="form-check-label"
@@ -93,8 +124,10 @@
                       v-model="editProject.color"
                       class="form-check-input m-1"
                       type="radio"
+                      data-field="color"
                       name="flexRadioDefault"
                       value="color"
+                      @change="handleChange"
                     >
                     <label
                       class="form-check-label"
@@ -116,7 +149,9 @@
             <select
               id="inlineFormCustomSelect"
               v-model="editProject.status"
+              data-field="status"
               class="w-50 m-auto form-select"
+              @change="handleChange"
             >
               <option
                 ref="accepted"
@@ -198,19 +233,20 @@
   <!-- Section des Messages -->
 
   <section class="gradient-custom">
+    <h1 class="card-title">
+      Messages
+    </h1>
     <div class="container py-5 h-100">
-      <div class="card bg-dark text-white ">
+      <div class="card bg-dark text-white messages">
         <div class="card-body">
           <!-- Titre -->
-          <h1 class="card-title">
-            Messages
-          </h1>
         </div>
 
 
         <!-- Conteneur des messages à dupplique en cas de nouveau message-->
         <div
           v-for="message in editProject.messages"
+          :key="message.id"
           lass="container_messages py-3 h-100"
         >
           <div class="card-body">
@@ -244,7 +280,7 @@
           </div>
         </div>
         
-        <div class="card-body">
+        <div class="card-body msg">
           <form>
             <div class="form-outline form-white mb-4">
               <label
@@ -295,6 +331,7 @@ export default {
             newMessage: {
 
             },
+            notif:false,
             messageOk:null,
             messageNotOk:null,
             successMessage: null,
@@ -304,6 +341,7 @@ export default {
             last_name_client:null,
             project_id:null,
             editProject: {},
+            reqObject:{},
             calendarOptions: {
                 plugins: [listPlugin, dayGridPlugin, interactionPlugin],
                 initialView: 'listYear',
@@ -334,11 +372,15 @@ export default {
         }
     },
     mounted() { 
-      
+        setTimeout(() => {
+            this.scrollToBottom()
+        
+        }, 100);
+       
         this.axios
             .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/projet/${this.$route.params.id}`)
             .then((response) => {
-                console.log(">>>>>>>>>>>>>>>>>",response.data);
+                if(response.data.notifs.length!==0) this.notif=true;
                 this.project_id=response.data.id;
                 this.first_name_client=response.data.consumer.first_name;
                 this.last_name_client=response.data.consumer.last_name;
@@ -347,16 +389,16 @@ export default {
                     this.editProject.color = "color";
                 else
                     this.editProject.color = "black_and_white";
-
+                
                 if (response.data.status === "accepté")
                     this.$refs.accepted.setAttribute("selected", true);
                 else if (response.data.status === "en attente")
                     this.$refs.waiting.setAttribute("selected", true);
                 if (response.data.status === "refusé")
                     this.$refs.refused.setAttribute("selected", true);
-
+                
                 const rdvs = this.editProject.appointments;
-
+                
                 this.calendarApi = this.$refs.list.getApi();
                 rdvs.forEach(rdv => {
                     this.calendarApi.addEvent({
@@ -374,7 +416,43 @@ export default {
        
     },
     methods: {
-    
+        async deleteNotif(e){
+            try {
+                
+                await this.axios.post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/projet/${this.$route.params.id}/notifs`,{role:'pro'});   
+                this.notif=false;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        scrollToBottom(){
+            let messageElm = document.querySelector(".messages");
+            messageElm.scrollTop+=messageElm.scrollHeight
+            console.log(messageElm.scrollTop)
+        },
+        handleChange(e){
+            switch (e.target.getAttribute("data-field")) {
+            case "title":
+                this.reqObject.title=this.editProject.title;
+                break;
+            case "description":
+                this.reqObject.description=this.editProject.description;
+                break;
+            case "area":
+                this.reqObject.area=this.editProject.area;
+                break;
+            case "color":
+                this.reqObject.color=this.editProject.color;
+                this.reqObject.color=this.reqObject.color=== "color" ? true : false;
+                break;
+            case "status":
+                this.reqObject.status=this.editProject.status;
+                break;
+            default:
+                break;
+            }
+            console.log(this.reqObject)
+        },
         validFormMessage() {
             console.log(this.newMessage);
             const idProject=this.$route.params.id;
@@ -393,6 +471,10 @@ export default {
 
                     this.newMessage={};
                     this.messageOk="Votre message a bien été envoyé";
+                    setTimeout(() => {
+                        this.scrollToBottom()
+        
+                    }, 100);
                     this.messageNotOk=null;
                     response.data.pro=this.$store.state.user;
                     console.log('response data', response.data)
@@ -408,18 +490,9 @@ export default {
 
         editProjectForm() {
 
-            const reqProject = {
-                area: this.editProject.area,
-                description: this.editProject.description,
-                consumer_id: this.editProject.consumer_id,
-                pro_id: this.editProject.pro_id,
-                status: this.editProject.status,
-                title: this.editProject.title,
-            }
-            reqProject.color = this.editProject.color === "color" ? true : false;
-
+            
             this.axios
-                .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/projet/${this.project_id}`, reqProject)
+                .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/projet/${this.project_id}`, this.reqObject)
                 .then((response) => {
                     console.log(response.data);
                     this.errorMessage = null;
@@ -447,6 +520,12 @@ export default {
 
 .flex-row {
   padding-right:500px
+}
+
+.messages{
+  display: block;
+  max-height: 600px;
+  overflow-y: scroll;
 }
 
 ;

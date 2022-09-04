@@ -303,7 +303,10 @@ router.get('/api/consumer/:id/projet', controllerHandler(projectController.getAl
 
 router.post('/api/message', validate('body', messageCreateSchema), controllerHandler(projectController.createMessage));
 
-// ##################################################
+//! à commenter(suppression notif)
+router.post('/api/projet/:id/notifs', controllerHandler(projectController.deleteNotifs));
+
+// ##################################################.
 // ########## Routes pour la partie search ##########
 // ##################################################
 
