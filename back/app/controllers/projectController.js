@@ -1,9 +1,11 @@
 /* eslint-disable object-shorthand */
+const { request } = require('http');
 const {
     Project,
     Pro,
     Consumer,
     Message,
+    Notif,
 } = require('../models');
 
 module.exports = {
@@ -163,6 +165,17 @@ module.exports = {
 
     async createMessage(req, res) {
         const newMessage = await Message.create(req.body);
+        const project = await Project.findByPk(req.body.project_id);
+        console.log(req.body);
+        if (req.body.pro_id) {
+            const notif = await Notif.findOne({ where: { name: 'Nouveau(x) message(s) tatoueur' } });
+            await project.addNotif(notif);
+            await notif.addProject(project);
+        } else if (req.body.consumer_id) {
+            const notif = await Notif.findOne({ where: { name: 'Nouveau(x) message(s) client' } });
+            await project.addNotif(notif);
+            await notif.addProject(project);
+        }
         return res.json(newMessage);
     },
 };

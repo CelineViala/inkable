@@ -19,7 +19,7 @@ module.exports = {
         const consumer = await Consumer.findByPk(id, {
             include: {
                 association: 'projects',
-                include: ['appointments', 'pro'],
+                include: ['appointments', 'pro', 'notifs'],
             },
         });
         // Envoyer le résultat si ok

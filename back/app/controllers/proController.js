@@ -85,9 +85,19 @@ module.exports = {
     async getOnePro(req, res) {
         // Récupérer l'id et le pro
         const { id } = req.params;
+        // const project = await Project.findByPk(id, {
+        //     include: ['appointments', 'consumer', 'pro', {
+        //         association: 'messages',
+        //         include: ['pro', 'consumer'],
+        //     }],
+        // });
         const findOnePro = await Pro.findByPk(id, {
-            include: ['styles', 'tattoos', 'appointments', 'projects'],
+            include: ['styles', 'tattoos', 'appointments', {
+                association: 'projects',
+                include: ['notifs'],
+            }],
         });
+        console.log(findOnePro.projects[0].notifs[0]);
         // Renvoyer la réponse si on trouve
         if (findOnePro) {
             res.json(findOnePro);
