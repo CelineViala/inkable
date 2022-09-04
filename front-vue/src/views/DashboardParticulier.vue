@@ -36,6 +36,15 @@
                 class="card bg-dark text-white"
                 style="border-radius: 1rem;"
               >
+                <div class="d-inline-flex flex-wrap m-3">
+                  <p 
+                    v-for="notif in project.notifs"
+                    :key="notif.id"
+                    class="badge bg-danger m-1"
+                  >
+                    <span v-if="notif.name!=='Nouveau(x) message(s) client'">{{ notif.name }}</span>
+                  </p>
+                </div>
                 <div class="card-body p-4">
                   <h5>{{ project.title }}</h5>
                   <p>{{ project.area }}</p>

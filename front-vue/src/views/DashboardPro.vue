@@ -135,6 +135,15 @@
                 class="card bg-dark text-white position-relative"
                 style="border-radius: 1rem;"
               >
+                <div class="d-inline-flex flex-wrap m-3">
+                  <p 
+                    v-for="notif in projet.notifs"
+                    :key="notif.id"
+                    class="badge bg-danger m-1"
+                  >
+                    <span v-if="notif.name==='Nouveau(x) message(s) client'">{{ notif.name }}</span>
+                  </p>
+                </div>
                 <span
                   v-if="projet.status==='en attente'"
                   class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger p-2"
@@ -145,6 +154,7 @@
                 <div class="card-body p-4">
                   <h5>{{ projet.title }}</h5>
                   <p>Zone de tatouage : {{ projet.area }} </p>
+                  
                   <!-- ce boutton amène sur la page de projet modifiable ATTENTION Penser à dynamyser avec un params id du projet-->
                   <router-link
                     :to="{name:'Project', params:{id:projet.id}}"
@@ -222,13 +232,19 @@ export default {
     },
     created(){
  
-    
+        console.log(this.$store.state.user)
         //récupération du pro en bdd;
         this.axios
             .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}`)
             .then((response) => {
-                this.pro=response.data;   
+                this.pro=response.data;  
                 console.log(response.data);
+                this.pro.projects.forEach((project,indexProject)=>{
+                    project.notifs.forEach((notif,indexNotif)=>{
+                        console.log(notif,indexProject,indexNotif)
+                          
+                    })
+                })
             })
             .catch((err)=>{
                 console.log(err);       
