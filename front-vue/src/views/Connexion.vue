@@ -18,29 +18,29 @@
               
                 <form>
                   <div class="form-outline form-white mb-4">
+                    <label
+                      class="form-label"
+                      for="email"
+                    >Email</label><span class="text-danger"> * </span>
                     <input
                       id="email"
                       v-model="user.email"
                       type="email"
                       class="form-control form-control-lg"
                     >
-                    <label
-                      class="form-label"
-                      for="email"
-                    >Email</label><span class="text-danger"> * </span>
                   </div>
 
                   <div class="form-outline form-white mb-4">
+                    <label
+                      class="form-label"
+                      for="password"
+                    >Mot de passe</label><span class="text-danger"> * </span>
                     <input
                       id="password"
                       v-model="user.password"
                       type="password"
                       class="form-control form-control-lg"
                     >
-                    <label
-                      class="form-label"
-                      for="password"
-                    >Mot de passe</label><span class="text-danger"> * </span>
                   </div>
 
                   <p class="small mb-5 pb-lg-2">

@@ -61,10 +61,10 @@
                         id="color"
                         v-model="newPro.color"
                         type="checkbox"
-                        class="form-check-input"
+                        class="form-check-input me-2"
                       >
                       <label
-                        class="form-check-label"
+                        class="form-check-label "
                         for="color"
                       >Tatouages couleur</label>
                     </div>
@@ -74,7 +74,7 @@
                         id="blackAndWhite"
                         v-model="newPro.black_and_white"
                         type="checkbox"
-                        class="form-check-input"
+                        class="form-check-input me-2"
                       >
                       <label
                         class="form-check-label"
@@ -94,7 +94,7 @@
                           :id="style"
                           v-model="newPro.styles"
                           type="checkbox"
-                          class="form-check-input"
+                          class="form-check-input me-2"
                           :value="style"
                         >
                         <label

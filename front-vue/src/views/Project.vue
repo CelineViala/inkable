@@ -106,7 +106,7 @@
                       id="flexRadioDefault1"
                       ref="inputTest"
                       v-model="editProject.color"
-                      class="form-check-input m-1"
+                      class="form-check-input m-1 me-2"
                       type="radio"
                       data-field="color"
                       name="flexRadioDefault"
@@ -123,7 +123,7 @@
                     <input
                       id="flexRadioDefault2"
                       v-model="editProject.color"
-                      class="form-check-input m-1"
+                      class="form-check-input m-1 me-2"
                       type="radio"
                       data-field="color"
                       name="flexRadioDefault"
@@ -234,16 +234,13 @@
   <!-- Section des Messages -->
 
   <section class="gradient-custom">
-    <h1 class="card-title">
-      Messages
-    </h1>
     <div class="container py-5 h-100">
+      <div class="card-body text-white bg-dark">
+        <h1 class="card-title">
+          Messages
+        </h1>
+      </div>
       <div class="card bg-dark text-white messages">
-        <div class="card-body">
-          <!-- Titre -->
-        </div>
-
-
         <!-- Conteneur des messages à dupplique en cas de nouveau message-->
         <div
           v-for="message in editProject.messages"
