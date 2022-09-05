@@ -1,13 +1,15 @@
 const Joi = require('joi');
 
 module.exports = Joi.object({
-    email: Joi.string()
+    email: Joi
+        .string()
+        .email()
         .required()
         .messages({
+            'string.email': 'L\'email est invalide',
             'string.empty': 'Le champ email doit être rempli',
             'any.required': 'Le champ email est un champ obligatoire',
         }),
-
     password: Joi.string().min(8)
         .required()
         .messages({
