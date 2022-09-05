@@ -105,6 +105,7 @@
               <button
                 type="button"
                 class="btn btn-danger"
+                @click="deleteProfile"
               >
                 Supprimer mon compte
               </button>
@@ -217,7 +218,25 @@ export default {
                         return
                     })
             }
-        }
+        },
+
+        async deleteProfile(e) {
+            e.preventDefault();
+            this.axios
+                .delete(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/consumer/${this.$store.state.user.id}`, )
+                .then((response) => {
+                    console.log(response.data);
+                    this.errorMessage = null;
+                    this.waitingMessage=null;
+                    this.successMessage = "Le compte a bien été supprimé";
+                })
+                .catch((err) => {
+                    console.log(err);
+                    this.successMessage=null;
+                    this.waitingMessage=null;
+                    this.errorMessage = err.response.data.message;
+                })
+        },
     }
 }
 
