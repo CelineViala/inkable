@@ -25,6 +25,10 @@
             <h5 class="text-muted">
               Solution finder
             </h5>
+            <a
+              href="https://www.linkedin.com/in/devcelinev/"
+              target="_blank"
+            > <i class="bi bi-linkedin" /></a>
           </div>
         </div>
                 
@@ -75,6 +79,10 @@
             <h5 class="text-muted">
               Harmonisation designer
             </h5>
+            <a
+              href="https://www.linkedin.com/in/lauriealarcon/"
+              target="_blank"
+            > <i class="bi bi-linkedin" /></a>
           </div>
         </div>
       </div>
