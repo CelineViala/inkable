@@ -1,4 +1,6 @@
-const { Appointment, Pro } = require('../models');
+const {
+    Appointment, Pro, Project, Notif,
+} = require('../models');
 
 module.exports = {
 
@@ -40,6 +42,10 @@ module.exports = {
         if (!pro) throw new Error(`Aucun pro à l'id ${id}`, { statusCode: 404 });
         // la validation des champs obligatoire se fait avec Joi
         // Créer le rdv
+        const project = await Project.findByPk(req.body.project_id);
+        const notif = await Notif.findOne({ where: { code: 'new_rdv' } });
+        await project.addNotif(notif);
+        await notif.addProject(project);
         const newRdv = await Appointment.create({
             title: req.body.title,
             note: req.body.note,
@@ -66,6 +72,7 @@ module.exports = {
         const pro = await Pro.findByPk(idPro);
         if (!pro) throw new Error(`Aucun pro à l'id ${idPro}`, { statusCode: 404 });
         const appointment = await Appointment.findByPk(idRdv);
+
         // Modifier le rdv si trouvé avec les infos du body
         if (appointment) {
             if (req.body.title) {
@@ -79,6 +86,16 @@ module.exports = {
             }
             if (req.body.ending_hour) {
                 appointment.ending_hour = req.body.ending_hour;
+            }
+            if (req.body.project_id !== undefined) {
+                appointment.project_id = req.body.project_id;
+            }
+
+            if (appointment.project_id) {
+                const project = await Project.findByPk(appointment.project_id);
+                const notif = await Notif.findOne({ where: { code: 'edit_rdv' } });
+                await project.addNotif(notif);
+                await notif.addProject(project);
             }
             // Sauvegarder en bdd
             const appointmentSaved = await appointment.save();
@@ -104,6 +121,12 @@ module.exports = {
         if (!pro) throw new Error(`Aucun pro à l'id ${idPro}`, { statusCode: 404 });
         const appointment = await Appointment.findByPk(idRdv);
         // Supprimer si on trouve et envoi d'une réponse au front
+        if (appointment.project_id) {
+            const project = await Project.findByPk(appointment.project_id);
+            const notif = await Notif.findOne({ where: { name: 'Annulation RDV' } });
+            await project.addNotif(notif);
+            await notif.addProject(project);
+        }
         if (appointment) {
             await appointment.destroy();
             res.json('RDV supprimé');

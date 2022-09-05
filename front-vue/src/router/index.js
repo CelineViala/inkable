@@ -18,6 +18,8 @@ const store = require('../store')
 function checkAuthorization(user,id)
 {
     
+    if(user.role=='anonyme')
+        return false;
     let isAuthorized=false;
       
     for (let i = 0; i <user.projects.length; i++) {
@@ -184,7 +186,8 @@ router.beforeEach(async (to,from,next)=>{
     else if(to.name==='Planning')
     {
         let isAuthorized=true;
-        if(to.params.projectId!== '')
+        console.log(to.params.projectId)
+        if(to.params.projectId!== '' && to.params.projectId!== undefined)
             isAuthorized=checkAuthorization(store.default._state.data.user,Number(to.params.projectId));
         if(!isAuthorized)
         {
@@ -195,8 +198,8 @@ router.beforeEach(async (to,from,next)=>{
     }
     if(to.meta.roles && !to.meta.roles.includes(store.default._state.data.user.role)){
         return next({
-        path:'/connexion',
-    })   
+            path:'/connexion',
+        })   
     }
     return next();
    

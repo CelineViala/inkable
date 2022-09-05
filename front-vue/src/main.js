@@ -10,14 +10,14 @@ import Cloudinary from "cloudinary-vue";
 
 
 createApp(App)
-.use(Cloudinary, {
-    configuration: { 
-      cloudName: "dmoacy4yl",
-    },
-})
-.use(VueAxios,axios)
-.use(createStore)
-.use(router)
-.mount('#app');
+    .use(Cloudinary, {
+        configuration: { 
+            cloudName: "dmoacy4yl",
+        },
+    })
+    .use(VueAxios,axios)
+    .use(createStore)
+    .use(router)
+    .mount('#app');
 
 import "bootstrap/dist/js/bootstrap.js";

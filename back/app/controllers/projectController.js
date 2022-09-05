@@ -1,9 +1,11 @@
 /* eslint-disable object-shorthand */
+
 const {
     Project,
     Pro,
     Consumer,
     Message,
+    Notif,
 } = require('../models');
 
 module.exports = {
@@ -20,7 +22,7 @@ module.exports = {
         // Récupérer l'id et le projet
         const { id } = req.params;
         const project = await Project.findByPk(id, {
-            include: ['appointments', 'consumer', 'pro', {
+            include: ['appointments', 'consumer', 'pro', 'notifs', {
                 association: 'messages',
                 include: ['pro', 'consumer'],
             }],
@@ -66,13 +68,43 @@ module.exports = {
                 statusCode: 404,
             });
         }
+        console.log(req.body);
+        let notif;
+        let edit = false;
         // Modifier le projet avec les infos du body
-        if (req.body.title) project.title = req.body.title;
-        if (req.body.description) project.description = req.body.description;
-        if (req.body.status) project.status = req.body.status;
-        if (req.body.color !== undefined) project.color = req.body.color;
-        if (req.body.area) project.area = req.body.area;
+        if (req.body.title) {
+            project.title = req.body.title;
+            edit = true;
+        }
+        if (req.body.description) {
+            project.description = req.body.description;
+            edit = true;
+        }
+        if (req.body.status) {
+            project.status = req.body.status;
+        }
+        if (req.body.color !== undefined) {
+            project.color = req.body.color;
+            edit = true;
+        }
+        if (req.body.area) {
+            project.area = req.body.area;
+            edit = true;
+        }
+
+        if (req.body.status === 'accepté') {
+            notif = await Notif.findOne({ where: { code: 'accepted_project' } });
+        } else if (req.body.status === 'refusé') {
+            notif = await Notif.findOne({ where: { code: 'denied_project' } });
+        }
+        await project.addNotif(notif);
+        await notif.addProject(project);
         // Sauvegarder et envoyer la réponse
+        if (edit) {
+            notif = await Notif.findOne({ where: { name: 'Projet modifié' } });
+            await project.addNotif(notif);
+            await notif.addProject(project);
+        }
         await project.save();
         return res.json(project);
     },
@@ -160,9 +192,38 @@ module.exports = {
      * @param {object} res Express response object
      * @returns New message - Route API JSON response
      */
-
+    //! modifié
     async createMessage(req, res) {
         const newMessage = await Message.create(req.body);
+        const project = await Project.findByPk(req.body.project_id);
+
+        if (req.body.pro_id) {
+            const notif = await Notif.findOne({ where: { code: 'msg_pro' } });
+            await project.addNotif(notif);
+            await notif.addProject(project);
+        } else if (req.body.consumer_id) {
+            const notif = await Notif.findOne({ where: { code: 'msg_consumer' } });
+            await project.addNotif(notif);
+            await notif.addProject(project);
+        }
         return res.json(newMessage);
+    },
+    //! à commenter
+    async deleteNotifs(req, res) {
+        const project = await Project.findByPk(req.params.id, { include: 'notifs' });
+        project.notifs.forEach((notif) => {
+            if (req.body.role === 'consumer') {
+                if (notif.code !== 'msg_consumer') {
+                    notif.removeProject(project);
+                    project.removeNotif(notif);
+                }
+            } else if (req.body.role === 'pro') {
+                if (notif.code === 'msg_consumer') {
+                    notif.removeProject(project);
+                    project.removeNotif(notif);
+                }
+            }
+        });
+        return res.json('Notifs supprimées');
     },
 };

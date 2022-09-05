@@ -9,7 +9,7 @@
   "scripts": {
     "resetDB": "sqitch revert -y; sqitch deploy; DEBUG=import:* psql -d inkable -f ./data/seeding_V2.sql",
     "start": "node .",
-    "dev": "DEBUG=*,-express*,-nodemon*,-body-parser* npx nodemon"
+    "dev": "DEBUG=*,-express*,-sequelize*,-nodemon*,-body-parser* npx nodemon"
   },
   "repository": {
     "type": "git",
