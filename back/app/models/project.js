@@ -3,6 +3,18 @@ const sequelize = require('../config/db');
 
 class Project extends Model {}
 
+/**
+ * @typedef {object} Projet
+ * @property {number} id - Indentifiant unique, Pk de la table
+ * @property {text} title - Titre du projet
+ * @property {text} description - Annotations pour commenter le projet
+ * @property {text} status - Statut pour savoir si le projet est accépté ou annulé par exemple
+ * @property {boolean} color - Savoir si le projet sera en couleur ou noir et blanc
+ * @property {text} area - Zone du tatouage
+ * @property {number} pro_id - Id du pro auquel est rattaché le projet
+ * @property {number} consumer_id - Id du particulier auquel est rattaché le projet
+ */
+
 Project.init({
     title: DataTypes.TEXT,
     description: DataTypes.TEXT,

@@ -3,6 +3,12 @@ const sequelize = require('../config/db');
 
 class Style extends Model {}
 
+/**
+ * @typedef {object} Style
+ * @property {number} id - Indentifiant unique, Pk de la table
+ * @property {text} name - Nom du style
+ */
+
 Style.init({
     name: DataTypes.TEXT,
 }, {
