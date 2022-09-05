@@ -14,6 +14,7 @@ import Planning from '@/views/Planning.vue';
 import Page404 from '@/views/Page404.vue';
 import ProjectParticulier from '@/views/ProjectParticulier';
 import Createurs from '@/views/Createurs.vue';
+import axios from 'axios';
 const store = require('../store')
 function checkAuthorization(user,id)
 {
@@ -167,7 +168,23 @@ const router=createRouter({
 
 router.beforeEach(async (to,from,next)=>{
     try {
-        await store.default.dispatch('getUser');    
+        const token=localStorage.getItem("token");
+        //met le token dans le header 
+        axios.defaults.headers.common['Authorization']=`Bearer ${token}`
+        await store.default.dispatch('getUser');  
+        const user=store.default._state.data.user;
+        let hasNotif=false;
+        user.projects?.forEach(project => {
+            project.notifs?.forEach((notif)=> {
+                if(notif.code==='msg_consumer'&&user.role==='pro'){hasNotif=true}
+                else if(notif.code!=='msg_consumer'&&user.role==='consumer') {hasNotif=true;}
+            });
+        })
+        await store.default.dispatch('setNotifDashboard',{active:hasNotif});
+        console.log("notifs",store.default._state.data.hasNotif);
+
+       
+
     } catch (error) {
         console.log(error);
     }

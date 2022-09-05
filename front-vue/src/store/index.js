@@ -13,6 +13,7 @@ export default createStore({
             role:'anonyme'
         },
         styles:[],
+        hasNotif:false,
         cities:[],
         requestObj:{},
         url:null
@@ -46,6 +47,9 @@ export default createStore({
         },
         transformImg(state,url){
             state.url=url;
+        },
+        setNotifDashboard(state,hasNotif){
+            state.hasNotif=hasNotif;
         }
     },
     actions:{
@@ -145,6 +149,9 @@ export default createStore({
             console.log(router)
             router.default.push('/'); 
 
+        },
+        setNotifDashboard({commit},data){
+            commit('setNotifDashboard',data.active);
         },
         handleUploadToCloudinary({commit}){
             let instance = axios.create();
