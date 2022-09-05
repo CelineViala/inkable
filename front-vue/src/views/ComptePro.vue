@@ -35,7 +35,7 @@
                     id="studioName"
                     v-model="editPro.studio_name"
                     type="text"
-                    class="form-control"
+                    class="form-control "
                   >
                 </div>
 
@@ -140,7 +140,7 @@
                     <input
                       id="color"
                       v-model="editPro.color"
-                      class="form-check-input"
+                      class="form-check-input me-2"
                       type="checkbox"
                       value="color"
                     >
@@ -156,7 +156,7 @@
                     <input
                       id="bAndW"
                       v-model="editPro.black_and_white"
-                      class="form-check-input"
+                      class="form-check-input me-2"
                       type="checkbox"
                       value="bAndW"
                     >
@@ -180,7 +180,7 @@
                     <input
                       :id="style"
                       v-model="editPro.styles"
-                      class="form-check-input"
+                      class="form-check-input me-2"
                       type="checkbox"
                       :value="style"
                     >

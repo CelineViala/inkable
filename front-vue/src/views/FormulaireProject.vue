@@ -17,43 +17,43 @@
                 </p>
                 <form>
                   <div class="form-outline form-white mb-4">
+                    <label
+                      class="form-label"
+                      for="typeText"
+                    >Titre du projet</label>
                     <input
                       id="typeText"
                       v-model="newProject.title"
                       type="text"
                       class="form-control form-control-lg"
                     >
-                    <label
-                      class="form-label"
-                      for="typeText"
-                    >Titre du projet</label>
                   </div>
 
                   <div class="form-outline form-white mb-4">
                     <!-- <input v-model="newProject.description" type="text" id="typeText" class="form-control form-control-lg" />-->
+                    <label
+                      class="form-label"
+                      for="typeText"
+                    >Description</label> 
                     <textarea
                       id="typeText"
                       v-model="newProject.description"
                       type="text"
                       class="form-control form-control-lg"
                     />
-                    <label
-                      class="form-label"
-                      for="typeText"
-                    >Description</label> 
                   </div>
 
                   <div class="form-outline form-white mb-4">
+                    <label
+                      class="form-label"
+                      for="typeText"
+                    >Zone à tatouer</label>
                     <input
                       id="typeText"
                       v-model="newProject.area"
                       type="text"
                       class="form-control form-control-lg"
                     >
-                    <label
-                      class="form-label"
-                      for="typeText"
-                    >Zone à tatouer</label>
                   </div>
            
             
@@ -61,7 +61,7 @@
                     <input
                       id="flexRadioDefault1"
                       v-model="newProject.color"
-                      class="form-check-input"
+                      class="form-check-input me-2"
                       type="radio"
                       name="flexRadioDefault"
                       value="black_and_white"
@@ -78,7 +78,7 @@
                     <input
                       id="flexRadioDefault2"
                       v-model="newProject.color"
-                      class="form-check-input"
+                      class="form-check-input me-2"
                       type="radio"
                       name="flexRadioDefault"
                       value="color"

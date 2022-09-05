@@ -122,15 +122,12 @@
 
   <section class="gradient-custom">
     <div class="container py-5 h-100">
+      <div class="card-body text-white bg-dark">
+        <h1 class="card-title">
+          Messages
+        </h1>
+      </div>
       <div class="card bg-dark text-white messages">
-        <div class="card-body">
-          <!-- Titre -->
-          <h1 class="card-title">
-            Messages
-          </h1>
-        </div>
-
-
         <!--Conteneur des messages à dupplique en cas de nouveau message-->
         <div
           v-for="message in project.messages"
