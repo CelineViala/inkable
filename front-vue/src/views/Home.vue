@@ -162,6 +162,7 @@ export default {
             },
             cities:[],
             styles:[],
+            stylesByIdPro:{},
             pros:[],
             message: null   
         }
@@ -170,6 +171,10 @@ export default {
         try {
             const response=await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro`);
             this.pros=response.data;
+            this.pros.forEach((pro)=>{
+                this.stylesByIdPro[pro.id]=pro.styles;
+            })
+            
         } catch (error) {
             console.log(error)
         }
@@ -189,11 +194,10 @@ export default {
                 requestObj.color=this.searchForm.color;
             if( this.searchForm.black_and_white)
                 requestObj.black_and_white = this.searchForm.black_and_white ;
-            console.log(this.searchForm,requestObj)
+            
             if(!Object.keys(requestObj).length){
                 try {
                     const response=await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro`)
-                    console.log('response data', response.data);
                     this.pros=response.data;
                     return
                 } catch (error) {
@@ -202,9 +206,12 @@ export default {
             }
             try {
                 const response= await this.axios.post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/search`,requestObj);
-                console.log('response', response);
+
                 this.pros=response.data;
-                console.log('TEST', this.pros.length);
+                this.pros.forEach(pro=>{
+                    pro.styles=this.stylesByIdPro[pro.id];
+                  
+                })
                 if(this.pros.length === 0){
                     this.message="Pas de résultats, relancez votre recherche";
                 }
