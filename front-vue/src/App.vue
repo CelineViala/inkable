@@ -32,8 +32,14 @@
             to="/dashbord-pro"
             class="text-decoration-none"
           >
-            <div class="nav-link text-dark">
+            <div class="nav-link text-dark position-relative">
               Dashboard
+              <span
+                v-if="$store.state.hasNotif"
+                class="position-absolute top-0 start-120 translate-middle p-2 bg-danger border border-light rounded-circle"
+              >
+                <span class="visually-hidden">New alerts</span>
+              </span>
             </div>
           </router-link>
         </li>
@@ -44,8 +50,14 @@
             to="/dashbord-particulier"
             class="text-decoration-none"
           >
-            <div class="nav-link text-dark">
+            <div class="nav-link text-dark position-relative">
               Dashboard
+              <span
+                v-if="$store.state.hasNotif"
+                class="position-absolute top-0 start-120 translate-middle p-2 bg-danger border border-light rounded-circle"
+              >
+                <span class="visually-hidden">New alerts</span>
+              </span>
             </div>
           </router-link>
         </li>
@@ -169,14 +181,16 @@ export default {
     },
     async created(){  
     
+        const token=localStorage.getItem("token");
         //met le token dans le header 
-        this.axios.defaults.headers.common['Authorization']=`Bearer ${localStorage.token}`;
+        this.axios.defaults.headers.common['Authorization']=`Bearer ${token}`;
         // try {
-        //   await this.$store.dispatch('getUser');
-      
+        //     await this.$store.dispatch('getUser');
+        //     console.log(await this.$store.state.user)
         // } catch (error) {
-        //   console.log(error)
+        //     console.log(error)
         // }
+        // console.log(this.$store.state.user)
         this.$store.dispatch('getAllStyles');
         this.$store.dispatch('getAllCities');
 
