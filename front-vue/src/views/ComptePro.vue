@@ -368,6 +368,9 @@ export default {
                     this.errorMessage = null;
                     this.waitingMessage=null;
                     this.successMessage = "Le compte a bien été supprimé";
+                    setTimeout(() => {
+                        this.$router.push('/');   
+                    }, 2000);
                 })
                 .catch((err) => {
                     console.log(err);
