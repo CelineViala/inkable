@@ -3,7 +3,10 @@ const Joi = require('joi');
 module.exports = Joi.object({
     studio_name: Joi.string(),
     email: Joi.string().email(),
-    password: Joi.string().min(8),
+    password: Joi
+        .string()
+        .min(8)
+        .messages({ 'string.min': 'Le mot de passe doit comprendre 8 caractères' }),
     passwordConfirm: Joi.string()
         .valid(Joi.ref('password'))
         .error(() => new Error('Erreur liée à la confirmation du mot de passe')),
