@@ -198,7 +198,7 @@ router.beforeEach(async (to,from,next)=>{
     }
     if(to.meta.roles && !to.meta.roles.includes(store.default._state.data.user.role)){
         return next({
-            path:'/connexion',
+            path:'/',
         })   
     }
     return next();
