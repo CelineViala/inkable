@@ -6,7 +6,7 @@ class Style extends Model {}
 /**
  * @typedef {object} Style
  * @property {number} id - Indentifiant unique, Pk de la table
- * @property {text} name - Nom du style
+ * @property {string} name - Nom du style
  */
 
 Style.init({
