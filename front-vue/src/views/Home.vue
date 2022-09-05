@@ -128,6 +128,15 @@
               <p class="card-text">
                 {{ p.city }}
               </p>
+              <div class="d-flex justify-content-start flex-column">
+                <p>
+                  <span
+                    v-for="style in p.styles"
+                    :key="style.id"
+                    class="badge bg-light text-dark m-1"
+                  >{{ style.name }}</span>
+                </p>
+              </div>
               <router-link
                 :to="{name:'ProfilPro',params:{id:p.id}}"
                 class="btn btn-primary"
@@ -212,7 +221,7 @@ export default {
 </script>
 <style>
   .container-card{
-    min-height: 500px;
+    min-height: 550px;
   }
 
 </style>

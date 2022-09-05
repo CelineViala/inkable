@@ -267,8 +267,10 @@ export default {
                 this.pro_name=response.data.pro.studio_name;
                 this.statusColor();
                 console.log(this.project)
-                if(this.project.notifs.length) this.notif=true;
-
+                
+                response.data.notifs.forEach((notif)=>{
+                    if(notif.code!=='msg_consumer') this.notif=true;
+                })
                 if (response.data.color)
                     this.project.color = "Couleur";
                 else

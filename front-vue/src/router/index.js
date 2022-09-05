@@ -214,6 +214,11 @@ router.beforeEach(async (to,from,next)=>{
         }
     }
     if(to.meta.roles && !to.meta.roles.includes(store.default._state.data.user.role)){
+        if(to.name==='FormulaireProject'){
+            return next({
+                path:'/connexion',
+            })   
+        }
         return next({
             path:'/',
         })   
