@@ -79,7 +79,6 @@
                     >
                       Prendre rendez-vous
                     </router-link>
-                    
                   </div>
                 </div>
               </div>
@@ -119,14 +118,14 @@
                 class="img-fluid card"
               >
             </a>
-            
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-<router-view />
+
+
 
 <script>
 

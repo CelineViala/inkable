@@ -125,13 +125,13 @@ export default {
         }
     },
     created(){
-        console.log("test")
+      
     },
     methods:{
         validForm:function(){ 
             if(this.newProject.color!==undefined)   
                 this.newProject.color=this.newProject.color==='color'?true:false;
-            this.newProject.pro_id=this.$route.params.id;//!arrr
+            this.newProject.pro_id=this.$route.params.id;
             this.newProject.consumer_id=this.$store.state.user.id; 
       
             this.axios

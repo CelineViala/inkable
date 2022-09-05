@@ -41,7 +41,7 @@ const routes=[
         component: Home,
         meta:{
             roles:['pro', 'consumer','anonyme'],
-            breadcrumb:'Home'
+            breadcrumb:'Accueil'
         }
     },
     {
@@ -80,10 +80,19 @@ const routes=[
             breadcrumb:'Inscriptions'
         }
     },
-    
+    {
+        name:'FormulaireProject',
+        path:'/profil-pro/:id(\\d+)/formulaire-project',
+        component:FormulaireProject,
+        meta:{
+            roles:['consumer'],
+            breadcrumb:'Formulaire'
+        }
+    },
     {
         name:'Project',
-        path:'/project/:id',
+        path:'/dashbord-pro/project/:id',
+        alias:['/project/:id'],
         component:Project,
         meta:{
             roles:['pro'],
@@ -92,7 +101,7 @@ const routes=[
     },
     {
         name:'ProjectParticulier',
-        path:'/project-particulier/:id',
+        path:'/dashbord-particulier/project-particulier/:id',
         component:ProjectParticulier,
         meta:{
             roles:['consumer'],
@@ -106,16 +115,7 @@ const routes=[
         meta:{
             roles:['pro', 'consumer','anonyme'],
             breadcrumb:'Profil'
-        },
-        children:[{
-            name:'FormulaireProject',
-            path:'/profil-pro/:id(\\d+)/form-project',
-            component:FormulaireProject,
-            meta:{
-                roles:['consumer'],
-                breadcrumb: "Formulaire"
-            }
-        }]
+        }
     },
     {
         name:'DashboardParticulier',
@@ -144,16 +144,25 @@ const routes=[
             breadcrumb:'Compte'
         }
     },
-
     {
         name:'Planning',
-        path:'/planning/:projectId?',
+        path:'/dashbord-pro/planning/:projectId?',
+        alias:['/planning','/dashbord-pro/project/:id/planning/:projectId'],
         component:Planning,
         meta:{
             roles:['pro'],
             breadcrumb:'Planning'
         }
     },
+    // {
+    //     name:'Planning',
+    //     path:'/planning/:projectId?',
+    //     component:Planning,
+    //     meta:{
+    //         roles:['pro'],
+    //         breadcrumb:'Planning'
+    //     }
+    // },
     {
         name:'NotFound',
         path:'/:pathMatch(.*)*',
@@ -190,9 +199,12 @@ router.beforeEach(async (to,from,next)=>{
         const user=store.default._state.data.user;
         let hasNotif=false;
         user.projects?.forEach(project => {
+            if(project.status==='en attente' && user.role==='pro'){hasNotif=true}
             project.notifs?.forEach((notif)=> {
-                if(notif.code==='msg_consumer'&&user.role==='pro'){hasNotif=true}
-                else if(notif.code!=='msg_consumer'&&user.role==='consumer') {hasNotif=true;}
+                if(notif.code==='msg_consumer' && user.role==='pro'){hasNotif=true}
+                
+
+                if(notif.code!=='msg_consumer'&& user.role==='consumer') {hasNotif=true;}
             });
         })
         await store.default.dispatch('setNotifDashboard',{active:hasNotif});
