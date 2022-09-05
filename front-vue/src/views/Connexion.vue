@@ -50,7 +50,7 @@
                     >Mot de passe oublié</a>
                   </p>
                   <p class="text-danger">
-                    {{ message }}
+                    {{ errorMessage }}
                   </p>
                   <input
                     type="button"
@@ -111,7 +111,7 @@ export default {
     
     data(){
         return {
-            message:null,
+            errorMessage:null,
             user:{ 
             }
         }
@@ -124,7 +124,6 @@ export default {
                 .then((response) => {
                     console.log(response.data);
                     this.user={};
-                    this.message="Connexion réussie!";
                     this.$router.push('/');
                     localStorage.setItem("token",response.data.accessToken);
                     this.axios.defaults.headers.common['Authorization']=`Bearer ${response.data.accessToken}`;
@@ -133,7 +132,7 @@ export default {
                 .catch((err)=>{
                   
                     console.log(err.response.data.message);
-                    this.message=err.response.data.message;
+                    this.errorMessage=err.response.data.message;
                 })
 
       

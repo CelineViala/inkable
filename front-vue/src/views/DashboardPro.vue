@@ -141,7 +141,7 @@
                     :key="notif.id"
                     class="badge bg-danger m-1"
                   >
-                    <span v-if="notif.name==='Nouveau(x) message(s) client'">{{ notif.name }}</span>
+                    <span v-if="notif.code==='msg_consumer'">{{ notif.name }}</span>
                   </p>
                 </div>
                 <span

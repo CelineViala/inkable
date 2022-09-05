@@ -7,6 +7,7 @@
         class="top-0 badge m-1"
       >
         <button
+          
           type="button"
           class="btn-close m-1 bg-light"
           aria-label="Close"
@@ -19,7 +20,7 @@
           class=" d-block"
         >
           <span
-            v-if="n.name==='Nouveau(x) message(s) client'"
+            v-if="n.code==='msg_consumer'"
             class="badge bg-danger fs-6 m-1"
           >{{ n.name }}</span>
         </p>
@@ -380,7 +381,10 @@ export default {
         this.axios
             .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/projet/${this.$route.params.id}`)
             .then((response) => {
-                if(response.data.notifs.length!==0) this.notif=true;
+               
+                response.data.notifs.forEach((notif)=>{
+                    if(notif.code==='msg_consumer') this.notif=true;
+                })
                 this.project_id=response.data.id;
                 this.first_name_client=response.data.consumer.first_name;
                 this.last_name_client=response.data.consumer.last_name;

@@ -19,7 +19,7 @@
           class="d-block"
         >
           <span
-            v-if="n.name!=='Nouveau(x) message(s) client'"
+            v-if="n.code!=='msg_consumer'"
             class="badge bg-danger m-1 fs-6"
           >{{ n.name }}</span>
         </p>

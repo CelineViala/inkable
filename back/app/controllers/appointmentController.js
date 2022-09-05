@@ -43,7 +43,7 @@ module.exports = {
         // la validation des champs obligatoire se fait avec Joi
         // Créer le rdv
         const project = await Project.findByPk(req.body.project_id);
-        const notif = await Notif.findOne({ where: { name: 'New RDV' } });
+        const notif = await Notif.findOne({ where: { code: 'new_rdv' } });
         await project.addNotif(notif);
         await notif.addProject(project);
         const newRdv = await Appointment.create({
@@ -93,7 +93,7 @@ module.exports = {
 
             if (appointment.project_id) {
                 const project = await Project.findByPk(appointment.project_id);
-                const notif = await Notif.findOne({ where: { name: 'Modification RDV' } });
+                const notif = await Notif.findOne({ where: { code: 'edit_rdv' } });
                 await project.addNotif(notif);
                 await notif.addProject(project);
             }

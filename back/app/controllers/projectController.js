@@ -93,9 +93,9 @@ module.exports = {
         }
 
         if (req.body.status === 'accepté') {
-            notif = await Notif.findOne({ where: { name: 'Projet accepté' } });
+            notif = await Notif.findOne({ where: { code: 'accepted_project' } });
         } else if (req.body.status === 'refusé') {
-            notif = await Notif.findOne({ where: { name: 'Projet refusé' } });
+            notif = await Notif.findOne({ where: { code: 'denied_project' } });
         }
         await project.addNotif(notif);
         await notif.addProject(project);
@@ -198,11 +198,11 @@ module.exports = {
         const project = await Project.findByPk(req.body.project_id);
 
         if (req.body.pro_id) {
-            const notif = await Notif.findOne({ where: { name: 'Nouveau(x) message(s) tatoueur' } });
+            const notif = await Notif.findOne({ where: { code: 'msg_pro' } });
             await project.addNotif(notif);
             await notif.addProject(project);
         } else if (req.body.consumer_id) {
-            const notif = await Notif.findOne({ where: { name: 'Nouveau(x) message(s) client' } });
+            const notif = await Notif.findOne({ where: { code: 'msg_consumer' } });
             await project.addNotif(notif);
             await notif.addProject(project);
         }
@@ -213,12 +213,12 @@ module.exports = {
         const project = await Project.findByPk(req.params.id, { include: 'notifs' });
         project.notifs.forEach((notif) => {
             if (req.body.role === 'consumer') {
-                if (notif.name !== 'Nouveau(x) message(s) client') {
+                if (notif.code !== 'msg_consumer') {
                     notif.removeProject(project);
                     project.removeNotif(notif);
                 }
             } else if (req.body.role === 'pro') {
-                if (notif.name === 'Nouveau(x) message(s) client') {
+                if (notif.code === 'msg_consumer') {
                     notif.removeProject(project);
                     project.removeNotif(notif);
                 }
