@@ -42,10 +42,12 @@ module.exports = {
         if (!pro) throw new Error(`Aucun pro à l'id ${id}`, { statusCode: 404 });
         // la validation des champs obligatoire se fait avec Joi
         // Créer le rdv
-        const project = await Project.findByPk(req.body.project_id);
-        const notif = await Notif.findOne({ where: { code: 'new_rdv' } });
-        await project.addNotif(notif);
-        await notif.addProject(project);
+        if (req.body.project_id) {
+            const project = await Project.findByPk(req.body.project_id);
+            const notif = await Notif.findOne({ where: { code: 'new_rdv' } });
+            await project.addNotif(notif);
+            await notif.addProject(project);
+        }
         const newRdv = await Appointment.create({
             title: req.body.title,
             note: req.body.note,
@@ -123,7 +125,7 @@ module.exports = {
         // Supprimer si on trouve et envoi d'une réponse au front
         if (appointment.project_id) {
             const project = await Project.findByPk(appointment.project_id);
-            const notif = await Notif.findOne({ where: { name: 'Annulation RDV' } });
+            const notif = await Notif.findOne({ where: { code: 'delete_rdv' } });
             await project.addNotif(notif);
             await notif.addProject(project);
         }
