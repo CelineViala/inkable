@@ -6,7 +6,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import createStore from './store';
 import Cloudinary from "cloudinary-vue";
-
+import breadcrumbs from 'vue-3-breadcrumbs';
 
 
 createApp(App)
@@ -18,6 +18,9 @@ createApp(App)
     .use(VueAxios,axios)
     .use(createStore)
     .use(router)
+    .use(breadcrumbs, {
+        includeComponent: false // {boolean} [includeComponent=false] - Include global breadcrumbs component or not
+    })
     .mount('#app');
 
 import "bootstrap/dist/js/bootstrap.js";

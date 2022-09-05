@@ -40,7 +40,8 @@ const routes=[
         path:'/',
         component: Home,
         meta:{
-            roles:['pro', 'consumer','anonyme']
+            roles:['pro', 'consumer','anonyme'],
+            breadcrumb:['Home']
         }
     },
     {

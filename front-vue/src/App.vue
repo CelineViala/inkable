@@ -1,4 +1,14 @@
 <template>
+  <AmBreadcrumbs>
+    <template #crumb="{ crumb }">
+      <router-link
+        class="my-custom-crumb"
+        :to="crumb.link"
+      >
+        TEST
+      </router-link>
+    </template>
+  </AmBreadcrumbs>
   <!-- Création de ligne -->
   <div class="row d-flex align-items-center h-100 mx-4 ">
     <!-- Première colonne -->
@@ -158,10 +168,15 @@
 
 <script>
 
-import Home from './views/Home.vue'
+import { defineAsyncComponent } from 'vue'
+// const AmBreadcrumbs = defineAsyncComponent(() =>
+//     import ('vue-3-breadcrumbs/dist/cjs/AmBreadcrumbs-8489d1fe')
+// )
+
 export default {
     name: 'App',
-    components:{Home},
+    components:{
+        AmBreadcrumbs:defineAsyncComponent(()=> import ('vue-3-breadcrumbs'))},
   
     computed:{
         user() {
@@ -176,7 +191,7 @@ export default {
         console.log("updated");
     },
     async created(){  
-    
+        
         const token=localStorage.getItem("token");
         //met le token dans le header 
         this.axios.defaults.headers.common['Authorization']=`Bearer ${token}`;
