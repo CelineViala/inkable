@@ -1,17 +1,17 @@
 <template>
-  <AmBreadcrumbs>
-    <template #crumb="{ crumb }">
-      <router-link
-        class="my-custom-crumb"
-        :to="crumb.link"
-      >
-        TEST
-      </router-link>
-    </template>
-  </AmBreadcrumbs>
   <!-- Création de ligne -->
   <div class="row d-flex align-items-center h-100 mx-4 ">
     <!-- Première colonne -->
+    <AmBreadcrumbs>
+      <template #crumb="{ crumb }">
+        <router-link
+          class="my-custom-crumb"
+          :to="crumb.link"
+        >
+          {{ crumb.label }} /
+        </router-link>
+      </template>
+    </AmBreadcrumbs>
     <div class="d-flex col-xl-3 col-md-4 mb-4 ">
       <router-link to="/">
         <img
@@ -20,7 +20,7 @@
         >
       </router-link>
     </div>
-
+    
     <!-- Deuxiemme colonne -->
     <div class="d-flex col-xl-6 col-md-auto justify-content-center">
       <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
@@ -168,15 +168,11 @@
 
 <script>
 
-import { defineAsyncComponent } from 'vue'
-// const AmBreadcrumbs = defineAsyncComponent(() =>
-//     import ('vue-3-breadcrumbs/dist/cjs/AmBreadcrumbs-8489d1fe')
-// )
+
 
 export default {
     name: 'App',
-    components:{
-        AmBreadcrumbs:defineAsyncComponent(()=> import ('vue-3-breadcrumbs'))},
+    components:{},
   
     computed:{
         user() {
@@ -191,7 +187,7 @@ export default {
         console.log("updated");
     },
     async created(){  
-        
+        // console.log(AmBreadcrumbs)
         const token=localStorage.getItem("token");
         //met le token dans le header 
         this.axios.defaults.headers.common['Authorization']=`Bearer ${token}`;

@@ -41,7 +41,7 @@ const routes=[
         component: Home,
         meta:{
             roles:['pro', 'consumer','anonyme'],
-            breadcrumb:['Home']
+            breadcrumb:'Home'
         }
     },
     {
@@ -49,7 +49,8 @@ const routes=[
         path:'/dashbord-pro',
         component: DashboardPro,
         meta:{
-            roles:['pro']
+            roles:['pro'],
+            breadcrumb:'Dashboard'
         }
     },
     {
@@ -57,7 +58,8 @@ const routes=[
         path:'/inscriptionPro',
         component:InscriptionPro,
         meta:{
-            roles:['anonyme']
+            roles:['anonyme'],
+            breadcrumb:'Inscriptions tatoueur'
         }
     },
     {
@@ -65,7 +67,8 @@ const routes=[
         path:'/connexion',
         component:Connexion,
         meta:{
-            roles:['anonyme']
+            roles:['anonyme'],
+            breadcrumb:'Connexion'
         }
     },
     {
@@ -73,23 +76,18 @@ const routes=[
         path:'/inscriptionConsumer',
         component:InscriptionConsumer,
         meta:{
-            roles:['anonyme']
+            roles:['anonyme'],
+            breadcrumb:'Inscriptions'
         }
     },
-    {
-        name:'FormulaireProject',
-        path:'/formulaire-project/:proId',
-        component:FormulaireProject,
-        meta:{
-            roles:['consumer']
-        }
-    },
+    
     {
         name:'Project',
         path:'/project/:id',
         component:Project,
         meta:{
-            roles:['pro']
+            roles:['pro'],
+            breadcrumb:'Projet'
         }
     },
     {
@@ -97,7 +95,8 @@ const routes=[
         path:'/project-particulier/:id',
         component:ProjectParticulier,
         meta:{
-            roles:['consumer']
+            roles:['consumer'],
+            breadcrumb:'Projet'
         }
     },
     {
@@ -105,15 +104,26 @@ const routes=[
         path:'/profil-pro/:id(\\d+)',
         component:ProfilPro,
         meta:{
-            roles:['pro', 'consumer','anonyme']
-        }
+            roles:['pro', 'consumer','anonyme'],
+            breadcrumb:'Profil'
+        },
+        children:[{
+            name:'FormulaireProject',
+            path:'/profil-pro/:id(\\d+)/form-project',
+            component:FormulaireProject,
+            meta:{
+                roles:['consumer'],
+                breadcrumb: "Formulaire"
+            }
+        }]
     },
     {
         name:'DashboardParticulier',
         path:'/dashbord-particulier',
         component:DashboardParticulier,
         meta:{
-            roles:['consumer']
+            roles:['consumer'],
+            breadcrumb:'Dashboard'
         }
     },
     {
@@ -121,7 +131,8 @@ const routes=[
         path:'/compte-particulier',
         component:CompteParticulier,
         meta:{
-            roles:['consumer']
+            roles:['consumer'],
+            breadcrumb:'Compte'
         }
     },
     {
@@ -129,7 +140,8 @@ const routes=[
         path:'/compte-pro',
         component:ComptePro,
         meta:{
-            roles:['pro']
+            roles:['pro'],
+            breadcrumb:'Compte'
         }
     },
 
@@ -138,7 +150,8 @@ const routes=[
         path:'/planning/:projectId?',
         component:Planning,
         meta:{
-            roles:['pro']
+            roles:['pro'],
+            breadcrumb:'Planning'
         }
     },
     {
@@ -155,7 +168,8 @@ const routes=[
         path:'/createurs',
         component:Createurs,
         meta:{
-            roles:['pro', 'consumer','anonyme']
+            roles:['pro', 'consumer','anonyme'],
+            breadcrumb:'Créateurs'
         }
     },
     
