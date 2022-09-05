@@ -34,12 +34,10 @@
           >
             <div class="nav-link text-dark position-relative">
               Dashboard
-              <span
+              <i
                 v-if="$store.state.hasNotif"
-                class="position-absolute top-0 start-120 translate-middle p-2 bg-danger border border-light rounded-circle"
-              >
-                <span class="visually-hidden">New alerts</span>
-              </span>
+                class="bi bi-circle-fill text-danger"
+              />
             </div>
           </router-link>
         </li>
@@ -50,14 +48,12 @@
             to="/dashbord-particulier"
             class="text-decoration-none"
           >
-            <div class="nav-link text-dark position-relative">
+            <div class="nav-link text-dark">
               Dashboard
-              <span
+              <i
                 v-if="$store.state.hasNotif"
-                class="position-absolute top-0 start-120 translate-middle p-2 bg-danger border border-light rounded-circle"
-              >
-                <span class="visually-hidden">New alerts</span>
-              </span>
+                class="bi bi-circle-fill text-danger"
+              />
             </div>
           </router-link>
         </li>
