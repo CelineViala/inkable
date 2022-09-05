@@ -92,16 +92,18 @@ module.exports = {
             edit = true;
         }
 
-        if (req.body.status === 'accepté') {
+        if (req.body.status && req.body.status === 'accepté') {
             notif = await Notif.findOne({ where: { code: 'accepted_project' } });
-        } else if (req.body.status === 'refusé') {
+            await project.addNotif(notif);
+            await notif.addProject(project);
+        } else if (req.body.status && req.body.status === 'refusé') {
             notif = await Notif.findOne({ where: { code: 'denied_project' } });
+            await project.addNotif(notif);
+            await notif.addProject(project);
         }
-        await project.addNotif(notif);
-        await notif.addProject(project);
         // Sauvegarder et envoyer la réponse
         if (edit) {
-            notif = await Notif.findOne({ where: { name: 'Projet modifié' } });
+            notif = await Notif.findOne({ where: { code: 'edit_project' } });
             await project.addNotif(notif);
             await notif.addProject(project);
         }
