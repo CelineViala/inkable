@@ -220,6 +220,7 @@
               <button
                 type="button"
                 class="btn btn-danger"
+                @click="deleteProfile"
               >
                 Supprimer mon compte
               </button>
@@ -346,11 +347,9 @@ export default {
                         setTimeout(() => {
                             this.successMessage = null;
                         }, 2000);
-
                     })
                     .catch((err) => {
                         console.log(err);
-                        console.log(this.mail)
                         this.editPro.email = this.mail;
                         this.successMessage=null;
                         this.waitingMessage=null;
@@ -358,8 +357,28 @@ export default {
 
                     })
             }
-        }
-    }
+        },
+
+        async deleteProfile(e) {
+            e.preventDefault();
+            this.axios
+                .delete(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}`, )
+                .then((response) => {
+                    console.log(response.data);
+                    this.errorMessage = null;
+                    this.waitingMessage=null;
+                    this.successMessage = "Le compte a bien été supprimé";
+                })
+                .catch((err) => {
+                    console.log(err);
+                    this.successMessage=null;
+                    this.waitingMessage=null;
+                    this.errorMessage = err.response.data.message;
+                })
+        },
+    },
+
+    
 }
 
 
