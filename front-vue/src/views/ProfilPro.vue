@@ -37,7 +37,7 @@
                   </div>
 
 
-                  <div class="d-flex justify-content-start rounded-3 mb-1">
+                  <div class="d-flex justify-content-start rounded-3 mb-1 flex-wrap">
                     <div
                       v-for="style in pro.styles"
                       :key="style.id"
@@ -148,7 +148,7 @@ export default {
             try {
                 const response=await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$route.params.id}`);
                 this.pro=response.data;
-                console.log(this.pro);
+                //  console.log(this.pro);
             } catch (error) {
                 console.log("error")
             }
