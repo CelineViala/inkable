@@ -137,15 +137,23 @@ export default {
             pro:{}
         }
     },
-    async mounted(){
-        try {
-            const response=await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$route.params.id}`);
-            this.pro=response.data;
-            console.log(this.pro);
-        } catch (error) {
-            console.log("error")
-        }
+    async updated(){
+        this.getPro();
     },
+    async mounted(){
+        this.getPro();
+    },
+    methods:{
+        async getPro(){
+            try {
+                const response=await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$route.params.id}`);
+                this.pro=response.data;
+                console.log(this.pro);
+            } catch (error) {
+                console.log("error")
+            }
+        }
+    }
  
     
 }
