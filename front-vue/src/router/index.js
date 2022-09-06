@@ -92,7 +92,7 @@ const routes=[
     {
         name:'Project',
         path:'/dashbord-pro/project/:id',
-        alias:['/project/:id'],
+        alias:['/planning/project/:id','/project/:id'],
         component:Project,
         meta:{
             roles:['pro'],
@@ -101,7 +101,9 @@ const routes=[
     },
     {
         name:'ProjectParticulier',
-        path:'/dashbord-particulier/project-particulier/:id',
+        path:'/project-particulier/:id',
+        alias:['/dashbord-particulier/project-particulier/:id'],
+
         component:ProjectParticulier,
         meta:{
             roles:['consumer'],
@@ -147,7 +149,7 @@ const routes=[
     {
         name:'Planning',
         path:'/dashbord-pro/planning/:projectId?',
-        alias:['/planning','/dashbord-pro/project/:id/planning/:projectId'],
+        alias:['/planning','/dashbord-pro/project/:projectId?/planning'],
         component:Planning,
         meta:{
             roles:['pro'],

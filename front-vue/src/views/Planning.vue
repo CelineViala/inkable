@@ -370,7 +370,7 @@ export default {
             let projet = document.createElement('a');
             projet.classList.add("classLink");
             projet.setAttribute("data-projectId",arg.event.extendedProps.project_id);
-            projet.setAttribute("href", `/project/${arg.event.extendedProps.project_id}`);
+            projet.setAttribute("href", `/planning/project/${arg.event.extendedProps.project_id}`);
             projet.textContent = arg.event.extendedProps.project_id ? "lien vers le projet" : "";
             edit.id = event.id;
             edit.classList.add("btn-edit");
