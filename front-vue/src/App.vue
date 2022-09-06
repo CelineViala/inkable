@@ -1,18 +1,8 @@
 <template>
   <!-- Création de ligne -->
-  <div class="row d-flex align-items-center h-100 mx-4 p-2">
+  <div class="row d-flex align-items-center h-100 mx-4">
     <!-- Première colonne -->
-    <AmBreadcrumbs>
-      <template #crumb="{ crumb }">
-        <router-link
-          class="my-custom-crumb"
-          :to="crumb.link"
-        >
-          {{ crumb.label }} /
-        </router-link>
-      </template>
-    </AmBreadcrumbs>
-    <div class="d-flex col-xl-3 col-md-4 mb-4 ">
+    <div class="d-flex col-xl-3 col-md-4 ">
       <router-link to="/">
         <img
           src="https://res.cloudinary.com/dmoacy4yl/image/upload/c_thumb,w_200,g_face/v1661781662/inkable_rectangle_but7iu.png"
@@ -145,6 +135,21 @@
           Vous êtes tatoueur ?
         </button>
       </router-link>
+    </div>
+  </div>
+
+  <div class="row d-flex align-items-center h-100 mx-3 ">
+    <div class="d-flex col-xl-3 col-md-4 ">
+      <AmBreadcrumbs>
+        <template #crumb="{ crumb }">
+          <router-link
+            class="my-custom-crumb"
+            :to="crumb.link"
+          >
+            {{ crumb.label }} /
+          </router-link>
+        </template>
+      </AmBreadcrumbs>
     </div>
   </div>
 
