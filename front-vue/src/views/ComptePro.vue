@@ -307,17 +307,19 @@ export default {
             e.preventDefault();
             this.successMessage=null;
             this.errorMessage=null;
-            this.waitingMessage="Veuillez patientez SVP ..."
             console.log(this.editPro);
             if (this.editPro.password === '')
                 delete this.editPro.password;
             if (this.editPro.passwordConfirm === '')
                 delete this.editPro.passwordConfirm;
             if (this.editPro.password !== undefined && this.editPro.passwordConfirm === undefined) {
-                this.errorMessage = " Vous devez  confirmer votre mot de passe"
+                this.waitingMessage=null;
+                this.successMessage=null;
+                this.errorMessage = " Vous devez  confirmer votre mot de passe";
             }
             else {
-               
+              
+                this.waitingMessage="Veuillez patientez SVP ..."
                 if (this.picture) {
                     let img;
                     try {
@@ -341,11 +343,12 @@ export default {
                         this.waitingMessage=null;
                         this.successMessage = "Vos informations ont bien été modifiées.";
                         if(this.picture)
-                            this.successMessage+="Mise à jour de votre page...";
+                            this.successMessage += "Mise à jour de votre page...";
                         this.picture = false;
                         this.editPro.email = this.mail;
                         setTimeout(() => {
                             this.successMessage = null;
+                            this.waitingMessage=null;
                         }, 2000);
                     })
                     .catch((err) => {
@@ -368,6 +371,7 @@ export default {
                     this.errorMessage = null;
                     this.waitingMessage=null;
                     this.successMessage = "Le compte a bien été supprimé";
+                    this.$store.dispatch('logout');
                     setTimeout(() => {
                         this.$router.push('/');   
                     }, 2000);

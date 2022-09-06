@@ -166,8 +166,10 @@ export default {
             this.errorMessage=null;
         },
         async editProfile(e) {
-            this.waitingMessage="Veuillez patientez SVP ...";
             e.preventDefault();
+            this.successMessage=null;
+            this.waitingMessage = null;
+            this.errorMessage=null;
             if (this.editConsumer.password === '')
                 delete this.editConsumer.password;
             if (this.editConsumer.passwordConfirm === '')
@@ -176,7 +178,7 @@ export default {
                 this.errorMessage = " Vous devez  confirmer votre mot de passe"
             }
             else {
-                
+                this.waitingMessage="Veuillez patientez SVP ...";
                 if (this.picture) {
                     let img;
                     try {
@@ -204,7 +206,6 @@ export default {
                         this.picture = false;
                         this.editConsumer.email = this.mail;
                         setTimeout(() => {
-
                             this.successMessage = null;
                         }, 2000);
                         this.editConsumer.email = this.mail;
@@ -229,6 +230,7 @@ export default {
                     this.errorMessage = null;
                     this.waitingMessage=null;
                     this.successMessage = "Le compte a bien été supprimé";
+                    this.$store.dispatch('logout');
                     setTimeout(() => {
                         this.$router.push('/');   
                     }, 2000);

@@ -220,6 +220,9 @@
                 >
                   Valider l'inscription
                 </button>
+                <p class="text-warning m-3">
+                  {{ waitingMessage }}
+                </p>
                 <p class="text-success m-5">
                   {{ successMessage }}
                 </p>
@@ -248,6 +251,7 @@ export default {
             },
             successMessage:null,
             errorMessage: null,
+            waitingMessage: null,
             picture:false
         }
     },
@@ -258,6 +262,9 @@ export default {
         },
         async addPro(e){
             e.preventDefault()
+            this.successMessage=null;
+            this.errorMessage=null;
+            this.waitingMessage="Veuillez patientez SVP ...";
             if(this.picture){
                 try {
                     let img=await this.$store.dispatch('handleUploadToCloudinary');
@@ -265,6 +272,8 @@ export default {
                     this.newPro.profile_picture_path_pro=this.$store.state.url;
                 } catch (error) {
                     console.log(error)
+                    this.waitingMessage=null;
+                    this.errorMessage="Erreur d'envoi de la photo"
                 }
             }else{
                 //image par défaut
@@ -273,8 +282,8 @@ export default {
             this.axios
                 .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}signupPro`,this.newPro)
                 .then((response) => {
-                    console.log(response.data);
                     this.newPro={};
+                    this.waitingMessage=null;
                     this.successMessage= "Vous êtes bien inscrit! Vous allez être redirigé vers la page de connexion";	
                     setTimeout(() => {
                         this.$router.push('/connexion');
@@ -284,6 +293,7 @@ export default {
                 })
                 .catch((err)=>{
                     console.log(err);
+                    this.waitingMessage=null;
                     this.errorMessage=err.response.data.message;
                     return
                 })
