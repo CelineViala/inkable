@@ -428,7 +428,7 @@ export default {
             this.editProjectForm();
         
 
-            this.$router.push(`/dashbord-pro/project/${this.$route.params.id}/planning`)
+            this.$router.push(`/dashboard-pro/project/${this.$route.params.id}/planning`)
         },
         async deleteNotif(e){
             try {

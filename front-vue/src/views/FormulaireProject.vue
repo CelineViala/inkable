@@ -141,8 +141,8 @@ export default {
                     this.newProject={};
                     this.messageSuccess="Votre projet a bien été enregistré, vous allez être redirigé vers votre page de projet.";
                     setTimeout(() => {
-                        this.$router.push(`/project-particulier/${response.data.id}`)
-                    }, 1500);
+                        this.$router.push(`/dashboard-particulier/project-particulier/${response.data.id}`)
+                    }, 1000);
                     this.messageError=null;
                 })
                 .catch((err)=>{

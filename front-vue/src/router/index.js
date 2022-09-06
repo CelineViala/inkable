@@ -46,7 +46,7 @@ const routes=[
     },
     {
         name:'DashboardPro',
-        path:'/dashbord-pro',
+        path:'/dashboard-pro',
         component: DashboardPro,
         meta:{
             roles:['pro'],
@@ -91,8 +91,8 @@ const routes=[
     },
     {
         name:'Project',
-        path:'/dashbord-pro/project/:id',
-        alias:['/planning/project/:id','/project/:id'],
+        path:'/dashboard-pro/project/:id',
+        alias:['/planning/project/:id','/project/:id','/dashboard-pro/project/:id/planning/project/:id','/dashboard-pro/planning/project/:id'],
         component:Project,
         meta:{
             roles:['pro'],
@@ -101,8 +101,8 @@ const routes=[
     },
     {
         name:'ProjectParticulier',
-        path:'/project-particulier/:id',
-        alias:['/dashbord-particulier/project-particulier/:id'],
+        path:'/dashboard-particulier/project-particulier/:id',
+        
 
         component:ProjectParticulier,
         meta:{
@@ -116,12 +116,12 @@ const routes=[
         component:ProfilPro,
         meta:{
             roles:['pro', 'consumer','anonyme'],
-            breadcrumb:'Profil'
+            breadcrumb:'Profil Tatoueur'
         }
     },
     {
         name:'DashboardParticulier',
-        path:'/dashbord-particulier',
+        path:'/dashboard-particulier',
         component:DashboardParticulier,
         meta:{
             roles:['consumer'],
@@ -148,8 +148,8 @@ const routes=[
     },
     {
         name:'Planning',
-        path:'/dashbord-pro/planning/:projectId?',
-        alias:['/planning','/dashbord-pro/project/:projectId?/planning'],
+        path:'/dashboard-pro/planning/:projectId(\\d+)?',
+        alias:['/planning','/dashboard-pro/project/:projectId(\\d+)?/planning'],
         component:Planning,
         meta:{
             roles:['pro'],

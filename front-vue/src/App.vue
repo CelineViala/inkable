@@ -39,7 +39,7 @@
         <li>
           <router-link
             v-if="$store.state.user.role==='pro'"
-            to="/dashbord-pro"
+            to="/dashboard-pro"
             class="text-decoration-none"
           >
             <div class="nav-link text-dark position-relative">
@@ -55,7 +55,7 @@
         <li>
           <router-link
             v-if="$store.state.user.role==='consumer'"
-            to="/dashbord-particulier"
+            to="/dashboard-particulier"
             class="text-decoration-none"
           >
             <div class="nav-link text-dark">
