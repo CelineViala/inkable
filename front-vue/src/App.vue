@@ -1,6 +1,6 @@
 <template>
   <!-- Création de ligne -->
-  <div class="row d-flex align-items-center h-100 mx-4 ">
+  <div class="row d-flex align-items-center h-100 mx-4 p-2">
     <!-- Première colonne -->
     <AmBreadcrumbs>
       <template #crumb="{ crumb }">

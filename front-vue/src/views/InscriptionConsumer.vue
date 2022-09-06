@@ -77,7 +77,7 @@
                     >Selectioner une photo de profil</label>
                     <input
                       id="formFile"
-                      class="form-control"
+                      class="form-control form-control-lg"
                       type="file"
                       @change="handleFile"
                     >

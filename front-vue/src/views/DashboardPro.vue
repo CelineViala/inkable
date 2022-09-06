@@ -19,7 +19,7 @@
                 >Ajouter une photo dans ma galerie </label>
                 <input
                   ref="pictureInput"
-                  class="form-control"
+                  class="form-control form-control-lg"
                   type="file"
                   @change="handleFile"
                 >
