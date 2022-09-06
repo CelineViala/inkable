@@ -2,6 +2,16 @@
   <!-- Création de ligne -->
   <div class="row d-flex align-items-center h-100 mx-4 ">
     <!-- Première colonne -->
+    <AmBreadcrumbs>
+      <template #crumb="{ crumb }">
+        <router-link
+          class="my-custom-crumb"
+          :to="crumb.link"
+        >
+          {{ crumb.label }} /
+        </router-link>
+      </template>
+    </AmBreadcrumbs>
     <div class="d-flex col-xl-3 col-md-4 mb-4 ">
       <router-link to="/">
         <img
@@ -10,7 +20,7 @@
         >
       </router-link>
     </div>
-
+    
     <!-- Deuxiemme colonne -->
     <div class="d-flex col-xl-6 col-md-auto justify-content-center">
       <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
@@ -29,7 +39,7 @@
         <li>
           <router-link
             v-if="$store.state.user.role==='pro'"
-            to="/dashbord-pro"
+            to="/dashboard-pro"
             class="text-decoration-none"
           >
             <div class="nav-link text-dark position-relative">
@@ -45,7 +55,7 @@
         <li>
           <router-link
             v-if="$store.state.user.role==='consumer'"
-            to="/dashbord-particulier"
+            to="/dashboard-particulier"
             class="text-decoration-none"
           >
             <div class="nav-link text-dark">
@@ -158,10 +168,11 @@
 
 <script>
 
-import Home from './views/Home.vue'
+
+
 export default {
     name: 'App',
-    components:{Home},
+    components:{},
   
     computed:{
         user() {
@@ -176,7 +187,7 @@ export default {
         console.log("updated");
     },
     async created(){  
-    
+        // console.log(AmBreadcrumbs)
         const token=localStorage.getItem("token");
         //met le token dans le header 
         this.axios.defaults.headers.common['Authorization']=`Bearer ${token}`;

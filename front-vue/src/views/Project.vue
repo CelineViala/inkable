@@ -188,13 +188,19 @@
             >
           </div>
           <div class="form-outline form-white mb-4">
-            <router-link
-              :to="{name:'Planning',params:{projectId:editProject.id}}"
+            <!-- <router-link
+              :to="{name:'Planning',params:{id:$route.params.id,projectId:editProject.id}}"
               class="btn btn-outline-light btn-lg px-5"
               @click="editProjectForm"
             >
               Fixer un RDV
-            </router-link>
+            </router-link> -->
+            <button
+              class="btn btn-outline-light btn-lg px-5"
+              @click="fixAppointment"
+            >
+              Fixer un RDV
+            </button>
           </div>
 
           <p class="text-success">
@@ -417,6 +423,13 @@ export default {
        
     },
     methods: {
+        fixAppointment(e){
+            e.preventDefault()
+            this.editProjectForm();
+        
+
+            this.$router.push(`/dashboard-pro/project/${this.$route.params.id}/planning`)
+        },
         async deleteNotif(e){
             try {
                 

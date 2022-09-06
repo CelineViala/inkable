@@ -40,15 +40,17 @@ const routes=[
         path:'/',
         component: Home,
         meta:{
-            roles:['pro', 'consumer','anonyme']
+            roles:['pro', 'consumer','anonyme'],
+            breadcrumb:'Accueil'
         }
     },
     {
         name:'DashboardPro',
-        path:'/dashbord-pro',
+        path:'/dashboard-pro',
         component: DashboardPro,
         meta:{
-            roles:['pro']
+            roles:['pro'],
+            breadcrumb:'Dashboard'
         }
     },
     {
@@ -56,7 +58,8 @@ const routes=[
         path:'/inscriptionPro',
         component:InscriptionPro,
         meta:{
-            roles:['anonyme']
+            roles:['anonyme'],
+            breadcrumb:'Inscriptions tatoueur'
         }
     },
     {
@@ -64,7 +67,8 @@ const routes=[
         path:'/connexion',
         component:Connexion,
         meta:{
-            roles:['anonyme']
+            roles:['anonyme'],
+            breadcrumb:'Connexion'
         }
     },
     {
@@ -72,31 +76,38 @@ const routes=[
         path:'/inscriptionConsumer',
         component:InscriptionConsumer,
         meta:{
-            roles:['anonyme']
+            roles:['anonyme'],
+            breadcrumb:'Inscriptions'
         }
     },
     {
         name:'FormulaireProject',
-        path:'/formulaire-project/:proId',
+        path:'/profil-pro/:id(\\d+)/formulaire-project',
         component:FormulaireProject,
         meta:{
-            roles:['consumer']
+            roles:['consumer'],
+            breadcrumb:'Formulaire'
         }
     },
     {
         name:'Project',
-        path:'/project/:id',
+        path:'/dashboard-pro/project/:id',
+        alias:['/planning/project/:id','/project/:id','/dashboard-pro/project/:id/planning/project/:id','/dashboard-pro/planning/project/:id'],
         component:Project,
         meta:{
-            roles:['pro']
+            roles:['pro'],
+            breadcrumb:'Projet'
         }
     },
     {
         name:'ProjectParticulier',
-        path:'/project-particulier/:id',
+        path:'/dashboard-particulier/project-particulier/:id',
+        
+
         component:ProjectParticulier,
         meta:{
-            roles:['consumer']
+            roles:['consumer'],
+            breadcrumb:'Projet'
         }
     },
     {
@@ -104,15 +115,17 @@ const routes=[
         path:'/profil-pro/:id(\\d+)',
         component:ProfilPro,
         meta:{
-            roles:['pro', 'consumer','anonyme']
+            roles:['pro', 'consumer','anonyme'],
+            breadcrumb:'Profil Tatoueur'
         }
     },
     {
         name:'DashboardParticulier',
-        path:'/dashbord-particulier',
+        path:'/dashboard-particulier',
         component:DashboardParticulier,
         meta:{
-            roles:['consumer']
+            roles:['consumer'],
+            breadcrumb:'Dashboard'
         }
     },
     {
@@ -120,7 +133,8 @@ const routes=[
         path:'/compte-particulier',
         component:CompteParticulier,
         meta:{
-            roles:['consumer']
+            roles:['consumer'],
+            breadcrumb:'Compte'
         }
     },
     {
@@ -128,18 +142,29 @@ const routes=[
         path:'/compte-pro',
         component:ComptePro,
         meta:{
-            roles:['pro']
+            roles:['pro'],
+            breadcrumb:'Compte'
         }
     },
-
     {
         name:'Planning',
-        path:'/planning/:projectId?',
+        path:'/dashboard-pro/planning/:projectId(\\d+)?',
+        alias:['/planning','/dashboard-pro/project/:projectId(\\d+)?/planning'],
         component:Planning,
         meta:{
-            roles:['pro']
+            roles:['pro'],
+            breadcrumb:'Planning'
         }
     },
+    // {
+    //     name:'Planning',
+    //     path:'/planning/:projectId?',
+    //     component:Planning,
+    //     meta:{
+    //         roles:['pro'],
+    //         breadcrumb:'Planning'
+    //     }
+    // },
     {
         name:'NotFound',
         path:'/:pathMatch(.*)*',
@@ -154,7 +179,8 @@ const routes=[
         path:'/createurs',
         component:Createurs,
         meta:{
-            roles:['pro', 'consumer','anonyme']
+            roles:['pro', 'consumer','anonyme'],
+            breadcrumb:'Créateurs'
         }
     },
     
@@ -175,9 +201,12 @@ router.beforeEach(async (to,from,next)=>{
         const user=store.default._state.data.user;
         let hasNotif=false;
         user.projects?.forEach(project => {
+            if(project.status==='en attente' && user.role==='pro'){hasNotif=true}
             project.notifs?.forEach((notif)=> {
-                if(notif.code==='msg_consumer'&&user.role==='pro'){hasNotif=true}
-                else if(notif.code!=='msg_consumer'&&user.role==='consumer') {hasNotif=true;}
+                if(notif.code==='msg_consumer' && user.role==='pro'){hasNotif=true}
+                
+
+                if(notif.code!=='msg_consumer'&& user.role==='consumer') {hasNotif=true;}
             });
         })
         await store.default.dispatch('setNotifDashboard',{active:hasNotif});

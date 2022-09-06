@@ -124,11 +124,14 @@ export default {
             messageError:null,
         }
     },
+    created(){
+      
+    },
     methods:{
         validForm:function(){ 
             if(this.newProject.color!==undefined)   
                 this.newProject.color=this.newProject.color==='color'?true:false;
-            this.newProject.pro_id=this.$route.params.proId;
+            this.newProject.pro_id=this.$route.params.id;
             this.newProject.consumer_id=this.$store.state.user.id; 
       
             this.axios
@@ -138,8 +141,8 @@ export default {
                     this.newProject={};
                     this.messageSuccess="Votre projet a bien été enregistré, vous allez être redirigé vers votre page de projet.";
                     setTimeout(() => {
-                        this.$router.push(`/project-particulier/${response.data.id}`)
-                    }, 1500);
+                        this.$router.push(`/dashboard-particulier/project-particulier/${response.data.id}`)
+                    }, 1000);
                     this.messageError=null;
                 })
                 .catch((err)=>{

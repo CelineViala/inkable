@@ -73,7 +73,7 @@
 
                     <router-link
                       v-if="$store.state.user.role!=='pro'"
-                      :to="{name:'FormulaireProject',params:{proId:$route.params.id}}"
+                      :to="{name:'FormulaireProject'}"
                       class="btn btn-outline-dark text-light flex-grow-1"
                       style="background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));"
                     >
@@ -137,15 +137,23 @@ export default {
             pro:{}
         }
     },
-    async mounted(){
-        try {
-            const response=await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$route.params.id}`);
-            this.pro=response.data;
-            console.log(this.pro);
-        } catch (error) {
-            console.log("error")
-        }
+    async updated(){
+        this.getPro();
     },
+    async mounted(){
+        this.getPro();
+    },
+    methods:{
+        async getPro(){
+            try {
+                const response=await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$route.params.id}`);
+                this.pro=response.data;
+                console.log(this.pro);
+            } catch (error) {
+                console.log("error")
+            }
+        }
+    }
  
     
 }
