@@ -20,15 +20,6 @@
         <div class="modal-body">
           <p>{{ modalText }}</p>
           <button
-            type="button"
-            class="close ok btn btn-primary m-1"
-            data-dismiss="modal"
-            aria-label="Close"
-            @click="edit"
-          >
-            Ok
-          </button>
-          <button
             v-if="confirm"
             type="button"
             class="close cancel btn btn-primary m-1"
@@ -37,6 +28,15 @@
             @click="toggleModal"
           >
             Annuler
+          </button>
+          <button
+            type="button"
+            class="close ok btn btn-primary m-1"
+            data-dismiss="modal"
+            aria-label="Close"
+            @click="edit"
+          >
+            Ok
           </button>
         </div>
       </div>

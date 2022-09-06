@@ -329,6 +329,9 @@ export default {
                     this.newMessage={};
                     this.messageSuccess="Votre message a bien été envoyé";
                     setTimeout(() => {
+                        this.messageSuccess=null;
+                    },2000)
+                    setTimeout(() => {
                         this.scrollToBottom()
                     }, 100);
                     this.messageError=null;

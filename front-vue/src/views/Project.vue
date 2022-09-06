@@ -486,6 +486,9 @@ export default {
                     this.newMessage={};
                     this.messageOk="Votre message a bien été envoyé";
                     setTimeout(() => {
+                        this.messageOk=null;
+                    },2000)
+                    setTimeout(() => {
                         this.scrollToBottom()
         
                     }, 100);
@@ -511,6 +514,9 @@ export default {
                     console.log(response.data);
                     this.errorMessage = null;
                     this.successMessage = "Vos informations ont bien été modifiées.";
+                    setTimeout(() => { 
+                        this.successMessage = null;
+                    }, 1000);
                 })
                 .catch((err) => {
                     console.log(err);
