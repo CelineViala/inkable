@@ -145,13 +145,16 @@
                   type="button"
                   @click="addConsumer"
                 >
+                <p class="text-warning m-3">
+                  {{ waitingMessage }}
+                </p>
+                <p class="text-success m-3">
+                  {{ successMessage }}
+                </p>
+                <p class="text-danger m-3">
+                  {{ errorMessage }}
+                </p>
               </div>
-              <p class="text-success m-5">
-                {{ successMessage }}
-              </p>
-              <p class="text-danger m-5">
-                {{ errorMessage }}
-              </p>
             </form>
           </div>
         </div>
@@ -173,6 +176,7 @@ export default {
             },
             successMessage:null,
             errorMessage:null,
+            waitingMessage:null
            
         }
     },
@@ -185,7 +189,9 @@ export default {
             this.picture=true; 
         },
         addConsumer:async function(){
-            
+            this.errorMessage=null;
+            this.successMessage=null;
+            this.waitingMessage="Veuillez patientez SVP ...";
             if(this.picture){
                 try {
                     let img=await this.$store.dispatch('handleUploadToCloudinary')
@@ -218,8 +224,9 @@ export default {
                     console.log(response.data);
                     this.newConsumer={};
                     this.$store.dispatch('resetRequestObj');
-                    this.successMessage= "Vous êtes bien inscrit! Vous allez être redirigé vers la page de connexion";	
                     this.errorMessage=null;
+                    this.waitingMessage=null;
+                    this.successMessage= "Vous êtes bien inscrit! Vous allez être redirigé vers la page de connexion";	
                     setTimeout(() => {
                         this.$router.push('/connexion');   
                     }, 2000);
@@ -228,6 +235,7 @@ export default {
                 .catch((err)=>{
                     console.log(err);
                     this.successMessage=null;
+                    this.waitingMessage=null;
                     this.errorMessage=err.response.data.message;
                     return
                 })    
