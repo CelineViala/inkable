@@ -17,9 +17,9 @@
               <!-- Alignement des informations -->
               <div class="card-body p-5 text-center">
                 <div class="row g-3">
-                  <h4 class="mb-3">
+                  <p class="mb-3 fs-4">
                     Les informations de votre studio
-                  </h4>
+                  </p>
 
                   <div class="col-sm-6">
                     <label
@@ -55,8 +55,10 @@
                   </div>
 
                   <div class="container py-5 h-10">
-                    <h4>Les couleurs de tatouage</h4>
-                    <div class="form-check-inline">
+                    <p class="fs-4">
+                      Les couleurs de tatouage
+                    </p>
+                    <div class="form-check-inline p-2">
                       <input
                         id="color"
                         v-model="newPro.color"
@@ -69,7 +71,7 @@
                       >Tatouages couleur</label>
                     </div>
 
-                    <div class="form-check-inline">
+                    <div class="form-check-inline p-2">
                       <input
                         id="blackAndWhite"
                         v-model="newPro.black_and_white"
@@ -83,12 +85,14 @@
                     </div>
 
                     <div class="container pt-5 h-10">
-                      <h4>Les styles de tatouage</h4>
+                      <p class="fs-4">
+                        Les styles de tatouage
+                      </p>
 
                       <div
                         v-for="style in $store.state.styles" 
                         :key="style.id"
-                        class="form-check-inline"
+                        class="form-check-inline p-2"
                       >
                         <input
                           :id="style"
@@ -108,9 +112,9 @@
                   
 
                 <div class="card-body p-2 text-center">
-                  <h4 class="mb-3">
+                  <p class="mb-3 fs-4">
                     Vos informations de connexion
-                  </h4>
+                  </p>
 
                   <div class="col-12">
                     <label
@@ -166,9 +170,9 @@
                 </div> 
 
                 <div class="card-body p-5 text-center">
-                  <h4 class="mb-3">
+                  <p class="mb-3 fs-4 text-wrap">
                     Vos informations complémentaires
-                  </h4>
+                  </p>
 
                   <div class="mb-3">
                     <label
@@ -177,7 +181,7 @@
                     >Selectioner une photo de profil</label>
                     <input
                       id="formFile"
-                      class="form-control"
+                      class="form-control form-control-lg"
                       type="file"
                       @change="handleFile"
                     >

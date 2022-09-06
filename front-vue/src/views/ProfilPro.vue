@@ -10,9 +10,9 @@
             class="card bg-dark text-white"
             style="border-radius: 1rem;"
           >
-            <div class="card-body p-4">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
+            <div class="card-body p-1">
+              <div class="justify-content-center flex-wrap">
+                <div class="flex-shrink-0 m-2">
                   <img
                     :src="pro.profile_picture_path_pro"
                     alt="Generic placeholder image"
@@ -21,13 +21,13 @@
                   >
                 </div>
                 <div class="flex-grow-1 ms-3">
-                  <div class="d-flex justify-content-start rounded-3 p-1 mb-1">
+                  <div class="rounded-3 p-1 mb-1">
                     <h5 class="mb-1">
                       {{ pro.studio_name }}
                     </h5>
                   </div>
 
-                  <div class="d-flex justify-content-start rounded-3 p-1 mb-1 ">
+                  <div class="rounded-3 p-1 mb-1 ">
                     <p
                       class="mb-2 pb-1 text-white"
                       style="color: #2b2a2a;"
@@ -37,15 +37,16 @@
                   </div>
 
 
-                  <div class="d-flex justify-content-start rounded-3 p-2 mb-2">
-                    <div
-                      v-for="style in pro.styles"
-                      :key="style.id"
-                    >
-                      <span class="badge m-1 text-bg-light">{{ style.name }}</span>
+                  <div class="d-flex flex-wrap justify-content-center rounded-3 p-2 mb-2">
+                    <div class="d-inline-flex justify-content-center flex-wrap">
+                      <span
+                        v-for="style in pro.styles"
+                        :key="style.id"
+                        class="badge d-inline m-1 text-bg-light"
+                      >{{ style.name }}</span>
                     </div>
                   </div>
-                  <div class="d-flex justify-content-start rounded-3 p-2 mb-2">
+                  <div class="d-flex justify-content-center rounded-3 p-2 mb-2">
                     <div>
                       <span class="badge text-bg-secondary">{{ pro.color?"Couleur":null }}</span>
                     </div>
@@ -56,7 +57,7 @@
 
 
 
-                  <div class="d-flex pt-1">
+                  <div class="d-inline-flex flex-column justify-content-center pt-1">
                     <a
                       v-if="pro.instagram"
                       class="link-insta"
@@ -65,7 +66,7 @@
                     >
                       <button
                         type="button"
-                        class="btn btn-outline-light me-1 flex-grow-1"
+                        class="btn btn-outline-light me-1 flex-grow-1 m-2"
                       >
                         Instagram
                       </button>
@@ -74,7 +75,7 @@
                     <router-link
                       v-if="$store.state.user.role!=='pro'"
                       :to="{name:'FormulaireProject'}"
-                      class="btn btn-outline-dark text-light flex-grow-1"
+                      class="btn btn-outline-dark text-light flex-grow-1 m-2"
                       style="background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));"
                     >
                       Prendre rendez-vous
@@ -98,13 +99,13 @@
     </div>
 
     <div class="container">
-      <div class="row">
+      <div class="row d-flex">
         <div class="col-12">
           <h1 class="page-title">
             Galerie
           </h1>
         
-          <div class="row">
+          <div class="row flex-wrap justify-content-center">
             <a
               v-for="tattoo in pro.tattoos"
               :key="tattoo.id"
@@ -148,7 +149,6 @@ export default {
             try {
                 const response=await this.axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$route.params.id}`);
                 this.pro=response.data;
-                console.log(this.pro);
             } catch (error) {
                 console.log("error")
             }
