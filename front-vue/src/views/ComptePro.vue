@@ -307,6 +307,7 @@ export default {
             e.preventDefault();
             this.successMessage=null;
             this.errorMessage=null;
+            this.waitingMessage="Veuillez patientez SVP ..."
             console.log(this.editPro);
             if (this.editPro.password === '')
                 delete this.editPro.password;
@@ -319,7 +320,7 @@ export default {
             }
             else {
               
-                this.waitingMessage="Veuillez patientez SVP ..."
+                
                 if (this.picture) {
                     let img;
                     try {
@@ -327,6 +328,8 @@ export default {
                         await this.$store.dispatch('transformImg',img);
                         this.editPro.profile_picture_path_pro = this.$store.state.url;
                     } catch (error) {
+                        this.waitingMessage=null;
+                        this.errorMessage="Erreur d'envoi de la photo";
                         console.log(error)
                     }
                 }
@@ -338,7 +341,6 @@ export default {
                 this.axios
                     .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}`, this.editPro)
                     .then((response) => {
-                        console.log(response.data);
                         this.errorMessage = null;
                         this.waitingMessage=null;
                         this.successMessage = "Vos informations ont bien été modifiées.";

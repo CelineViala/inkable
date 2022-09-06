@@ -9,6 +9,7 @@ module.exports = Joi.object({
             'string.email': 'L\'email est invalide',
             'string.empty': 'Le champ email doit être rempli',
             'any.required': 'Le champ email est un champ obligatoire',
+            'string.email_check': 'L\'email est invalide',
         }),
     first_name: Joi
         .string()
