@@ -12,11 +12,11 @@
           >
             <div class="card-body p-4">
               <div class="d-flex flex-wrap align-items-center">
-                <div class="flex-shrink-0 ">
+                <div class="flex-shrink-0  img-fluid">
                   <img
                     :src="pro.profile_picture_path_pro"
                     alt="Generic placeholder image"
-                    class="img-fluid  "
+                    class="img-fluid"
                     style="width: 11.25rem; border-radius: 10px;"
                   >
                 </div>
