@@ -27,6 +27,7 @@ const authController = {
         req.body.role = 'pro';
         req.body.password = await serviceAuth.hashPassword(req.body.password);
         req.body.city = req.body.city.toUpperCase();
+        req.body.email = req.body.email.toLowerCase();
 
         // Créer le nouveau pro et remplir la table categorize (many to many)
         const newPro = await Pro.create(req.body);
@@ -57,6 +58,7 @@ const authController = {
         delete req.body.passwordConfirm;
         req.body.role = 'consumer';
         req.body.password = await serviceAuth.hashPassword(req.body.password);
+        req.body.email = req.body.email.toLowerCase();
         // Créer le consumer en BDD et renvoyer une réponse
         const newConsumer = await Consumer.create(req.body);
         return res.status(200).json(newConsumer);
