@@ -94,7 +94,7 @@ module.exports = {
         const findOnePro = await Pro.findByPk(id, {
             include: ['styles', 'tattoos', 'appointments', {
                 association: 'projects',
-                include: ['notifs'],
+                include: ['notifs', 'consumer'],
             }],
         });
         // Renvoyer la réponse si on trouve

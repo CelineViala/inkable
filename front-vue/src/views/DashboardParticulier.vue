@@ -48,6 +48,7 @@
                 <div class="card-body p-4">
                   <h5>{{ project.title }}</h5>
                   <p>{{ project.area }}</p>
+                  <p> Tatoueur : {{ project.pro.studio_name }}</p>
                   <!-- Ce bouton amène sur la page de projet non modifiable, seul le pro peut le faire -->
                   <router-link
                     class="btn btn-primary"
