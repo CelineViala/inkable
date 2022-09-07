@@ -152,13 +152,18 @@
                   <span class="visually-hidden">unread messages</span>
                 </span>
                 <div class="card-body p-4">
-                  <h5>{{ projet.title }}</h5>
+                  <h5 style="color:burlywood">
+                    <strong>
+                      {{ projet.title }}
+                    </strong>
+                  </h5>
                   <p>Zone de tatouage : {{ projet.area }}</p>
                   <p>Envoyé par : {{ projet.consumer.first_name }} {{ projet.consumer.last_name }}</p>
                   
                   <!-- ce boutton amène sur la page de projet modifiable ATTENTION Penser à dynamyser avec un params id du projet-->
                   <router-link
-                    :data-projectId="projet.id"
+                    :data-projectId="
+                      projet.id"
                     :to="{name:'Project', params:{id:projet.id}}"
                     class="btn btn-primary"
                     @click="deleteNotif"
