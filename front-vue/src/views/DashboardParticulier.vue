@@ -51,7 +51,25 @@
                       {{ project.title }}
                     </strong>
                   </h5>
-                  <p>{{ project.area }}</p>
+                  <!-- <span
+                    v-if="project.status=='accepté'"
+                    class="badge rounded-pill bg-success m-3"
+                  >
+                    {{ project.status }}
+                  </span>
+                  <span
+                    v-if="project.status=='refusé'"
+                    class="badge rounded-pill bg-danger m-3"
+                  >
+                    {{ project.status }}
+                  </span>
+                  <span
+                    v-if="project.status==='en attente'"
+                    class="badge rounded-pill bg-light text-dark m-3"
+                  >
+                    {{ project.status }}
+                  </span> -->
+                  <p>Zone de tatouage : {{ project.area }}</p>
                   <p> Tatoueur : {{ project.pro.studio_name }}</p>
                   <!-- Ce bouton amène sur la page de projet non modifiable, seul le pro peut le faire -->
                   <router-link

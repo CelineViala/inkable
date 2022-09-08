@@ -157,6 +157,24 @@
                       {{ projet.title }}
                     </strong>
                   </h5>
+                  <!-- <span
+                    v-if="projet.status=='accepté'"
+                    class="badge rounded-pill bg-success m-3"
+                  >
+                    {{ projet.status }}
+                  </span>
+                  <span
+                    v-if="projet.status=='refusé'"
+                    class="badge rounded-pill bg-danger m-3"
+                  >
+                    {{ projet.status }}
+                  </span>
+                  <span
+                    v-if="projet.status==='en attente'"
+                    class="badge rounded-pill bg-light text-dark m-3"
+                  >
+                    {{ projet.status }}
+                  </span> -->
                   <p>Zone de tatouage : {{ projet.area }}</p>
                   <p>Envoyé par : {{ projet.consumer.first_name }} {{ projet.consumer.last_name }}</p>
                   
@@ -276,13 +294,13 @@ export default {
         formateEvent: function (arg) {
             const rdvElm=document.createElement('div');
             const linkElm=document.createElement('a');
-            rdvElm.textContent=`${arg.event.title} ${arg.event.extendedProps.description}`;
+            rdvElm.textContent=`${arg.event.title} ${arg.event.extendedProps.description?arg.event.extendedProps.description:''}`;
             if(arg.event.extendedProps.project_id)
             {
                 linkElm.classList.add('link-project');
               
                 linkElm.textContent="lien vers le projet";
-                linkElm.setAttribute("href",`project/${arg.event.extendedProps.project_id}`)
+                linkElm.setAttribute("href",`${this.$route.path}/project/${arg.event.extendedProps.project_id}`)
             }
             let arrayOfDomNodes = [rdvElm,linkElm]
             return {

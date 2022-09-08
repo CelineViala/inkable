@@ -25,7 +25,7 @@
                     <label
                       for="studioNmae"
                       class="form-label"
-                    >Nom du studio</label>
+                    >Nom du studio <span class="text-danger"> * </span></label>
                     <input
                       id="studioName"
                       v-model="newPro.studio_name"
@@ -40,7 +40,7 @@
                     <label
                       for="city"
                       class="form-label"
-                    >Ville</label>
+                    >Ville <span class="text-danger"> * </span></label>
                     <input
                       id="city"
                       v-model="newPro.city"
@@ -120,7 +120,7 @@
                     <label
                       for="email"
                       class="form-label"
-                    >Email</label>
+                    >Email <span class="text-danger"> * </span></label>
                     <input
                       id="email"
                       v-model="newPro.email"
@@ -138,7 +138,7 @@
                     <label
                       for="username"
                       class="form-label"
-                    >Mot de passe</label>
+                    >Mot de passe <span class="text-danger"> * </span></label>
                     <input
                       id="password"
                       v-model="newPro.password"
@@ -155,7 +155,7 @@
                     <label
                       for="username"
                       class="form-label"
-                    >Confirmer le mot de passe</label>
+                    >Confirmer le mot de passe <span class="text-danger"> * </span></label>
                     <input
                       id="confirmedPassword"
                       v-model="newPro.passwordConfirm"

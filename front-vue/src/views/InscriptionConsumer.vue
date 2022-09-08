@@ -23,7 +23,7 @@
                     <label
                       for="firstName"
                       class="form-label"
-                    >Prénom</label>
+                    >Prénom <span class="text-danger"> * </span></label>
                     <input
                       id="firstName"
                       v-model="newConsumer.first_name"
@@ -41,7 +41,7 @@
                     <label
                       for="lastName"
                       class="form-label"
-                    >Nom</label>
+                    >Nom <span class="text-danger"> * </span></label>
                     <input
                       id="lastName"
                       v-model="newConsumer.last_name"
@@ -59,7 +59,7 @@
                     <label
                       for="dateOfBirth"
                       class="form-label"
-                    >Date de naissance </label>
+                    >Date de naissance <span class="text-danger"> * </span></label>
                     <input
                       id="dateOfBirth"
                       v-model="newConsumer.date_of_birth"
@@ -95,7 +95,7 @@
                     <label
                       for="email"
                       class="form-label"
-                    >Email</label>
+                    >Email <span class="text-danger"> * </span></label>
                     <input
                       id="email"
                       v-model="newConsumer.email"
@@ -110,7 +110,7 @@
                     <label
                       for="password"
                       class="form-label"
-                    >Mot de passe</label>
+                    >Mot de passe <span class="text-danger"> * </span></label>
                     <input
                       id="password"
                       v-model="newConsumer.password"
@@ -124,7 +124,7 @@
                     <label
                       for="confirmedPassword"
                       class="form-label"
-                    >Confirmer le mot de passe</label>
+                    >Confirmer le mot de passe <span class="text-danger"> * </span></label>
                     <input
                       id="confirmedPassword"
                       v-model="newConsumer.passwordConfirm"

@@ -1,4 +1,5 @@
 <template>
+  <ModalDeleteCount ref="modale" />
   <section class="border-bottom pb-3 mb-3 gradient-custom">
     <div class="container py-5 h-10">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -127,8 +128,10 @@
 
 
 <script>
+import ModalDeleteCount from '../components/ModalDeleteCount.vue';
 export default {
     name: 'CompteParticulier',
+    components:{ ModalDeleteCount},
     data() {
         return {
             mail: null,
@@ -157,6 +160,26 @@ export default {
                 console.log(err);
                 return
             })
+        document.querySelector('.ok-delete').addEventListener("click",()=>{
+            this.axios
+                .delete(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/consumer/${this.$store.state.user.id}`, )
+                .then((response) => {
+                    console.log(response.data);
+                    this.errorMessage = null;
+                    this.waitingMessage=null;
+                    this.successMessage = "Votre compte a bien été supprimé, vous allez être redirigé vers la page d'accueil";
+                    setTimeout(() => {
+                        this.$store.dispatch('logout');
+                        this.$router.push('/');   
+                    }, 2000);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    this.successMessage=null;
+                    this.waitingMessage=null;
+                    this.errorMessage = err.response.data.message;
+                })
+        })
 
     },
     methods: {
@@ -223,24 +246,7 @@ export default {
 
         async deleteProfile(e) {
             e.preventDefault();
-            this.axios
-                .delete(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/consumer/${this.$store.state.user.id}`, )
-                .then((response) => {
-                    console.log(response.data);
-                    this.errorMessage = null;
-                    this.waitingMessage=null;
-                    this.successMessage = "Le compte a bien été supprimé";
-                    this.$store.dispatch('logout');
-                    setTimeout(() => {
-                        this.$router.push('/');   
-                    }, 2000);
-                })
-                .catch((err) => {
-                    console.log(err);
-                    this.successMessage=null;
-                    this.waitingMessage=null;
-                    this.errorMessage = err.response.data.message;
-                })
+            this.$refs.modale.toggleModal();
         },
     }
 }

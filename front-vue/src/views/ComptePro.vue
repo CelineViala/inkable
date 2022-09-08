@@ -1,4 +1,5 @@
 <template>
+  <ModalDeleteCount ref="modale" />
   <section class="border-bottom pb-3 mb-3 gradient-custom">
     <div class="container py-5 h-10">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -240,8 +241,11 @@
 </template>
 
 <script>
+
+import ModalDeleteCount from '../components/ModalDeleteCount.vue';
 export default {
-    name: 'ComptePro',
+    name: "ComptePro",
+    components: { ModalDeleteCount},
     data() {
         return {
             mail: null,
@@ -255,17 +259,13 @@ export default {
             successMessage: null,
             errorMessage: null,
             waitingMessage: null
-        }
+        };
     },
     async created() {
-
-
-
         this.axios
             .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}`)
             .then((response) => {
-                console.log(response.data)
-
+                console.log(response.data);
                 this.editPro.studio_name = response.data.studio_name;
                 this.editPro.black_and_white = response.data.black_and_white;
                 this.editPro.color = response.data.color;
@@ -277,117 +277,116 @@ export default {
                 this.editPro.description = response.data.description;
                 this.editPro.instagram = response.data.instagram;
                 this.editPro.profile_picture_path_pro = response.data.profile_picture_path_pro;
-                this.editPro.styles = response.data.styles.map((item) => item.name)
-
-
+                this.editPro.styles = response.data.styles.map((item) => item.name);
             })
             .catch((err) => {
                 console.log(err);
-                return
-            })
+                return;
+            });
+    },
+    mounted(){
+        document.querySelector('.ok-delete').addEventListener("click",()=>{
+            console.log("supprimer")
+            this.axios
+                .delete(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}`)
+                .then((response) => {
+                    console.log(response.data);
+                    this.errorMessage = null;
+                    this.waitingMessage = null;
+                    this.successMessage = "Votre compte a bien été supprimé, vous allez être redirigé vers la page d'accueil";
+                    setTimeout(() => {
+                        this.$store.dispatch("logout");
+                        this.$router.push("/");
+                    },2000)
 
+                        
+                })
+                .catch((err) => {
+                    console.log(err);
+                    this.successMessage = null;
+                    this.waitingMessage = null;
+                    this.errorMessage = err.response.data.message;
+                });
+
+
+        })
     },
     methods: {
         addInputPicture: function () {
             const parentElm = this.$refs.containerInputs;
-            const inputElm = document.createElement('input');
+            const inputElm = document.createElement("input");
             inputElm.setAttribute("type", "file");
             inputElm.classList.add("form-control");
             inputElm.addEventListener("change", this.handleFile);
             parentElm.appendChild(inputElm);
-
-
         },
         handleFile: async function (e) {
-            this.$store.dispatch('createRequestObjForCloudinary', e);
-
-            this.picture = true
+            this.$store.dispatch("createRequestObjForCloudinary", e);
+            this.picture = true;
         },
         async editProfile(e) {
             e.preventDefault();
-            this.successMessage=null;
-            this.errorMessage=null;
-            this.waitingMessage="Veuillez patientez SVP ..."
+            this.successMessage = null;
+            this.errorMessage = null;
+            this.waitingMessage = "Veuillez patientez SVP ...";
             console.log(this.editPro);
-            if (this.editPro.password === '')
+            if (this.editPro.password === "")
                 delete this.editPro.password;
-            if (this.editPro.passwordConfirm === '')
+            if (this.editPro.passwordConfirm === "")
                 delete this.editPro.passwordConfirm;
             if (this.editPro.password !== undefined && this.editPro.passwordConfirm === undefined) {
-                this.waitingMessage=null;
-                this.successMessage=null;
-                this.errorMessage = " Vous devez  confirmer votre mot de passe";
+                this.waitingMessage = null;
+                this.successMessage = null;
+                this.errorMessage = " Vous devez confirmer votre mot de passe";
             }
             else {
-              
-                
                 if (this.picture) {
                     let img;
                     try {
-                        img = await this.$store.dispatch('handleUploadToCloudinary')
-                        await this.$store.dispatch('transformImg',img);
+                        img = await this.$store.dispatch("handleUploadToCloudinary");
+                        await this.$store.dispatch("transformImg", img);
                         this.editPro.profile_picture_path_pro = this.$store.state.url;
-                    } catch (error) {
-                        this.waitingMessage=null;
-                        this.errorMessage="Erreur d'envoi de la photo";
-                        console.log(error)
+                    }
+                    catch (error) {
+                        this.waitingMessage = null;
+                        this.errorMessage = "Erreur d'envoi de la photo";
+                        console.log(error);
                     }
                 }
                 // si le mail n'a pas été modifié il faut supprimer la donnée car sinon on aura une erreur d'utilisateur déjà existant côté back
                 if (this.editPro.email === this.mail)
                     delete this.editPro.email;
                 else
-                    this.mail=this.editPro.email;
+                    this.mail = this.editPro.email;
                 this.axios
                     .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}`, this.editPro)
                     .then((response) => {
                         this.errorMessage = null;
-                        this.waitingMessage=null;
+                        this.waitingMessage = null;
                         this.successMessage = "Vos informations ont bien été modifiées.";
-                        if(this.picture)
+                        if (this.picture)
                             this.successMessage += "Mise à jour de votre page...";
                         this.picture = false;
                         this.editPro.email = this.mail;
                         setTimeout(() => {
                             this.successMessage = null;
-                            this.waitingMessage=null;
+                            this.waitingMessage = null;
                         }, 2000);
                     })
                     .catch((err) => {
                         console.log(err);
                         this.editPro.email = this.mail;
-                        this.successMessage=null;
-                        this.waitingMessage=null;
+                        this.successMessage = null;
+                        this.waitingMessage = null;
                         this.errorMessage = err.response.data.message;
-
-                    })
+                    });
             }
         },
-
         async deleteProfile(e) {
             e.preventDefault();
-            this.axios
-                .delete(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}`, )
-                .then((response) => {
-                    console.log(response.data);
-                    this.errorMessage = null;
-                    this.waitingMessage=null;
-                    this.successMessage = "Le compte a bien été supprimé";
-                    this.$store.dispatch('logout');
-                    setTimeout(() => {
-                        this.$router.push('/');   
-                    }, 2000);
-                })
-                .catch((err) => {
-                    console.log(err);
-                    this.successMessage=null;
-                    this.waitingMessage=null;
-                    this.errorMessage = err.response.data.message;
-                })
+            this.$refs.modale.toggleModal();
         },
-    },
-
-    
+    }
 }
 
 
