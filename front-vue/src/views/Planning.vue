@@ -509,7 +509,9 @@ export default {
         },
         cancel(e) {
             e.preventDefault();
+            
             this.$refs.formElm.style.display = 'none';
+            this.rdv={}
             console.log("test")
         },
 
