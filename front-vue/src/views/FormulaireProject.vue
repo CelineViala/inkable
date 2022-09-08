@@ -20,7 +20,7 @@
                     <label
                       class="form-label"
                       for="typeText"
-                    >Titre du projet</label>
+                    >Titre du projet <span class="text-danger"> * </span></label>
                     <input
                       id="typeText"
                       v-model="newProject.title"
@@ -34,7 +34,7 @@
                     <label
                       class="form-label"
                       for="typeText"
-                    >Description</label> 
+                    >Description <span class="text-danger"> * </span></label> 
                     <textarea
                       id="typeText"
                       v-model="newProject.description"
@@ -47,7 +47,7 @@
                     <label
                       class="form-label"
                       for="typeText"
-                    >Zone à tatouer</label>
+                    >Zone à tatouer <span class="text-danger"> * </span></label>
                     <input
                       id="typeText"
                       v-model="newProject.area"

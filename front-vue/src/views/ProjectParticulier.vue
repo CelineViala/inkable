@@ -285,7 +285,7 @@ export default {
                 rdvs.forEach(rdv => {
                     this.calendarApi.addEvent({
                         id: rdv.id,
-                        title: `RDV avec "${this.project.pro.studio_name}" pour : ${rdv.note}`,
+                        title: `RDV avec "${this.project.pro.studio_name}"  ${rdv.note?'pour : '+rdv.note:''}`,
                         extendedProps: {
                             description: rdv.note,
                         },
