@@ -181,7 +181,7 @@ If you don't have an account you can't login.
 #### Delete account
 - Go to "Mon compte" page
 - Click on "Supprimer mon compte" to delete it. 
-Warning : There is no confirm box at the moment, it's for V2. If you click on that button your acocunt will be instantly deleted. 
+- Confirm the delete by clicking on Ok in the modal box.  
 
 ### As a tattoo artist
 #### Add pictures to my galery
@@ -240,7 +240,7 @@ Warning : There is no confirm box at the moment, it's for V2. If you click on th
 #### Delete account
 - Go to "Mon compte" page
 - Click on "Supprimer mon compte" to delete it. 
-Warning : There is no confirm box at the moment, it's for V2. If you click on that button your acocunt will be instantly deleted.
+- Confirm the delete by clicking on Ok in the modal box. 
 
 ### Bonus pages
 #### 404 page 
