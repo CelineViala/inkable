@@ -33,19 +33,19 @@ module.exports = {
      * @returns Filtred pros - Route API JSON response
      */
 
-    async CreateSearch(req, res) {
+    async filteredSearch(req, res) {
         // Rquête sql pour avoir tous les pros
         let query = `SELECT DISTINCT pro.* FROM pro
         LEFT OUTER JOIN categorise ON pro_id=pro.id
         LEFT OUTER JOIN style on categorise.style_id=style.id
         WHERE `;
-        // Ici on va stocker les données rentrées dans le formulaire pour la requête SQL
+        // Ici on va stocker les conditions suivant les noms de colonnes
         let conditions = [];
-        // Et ici les infos avec lesquelles nous allons intéroger la BDD
+        // Et ici les valeurs 
         const args = [];
         let count = 1;
 
-        // Si un champs est défini, pusher la condition dans le tableau
+        // Si un champ est défini, push la condition dans le tableau
         if (req.body.city !== undefined) {
             conditions.push(`city = $${count}`);
             args.push(req.body.city);
@@ -65,7 +65,7 @@ module.exports = {
             conditions.push(`style.name= $${count}`);
             args.push(req.body.style);
         }
-        // Ajouter toutes conditions du tableau sur la requête pour la filter
+        // Ajouter toutes conditions du tableau sur la requête pour la filtrer
         conditions = conditions.join(' AND ');
         query += conditions;
         const filteredPros = await client.query(query, {

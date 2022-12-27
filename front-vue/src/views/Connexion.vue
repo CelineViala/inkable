@@ -26,7 +26,7 @@
                       id="email"
                       v-model="user.email"
                       type="email"
-                      class="form-control form-control-lg"
+                      class="form-control"
                     >
                   </div>
 
@@ -39,7 +39,7 @@
                       id="password"
                       v-model="user.password"
                       type="password"
-                      class="form-control form-control-lg"
+                      class="form-control"
                     >
                   </div>
 
@@ -118,26 +118,18 @@ export default {
     },
     methods:{
         connect:function(){
-           
             this.axios
                 .post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}login`,this.user)
                 .then((response) => {
-                    console.log(response.data);
+                    //console.log(response.data);
                     this.user={};
-                    this.$router.push('/');
                     localStorage.setItem("token",response.data.accessToken);
-                    this.axios.defaults.headers.common['Authorization']=`Bearer ${response.data.accessToken}`;
-                    this.$store.dispatch('check');
+                    this.$router.push('/');
                 })
-                .catch((err)=>{
-                  
+                .catch((err)=>{  
                     console.log(err.response.data.message);
                     this.errorMessage=err.response.data.message;
-                })
-
-      
-            
-            
+                })   
         }
     }
 }

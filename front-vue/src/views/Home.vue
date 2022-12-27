@@ -108,11 +108,11 @@
     <!-- <div class="container py-5 h-10"> -->
     <div class="container py-4 h-10">
       <!-- <div class="row row-cols-2 row-cols-md-5 g-4"> -->
-      <div class="row row-cols-2 row-cols-md-4 g-4">
+      <div class="row g-4">
         <div
           v-for="p in pros"
           :key="p.id"
-          class="col"
+          class="col-xs-12 col-sm-6 col-md-4 col-lg-3"
         >
           <div class="card bg-dark text-white container-card">
             <img

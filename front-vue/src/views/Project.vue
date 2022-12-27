@@ -45,7 +45,7 @@
                 v-model="editProject.title"
                 data-field="title"
                 type="text"
-                class="form-control form-control-lg"
+                class="form-control"
                 @change="handleChange"
               >
             </div>
@@ -63,7 +63,7 @@
                 v-model="editProject.description"
                 data-field="description"
                 type="text"
-                class="form-control form-control-lg"
+                class="form-control"
                 @change="handleChange"
               />
             </div>
@@ -86,7 +86,7 @@
                     v-model="editProject.area"
                     data-field="area"
                     type="text"
-                    class="form-control form-control-lg"
+                    class="form-control"
                     @change="handleChange"
                   >
                 </div>

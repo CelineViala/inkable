@@ -6,7 +6,7 @@
         Bienvenue sur votre dashboard {{ pro.studio_name }}
       </h3>
       <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-8">
+        <div class="col-md-8 col-xs-12">
           <div
             class="card bg-dark text-white"
             style="border-radius: 1rem;"
@@ -19,7 +19,7 @@
                 >Ajouter une photo dans ma galerie </label>
                 <input
                   ref="pictureInput"
-                  class="form-control form-control-lg"
+                  class="form-control"
                   type="file"
                   @change="handleFile"
                 >
@@ -107,6 +107,7 @@
         >
           <FullCalendar
             ref="list"
+            class="calendar-app"
             :options="calendarOptions"
           />
           <p> Si vous souhaitez modifier ou annuler un rendez-vous, rendez-vous sur la page du projet en question</p>
@@ -350,8 +351,6 @@ export default {
             this.picture=true;
         },
         async sendPicture(){
-      
-
             //si une photo a été ajoutée
             if(this.picture)
             {
@@ -370,7 +369,7 @@ export default {
                     .then(async (res)=>{
                         this.errorMessage=null;
                         this.waitingMessage=null;
-                        this.successMessage="Votre photo a bien été envoyée";
+                        this.successMessage="Votre photo a bien été enregistrée.";
                         setTimeout(() => {
                             this.successMessage=null;
                         }, 1000);
@@ -386,8 +385,8 @@ export default {
                     .catch((err)=>{
                         this.successMessage=null;
                         this.waitingMessage=null;
-                        this.errorMessage="Erreur serveur";
-                        console.log(this.$store.state.url)
+                        this.errorMessage=err.response.data.message
+                        
                     })
             }else{
                 this.successMessage=null;
@@ -426,4 +425,6 @@ export default {
 .link-project{
   text-decoration: underline !important;
 }
+
+
 </style>

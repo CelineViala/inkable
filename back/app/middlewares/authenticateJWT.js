@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 /**
- * Token to identify visitors
+ * Token which identify visitors
  * @param {object} req
  * @param {object} res
  * @param {_} next
@@ -9,7 +9,6 @@ const jwt = require('jsonwebtoken');
 
 const authenticateJWT = (req, res, next) => {
     const authHeader = req.headers.authorization;
-
     if (authHeader) {
         const token = authHeader.split(' ')[1];
 

@@ -3,7 +3,7 @@
   <section class="border-bottom pb-3 mb-3 gradient-custom">
     <div class="container py-5 h-10">
       <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-8">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8">
           <div
             class="card bg-dark text-white"
             style="border-radius: 1rem;"
@@ -101,7 +101,7 @@
                     profil</label>
                   <input
                     id="formFile"
-                    class="form-control form-control-lg"
+                    class="form-control"
                     type="file"
                     @change="handleFile"
                   >
