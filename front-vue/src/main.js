@@ -15,7 +15,7 @@ const AmBreadcrumbs = defineAsyncComponent(() =>
 createApp(App)
     .use(Cloudinary, {
         configuration: { 
-            cloudName: "dmoacy4yl",
+            cloudName: process.env.VUE_APP_ENV_CLOUDINARY_CLOUDNAME,
         },
     })
     .use(VueAxios,axios)
@@ -27,4 +27,5 @@ createApp(App)
     
     .mount('#app');
 
-import "bootstrap/dist/js/bootstrap.js";
+import "bootstrap/dist/js/bootstrap.js";import { process } from "ipaddr.js";
+

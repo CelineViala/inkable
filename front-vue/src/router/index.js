@@ -192,7 +192,7 @@ const router=createRouter({
 })
 
 
-router.beforeEach(async (to,from,next)=>{
+router.beforeEach(async (to,_,next)=>{
     try {
         const token=localStorage.getItem("token");
         //met le token dans le header 
@@ -215,7 +215,7 @@ router.beforeEach(async (to,from,next)=>{
        
 
     } catch (error) {
-        console.log(error);
+        console.log("error");
     }
     
     

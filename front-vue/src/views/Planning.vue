@@ -55,6 +55,7 @@
         >
           <FullCalendar
             ref="fullCalendar"
+            class="calendar-app"
             :options="calendarOptions"
           />
 
@@ -75,7 +76,7 @@
                 v-model="rdv.title"
                 name="titre"
                 type="text"
-                class="form-control form-control-lg"
+                class="form-control"
               >
               <label
                 for="titre"
@@ -90,7 +91,7 @@
                 v-model="rdv.note"
                 name="description"
                 type="text"
-                class="form-control form-control-lg"
+                class="form-control"
               >
               <label
                 for="titre"
@@ -107,7 +108,7 @@
               <select
                 id="inlineFormCustomSelect"
                 v-model="rdv.project_id"
-                class="custom - select mr - sm - 2 form-control form-control-lg"
+                class="custom - select mr - sm - 2 form-control"
               >
                 <option value="null">
                   Aucun Projet associé au RDV
@@ -116,7 +117,7 @@
                   v-for="project in projects"
                   :key="project.id"
                   ref="accepted"
-                  class="form-control form-control-lg"
+                  class="form-control"
                   :value="project.id"
                 >
                   {{ `${project.consumer.first_name} ${project.consumer.last_name} ${project.title}`
@@ -209,13 +210,13 @@ export default {
             successMessage: null,
             errorMessage: null,
             startRange: new Date(),
-            endRange: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            endRange: new Date(Date.now() + this.getNbDays() * 24 * 60 * 60 * 1000),
             calendarOptions: {
                 plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
                 initialView: 'timeGrid',
                 visibleRange: {
                     start: new Date(),
-                    end: new Date().setDate(new Date().getDate() + 7)
+                    end: new Date().setDate(new Date().getDate() + this.getNbDays())
                 },
                 customButtons: {
                     myCustomButtonToday: {
@@ -275,7 +276,6 @@ export default {
             console.log(error);
         }
         try {
-
             const rdvs = this.$store.state.user.appointments;
             rdvs?.forEach(rdv => {
                 this.$refs.fullCalendar.getApi().addEvent({
@@ -297,9 +297,9 @@ export default {
         edit(e){
             console.log(e)
             if(e?.target.classList.contains('ok')){
-                console.log("rdv enregistrement");
+                console.log("rdv enregistré");
                 this.axios
-                    .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/rdv/${this.idRdv}`, this.requestObj)
+                    .patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.user.id}/rdv/${this.idRdv}`, this.requestObj)
                     .then((response) => {
                         console.log(response.data)
                         this.toggleModal();
@@ -320,14 +320,15 @@ export default {
             this.active
                 ? body.classList.add("modal-open")
                 : body.classList.remove("modal-open");
-            setTimeout(() => (this.show = !this.show), 10);
-            
-            
-            
+            setTimeout(() => (this.show = !this.show), 10);        
+        },
+        getNbDays(){
+            if(screen.width<700) return 0
+            else return 6
         },
         goToday: function () {
             this.startRange = new Date();
-            this.endRange = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+            this.endRange = new Date(Date.now() + this.getNbDays() * 24 * 60 * 60 * 1000);
             this.$refs.fullCalendar.getApi().setOption('visibleRange', {
                 start: this.startRange,
                 end: this.endRange
@@ -446,31 +447,30 @@ export default {
 
         },
         handleSelect(info) {
-            this.calendar.apiCalendar = info.view.calendar;
+            this.calendar.apiCalendar = this.$refs.fullCalendar.getApi();
             let isFree = true
             this.calendar.apiCalendar.getEvents().forEach(e => {
-                isFree = !isFree ? false : this.free(new Date(this.calendar.apiCalendar.getEventById(e._def.publicId)._instance
-                    .range.start), new Date(info.start), this.calendar.apiCalendar
-                    .getEventById(e._def.publicId)._instance.range.end,
-                new Date(info.end));
+                const beginNewRdv=new Date(info.start);
+                const endNewRdv=new Date(info.end);
+                const beginEvent=new Date(this.calendar.apiCalendar.getEventById(e._def.publicId)._instance.range.start);
+                const endEvent=new Date(this.calendar.apiCalendar.getEventById(e._def.publicId)._instance.range.end);
+                isFree = isFree && this.free(beginEvent, beginNewRdv, endEvent,endNewRdv);  
             })
             if (!isFree)
             {    
                 this.modalTitle="Attention"
                 this.modalText="Chevauchement de rdv détecté."
                 this.toggleModal();
+            }else{
+
+                this.errorMessage = null;
+                this.$refs.formElm.style.display = "block"
+                this.$refs.buttonValid.removeAttribute("hidden")
+                this.$refs.buttonEdit.setAttribute("hidden", "hidden");
+                this.$refs.dataElm.textContent = `${this.format(info.start)} - ${this.format(info.end)}`
+                this.rdv.beginning_hour = info.start
+                this.rdv.ending_hour = info.end;
             }
-            this.errorMessage = null;
-            this.$refs.formElm.style.display = "block"
-            this.$refs.buttonValid.removeAttribute("hidden")
-            this.$refs.buttonEdit.setAttribute("hidden", "hidden");
-
-            // this.$refs.formElm.style.top = info.jsEvent.y+ "px";
-            // this.$refs.formElm.style.left = info.jsEvent.x+ "px";
-
-            this.$refs.dataElm.textContent = `${this.format(info.start)} - ${this.format(info.end)}`
-            this.rdv.beginning_hour = info.start
-            this.rdv.ending_hour = info.end;
         },
         async handleEditEvent(info) {
 
@@ -509,25 +509,19 @@ export default {
         },
         cancel(e) {
             e.preventDefault();
-            
             this.$refs.formElm.style.display = 'none';
             this.rdv={}
             console.log("test")
         },
 
         async valid(e) {
-
             this.rdv.pro_id = this.$store.state.user.id;
-          
-           
             if(this.rdv.project_id==="null")
                 delete this.rdv.project_id;
-           
             //enregistrement bdd
             try {
-                const response = await this.axios.post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/rdv`, this.rdv);
-
-                console.log("rdv enregistré", this.rdv);
+                const response = await this.axios.post(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.user.id}/rdv`, this.rdv);
+                //console.log("rdv enregistré", this.rdv);
                 this.rdv.id = response.data.id;
                 //ajout sur le calendrier
                 this.calendar.apiCalendar.addEvent({
@@ -542,13 +536,10 @@ export default {
                 })
                 this.$refs.formElm.style.display = 'none';
                 this.rdv = {};
-
             } catch (error) {
                 console.log(error)
                 this.errorMessage = error.response.data.message;
             }
-
-
         },
         async modify(e) {
             this.$refs.formElm.style.display = 'none';
@@ -557,10 +548,8 @@ export default {
                 this.rdv.project_id=null;
             //enregistrement bdd
             try {
-                const response = await this.axios.patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.$store.state.user.id}/rdv/${e.target.id}`, this.rdv);
-                console.log("rdv enregistré", response);
-
-
+                const response = await this.axios.patch(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.user.id}/rdv/${e.target.id}`, this.rdv);
+                console.log("rdv modifié");
             } catch (error) {
                 console.log(error)
                 this.errorMessage = error.message
@@ -688,4 +677,5 @@ body {
 #calendar-listview {
     width: 30%;
 }
+
 </style>

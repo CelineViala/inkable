@@ -8,6 +8,7 @@
 
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, _, res, next) => {
+    console.log(err);
     let { message } = err;
     const { infos } = err;
     const statusCode = infos?.statusCode || 500;

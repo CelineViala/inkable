@@ -73,7 +73,7 @@ const authController = {
     },
 
     /**
-     * AuthController to send the loged user on the front
+     * AuthController which send the logged user to the front if
      * @param {Object} req Express request object
      * @param {Object} res Express request object
      * @returns Send user on front-vue - Route API JSON response
@@ -95,7 +95,7 @@ const authController = {
         const pro = await serviceAuth.findUser(Pro, req.body.email);
         const consumer = await serviceAuth.findUser(Consumer, req.body.email);
         if (!pro && !consumer) throw new ApiError('Compte non existant', { statusCode: 500 });
-        // Rediriger en fonction du rôle
+
         let user;
         if (pro) {
             user = pro;
@@ -105,13 +105,16 @@ const authController = {
         // Vérifier le mdp
         if (!await serviceAuth.checkPassword(req.body.password, user.password)) throw new InputError('Mot de passe erroné', { statusCode: 400 });
         const accessToken = jwt.sign(
-            { role: user.role, id: user.id },
+            {
+                role: user.role,
+                id: user.id,
+            },
             process.env.JWT_SECRET,
+            // { expiresIn: '3h' },
         );
-        // Renvoyer la réponse avec le token pour que le front connaisse le role de l'utilisateur
+        // Renvoyer la réponse avec le token pour que le front le stocke de son côté
         return res.json({ accessToken });
     },
-
 };
 
 module.exports = authController;

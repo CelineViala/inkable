@@ -30,7 +30,6 @@ Pro.init({
     black_and_white: DataTypes.BOOLEAN,
     role: DataTypes.TEXT,
 }, {
-
     sequelize,
     tableName: 'pro',
 });

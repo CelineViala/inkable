@@ -56,7 +56,7 @@ router.get('/api/pro', controllerHandler(proController.getAllPro));
  * @tags Pro
  * @return {[Pro]} 200 - success response - application/json
  */
-router.post('/api/pro/search', controllerHandler(proController.CreateSearch));
+router.post('/api/pro/search', controllerHandler(proController.filteredSearch));
 
 router
     .route('/api/pro/:id')
@@ -371,9 +371,9 @@ router.post('/login', validate('body', loginCreateSchema), controllerHandler(aut
 // ########## route de test JWT ##########
 // #######################################
 
-// router.get('/testConsumer', authenticateJWT, authController.testConsumer);
 // route de test JWT
-// router.get('/testPro', authenticateJWT, authController.testPro);
+router.get('/testConsumer', authenticateJWT, controllerHandler(authController.testConsumer));
+router.get('/testPro', authenticateJWT, controllerHandler(authController.testPro));
 
 /**
  * GET /checkRole

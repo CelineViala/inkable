@@ -25,7 +25,7 @@
                       id="typeText"
                       v-model="newProject.title"
                       type="text"
-                      class="form-control form-control-lg"
+                      class="form-control"
                     >
                   </div>
 
@@ -39,7 +39,7 @@
                       id="typeText"
                       v-model="newProject.description"
                       type="text"
-                      class="form-control form-control-lg"
+                      class="form-control"
                     />
                   </div>
 
@@ -52,7 +52,7 @@
                       id="typeText"
                       v-model="newProject.area"
                       type="text"
-                      class="form-control form-control-lg"
+                      class="form-control"
                     >
                   </div>
            
@@ -146,7 +146,6 @@ export default {
                     this.messageError=null;
                 })
                 .catch((err)=>{
-                    console.log(err)
                     this.messageSuccess=null;
                     this.messageError=err.response.data.message;
                 })

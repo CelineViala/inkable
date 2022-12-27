@@ -2,9 +2,6 @@ import {createStore} from 'vuex';
 import axios from 'axios';
 import { Cloudinary } from "@cloudinary/url-gen";
 import { fill} from "@cloudinary/url-gen/actions/resize";
-// import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
-// import {focusOn} from "@cloudinary/url-gen/qualifiers/gravity";
-// import {FocusOn} from "@cloudinary/url-gen/qualifiers/focusOn";
 const router=require('../router')
 export default createStore({
     state:{
@@ -146,9 +143,7 @@ export default createStore({
             //mise à jour de user.role à anonyme
             await dispatch('deleteUser');
             await dispatch('setAnonymous');
-            console.log(router)
             router.default.push('/'); 
-
         },
         setNotifDashboard({commit},data){
             commit('setNotifDashboard',data.active);

@@ -1,143 +1,50 @@
 <template>
-  <!-- Création de ligne -->
-  <div class="row d-flex align-items-center h-100 mx-4">
-    <!-- Première colonne -->
-    <div class="d-flex col-xl-3 col-md-4 ">
+  <div id="root">
+    <div
+      id="topnav"
+      class="topnav"
+    >
       <router-link to="/">
         <img
           src="https://res.cloudinary.com/dmoacy4yl/image/upload/c_thumb,w_200,g_face/v1661781662/inkable_rectangle_but7iu.png"
           alt=""
         >
       </router-link>
-    </div>
-    
-    <!-- Deuxiemme colonne -->
-    <div class="d-flex col-xl-6 col-md-auto justify-content-center">
-      <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-        <li>
-          <router-link
-            v-if="$store.state.user.role==='pro'"
-            class="text-decoration-none"
-            :to="{name :'ProfilPro', params: {id:$store.state.user.id}}"
-          >
-            <div class="nav-link text-dark">
-              Mon profil
-            </div>
-          </router-link>
-        </li>
-
-        <li>
-          <router-link
-            v-if="$store.state.user.role==='pro'"
-            to="/dashboard-pro"
-            class="text-decoration-none"
-          >
-            <div class="nav-link text-dark position-relative">
-              Dashboard
-              <i
-                v-if="$store.state.hasNotif"
-                class="bi bi-circle-fill text-danger"
-              />
-            </div>
-          </router-link>
-        </li>
-
-        <li>
-          <router-link
-            v-if="$store.state.user.role==='consumer'"
-            to="/dashboard-particulier"
-            class="text-decoration-none"
-          >
-            <div class="nav-link text-dark">
-              Dashboard
-              <i
-                v-if="$store.state.hasNotif"
-                class="bi bi-circle-fill text-danger"
-              />
-            </div>
-          </router-link>
-        </li>
-
-        <li>
-          <router-link
-            v-if="$store.state.user.role==='pro'"
-            to="/planning"
-            class="text-decoration-none"
-          >
-            <div class="nav-link text-dark">
-              Planning
-            </div>
-          </router-link>
-        </li>
-
-        <li>
-          <router-link
-            v-if="$store.state.user.role==='pro'"
-            to="/compte-pro"
-            class="text-decoration-none"
-          >
-            <div class="nav-link text-dark">
-              Mon Compte
-            </div>
-          </router-link>
-        </li>
-
-        <li>
-          <router-link
-            v-if="$store.state.user.role==='consumer'"
-            to="/compte-particulier"
-            class="text-decoration-none"
-          >
-            <div class="nav-link text-dark">
-              Mon Compte
-            </div>
-          </router-link>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Troisieme colonne -->
-    <div class="d-flex col-xl-3 col-md-4 justify-content-end">
-      <router-link to="/connexion">
-        <button
-          v-if="$store.state.user.role==='anonyme'"
-          type="button"
-          class="btn btn-light text-dark me-2 "
-        >
-          Se connecter
-        </button>
-      </router-link>
-          
-      <button
-        v-if="$store.state.user.role==='consumer'||$store.state.user.role==='pro'"
-        type="button"
-        class="btn btn-light text-dark me-2"
-        @click="deconnect"
+        
+      <!-- Classic Menu -->
+     
+      <nav
+        id="topnav_menu"
+        class="d-none d-lg-flex"
+        role="navigation"
       >
-        Se déconnecter
-      </button>
-         
-      <router-link to="/inscriptionConsumer">
-        <button
-          v-if="$store.state.user.role==='anonyme'"
-          type="button"
-          class="btn btn-primary me-2"
-        >
-          Créer compte
-        </button>
-      </router-link>
-      <router-link to="/inscriptionPro">
-        <button
-          v-if="$store.state.user.role==='anonyme'"
-          type="button"
-          class="btn btn-primary"
-        >
-          Vous êtes tatoueur ?
-        </button>
-      </router-link>
+        <NavItems />
+        <NavButtons />
+      </nav>
+
+      <a
+        id="topnav_hamburger_icon"
+        class="d-block d-lg-none"
+        @click="showResponsiveMenu"
+      >
+        <!-- Some spans to act as a hamburger -->
+        <span />
+        <span />
+        <span />
+      </a>
+
+      <!-- Responsive Menu -->
+      <nav
+        id="topnav_responsive_menu"
+        role="navigation"
+      >
+        <ul>
+          <NavItems />
+          <NavButtons />
+        </ul>
+      </nav>
     </div>
   </div>
-
   <div class="row d-flex align-items-center h-100 mx-3 ">
     <div class="d-flex col-xl-3 col-md-4 ">
       <AmBreadcrumbs>
@@ -152,7 +59,6 @@
       </AmBreadcrumbs>
     </div>
   </div>
-
   <router-view />
 
   <footer class="text-center text-lg-start bg-light text-muted">
@@ -174,11 +80,11 @@
 <script>
 
 
-
+import NavItems from './components/NavItems.vue';
+import NavButtons from './components/NavButtons.vue';
 export default {
     name: 'App',
-    components:{},
-  
+    components:{NavItems,NavButtons},
     computed:{
         user() {
             return this.$store.state.user
@@ -187,7 +93,6 @@ export default {
             return this.$store.state.cities
         }
     },
- 
     updated(){
         console.log("updated");
     },
@@ -209,6 +114,20 @@ export default {
 
     },
     methods:{
+        showResponsiveMenu() {
+            const menu = document.getElementById("topnav_responsive_menu");
+            const icon = document.getElementById("topnav_hamburger_icon");
+            const root = document.getElementById("root");
+            if (menu.className === "") {
+                menu.className = "open";
+                icon.className = "open";
+                root.style.overflowY = "hidden";
+            } else {
+                menu.className = "";                    
+                icon.className = "";
+                root.style.overflowY = "";
+            }
+        },
         deconnect(){
 
             this.$store.dispatch('logout');
@@ -229,7 +148,213 @@ export default {
   color: white;
 
 }
+/* ******************** NAV BAR ******************** */
+.topnav {
 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+#topnav_menu{
+  display: flex;
+  align-items: center;
+  gap:2em;
+}
+.topnav_link {
+  color: rgb(18, 18, 18);
 
+  text-decoration: none;
+}
+.topnav_link:hover {
+  color: #0078b4;
+}
+
+/* hide responsive menu */
+#topnav_hamburger_icon,
+#topnav_responsive_menu {
+  display: none;
+}
+
+@media only screen and (max-width: 992px) {
+  /* hide classic menu */
+  #topnav_menu {
+    display: none;
+  }
+
+  /* position home link at left and hamburger at right */
+  #home_link {
+    flex-grow: 1;
+  }
+
+  /* disable horizontal scrolling  */
+  #root {
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* show responsive menu and position at the right of the screen */
+  #topnav_responsive_menu {
+    display: block;
+    position: absolute;
+    margin: 0;
+    right: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 99;
+
+    transform-origin: 0% 0%;
+    transform: translate(200%, 0);
+
+    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+  }
+
+  #topnav_responsive_menu ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1em;
+    position: absolute;
+    margin: 0;
+    right: 0;
+    top: 0;
+
+    min-width: 50vw;
+    height: 100vh;
+    padding: 56px 0 0;
+
+    text-align: center;
+
+    background: #ededed;
+    list-style-type: none;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #topnav_responsive_menu li {
+    margin: 5px 5px;
+  }
+
+  #topnav_responsive_menu a {
+    white-space: nowrap;
+    color: #333;
+    text-decoration: none;
+  }
+
+  /* And let's slide it in from the right */
+  #topnav_responsive_menu.open {
+    transform: none;
+    position: fixed;
+  }
+
+  /* ******************** HAMBURGER ICON ******************** */
+  /* define size and position of the hamburger link */
+  #topnav_hamburger_icon {
+    display: block;
+    position: relative;
+    margin: 16px;
+    width: 33px;
+    height: 28px;
+    
+    z-index: 100;
+    
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  /* define the style (size, color, position, animation, ...) of the 3 spans */
+  #topnav_hamburger_icon span {
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    margin-bottom: 5px;
+ 
+    background: #333;
+    border-radius: 3px;
+    
+    z-index: 100;
+
+    opacity: 1;
+    left: 0;
+
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: 0.25s ease-in-out;
+    -moz-transition: 0.25s ease-in-out;
+    -o-transition: 0.25s ease-in-out;
+    transition: 0.25s ease-in-out;
+  }
+
+  /* set the 3 spans position to look like a hamburger */
+  #topnav_hamburger_icon span:nth-child(1) {
+    top: 0px;
+    -webkit-transform-origin: left top;
+    -moz-transform-origin: left top;
+    -o-transform-origin: left top;
+    transform-origin: left top;
+  }
+  #topnav_hamburger_icon span:nth-child(2) {
+    top: 12px;
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    -o-transform-origin: left center;
+    transform-origin: left center;
+  }
+  #topnav_hamburger_icon span:nth-child(3) {
+    top: 24px;
+    -webkit-transform-origin: left bottom;
+    -moz-transform-origin: left bottom;
+    -o-transform-origin: left bottom;
+    transform-origin: left bottom;
+  }
+
+  /* change color when opening the menu */
+  #topnav_hamburger_icon.open span {
+    
+  }
+
+  /* the first span rotates 45° \ */
+  #topnav_hamburger_icon.open span:nth-child(1) {
+    width: 110%;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+  /* the second span disappears */
+  #topnav_hamburger_icon.open span:nth-child(2) {
+    width: 0%;
+    opacity: 0;
+  }
+
+  /* the last span rotates -45° / */
+  #topnav_hamburger_icon.open span:nth-child(3) {
+    width: 110%;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+}
+@media only screen and (max-width: 700px) {
+  body{
+    font-size: small !important;
+  }
+.calendar-app{
+  font-size:xx-small !important;
+}
+.fc-toolbar-chunk{
+  display: flex;
+  flex-direction: column;
+  gap:0.2em;
+}
+}
 /* style="background-color: rgba(37, 117, 252, 1 */
 </style>
