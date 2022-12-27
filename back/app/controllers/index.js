@@ -2,7 +2,6 @@ const consumerController = require('./consumerController');
 const proController = require('./proController');
 const appointmentController = require('./appointmentController');
 const projectController = require('./projectController');
-const testController = require('./testController');
 const searchController = require('./searchController');
 const authController = require('./authController');
 
@@ -12,7 +11,6 @@ module.exports = {
     proController,
     appointmentController,
     projectController,
-    testController,
     searchController,
     authController,
 };

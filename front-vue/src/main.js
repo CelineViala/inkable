@@ -6,18 +6,26 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import createStore from './store';
 import Cloudinary from "cloudinary-vue";
-
-
+import breadcrumbs from 'vue-3-breadcrumbs';
+import { defineAsyncComponent } from 'vue'
+const AmBreadcrumbs = defineAsyncComponent(() =>
+    import ('vue-3-breadcrumbs/dist/cjs/AmBreadcrumbs-8489d1fe')
+)
 
 createApp(App)
-.use(Cloudinary, {
-    configuration: { 
-      cloudName: "dmoacy4yl",
-    },
-})
-.use(VueAxios,axios)
-.use(createStore)
-.use(router)
-.mount('#app');
+    .use(Cloudinary, {
+        configuration: { 
+            cloudName: process.env.VUE_APP_ENV_CLOUDINARY_CLOUDNAME,
+        },
+    })
+    .use(VueAxios,axios)
+    .use(createStore)
+    .use(router)
+    .use(breadcrumbs, {
+        includeComponent: true// {boolean} [includeComponent=false] - Include global breadcrumbs component or not
+    })
+    
+    .mount('#app');
 
-import "bootstrap/dist/js/bootstrap.js";
+import "bootstrap/dist/js/bootstrap.js";import { process } from "ipaddr.js";
+

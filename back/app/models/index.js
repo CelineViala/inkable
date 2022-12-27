@@ -6,6 +6,7 @@ const Pro = require('./pro');
 const Project = require('./project');
 const Style = require('./style');
 const Tattoo = require('./tattoo');
+const Notif = require('./notif');
 
 Message.belongsTo(Project, {
     as: 'project',
@@ -103,6 +104,24 @@ Pro.belongsToMany(Style, {
     updatedAt: false,
 });
 
+Project.belongsToMany(Notif, {
+    as: 'notifs',
+    through: 'project_has_notif',
+    foreignKey: 'project_id',
+    otherKey: 'notif_id',
+    updatedAt: false,
+
+});
+
+Notif.belongsToMany(Project, {
+    as: 'projects',
+    through: 'project_has_notif',
+    foreignKey: 'notif_id',
+    otherKey: 'project_id',
+    updatedAt: false,
+
+});
+
 module.exports = {
     Appointment,
     Consumer,
@@ -111,4 +130,5 @@ module.exports = {
     Project,
     Style,
     Tattoo,
+    Notif,
 };

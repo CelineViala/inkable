@@ -1,5 +1,4 @@
 const Joi = require('joi');
-const ApiError = require('../../errors/apiError');
 
 module.exports = Joi.object({
     studio_name: Joi.string()
@@ -12,9 +11,9 @@ module.exports = Joi.object({
     password: Joi.string().min(8)
         .required()
         .messages({
-            'string.empty': 'Le nom de passe est obligatoire',
+            'string.empty': 'Le mot de passe est obligatoire',
             'string.min': 'Le mot de passe doit comprendre 8 caractères',
-            'any.required': 'Le nom de passe est obligatoire',
+            'any.required': 'Le mot de passe est obligatoire',
         }),
 
     passwordConfirm: Joi.string()
@@ -26,7 +25,7 @@ module.exports = Joi.object({
         .email()
         .required()
         .messages({
-            'string.email': 'L`email est invalide',
+            'string.email': 'L\'email est invalide',
             'string.empty': 'Le champ email doit être rempli',
             'any.required': 'Le champ email est un champ obligatoire',
         }),
@@ -40,7 +39,9 @@ module.exports = Joi.object({
             'string.base': 'Le champ "instagram" est de type texte',
         }),
     color: Joi.boolean().required(),
-    black_and_white: Joi.boolean().required(),
+    black_and_white: Joi
+        .boolean()
+        .required(),
     role: Joi.string(),
     city: Joi.string().required()
         .messages({

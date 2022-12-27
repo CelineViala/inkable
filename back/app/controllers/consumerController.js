@@ -1,19 +1,28 @@
 const { Consumer } = require('../models');
 const authService = require('../services/checkForms');
+// addConsumer est supprimé car géré par le authController (cf route /signupConsumer)
 
 module.exports = {
-    // addConsumer est supprimé car géré par le authController (cf route /signupConsumer)
+
+    /**
+     * Consumer controller to get one consumer
+     * ExpressMiddleware signature
+     * @param {object} req Express request object
+     * @param {object} res Express response object
+     * @returns One consumer - Route API JSON response
+     */
+
     async getOneConsumer(req, res) {
-        // récupère l'id du consumer
+        // Récupérer l'id du consumer
         const { id } = req.params;
-        // trouve le consumer
+        // Trouver le consumer
         const consumer = await Consumer.findByPk(id, {
             include: {
                 association: 'projects',
-                include: ['appointments', 'pro'],
+                include: ['appointments', 'pro', 'notifs'],
             },
         });
-        // si ok, on renvoi le consumer, sinon une erreur
+        // Envoyer le résultat si ok
         if (consumer) {
             res.json(consumer);
         } else {
@@ -21,12 +30,20 @@ module.exports = {
         }
     },
 
+    /**
+     * Consumer controller to modify one consumer
+     * ExpressMiddleware signature
+     * @param {object} req Express request object
+     * @param {object} res Express response object
+     * @returns Modified consumer -  Route API JSON response
+     */
+
     async modifyConsumer(req, res) {
-        // récupère l'id du consumer
+        // Récupèrer l'id du consumer
         const { id } = req.params;
-        // trouve le consumer
+        // Trouver le consumer
         const consumer = await Consumer.findByPk(id);
-        // si tout va bien on modifie
+        // Modifier le consummer
         if (consumer) {
             if (req.body.email) {
                 consumer.email = req.body.email;
@@ -46,23 +63,30 @@ module.exports = {
             if (req.body.date_of_birth) {
                 consumer.date_of_birth = req.body.date_of_birth;
             }
-            // on sauvegarde en bdd
+            // Sauvegarder en bdd
             const savedConsumer = await consumer.save();
-            // on renvoie le json
+            // Renvoyer le json
             res.json(savedConsumer);
         } else {
             throw new Error(`Aucun consumer à l'id ${id}`, { statusCode: 404 });
         }
     },
 
+    /**
+     * Consumer controller to delete one consumer
+     * ExpressMiddleware signature
+     * @param {object} req Express request object
+     * @param {object} res Express response object
+     * @returns Sucess Message -  Route API JSON response
+     */
+
     async deleteConsumer(req, res) {
-        // récupérer l'id demandé
+        // Récupérer l'id demandé
         const { id } = req.params;
-        // trouver le consumer
+        // Trouver le consumer
         const consumer = await Consumer.findByPk(id);
-        // si on trouve
+        // Supprimer si on trouve et envoyer la réponse
         if (consumer) {
-            // on supprime
             await consumer.destroy();
             res.json('Consumer supprimé');
         } else {

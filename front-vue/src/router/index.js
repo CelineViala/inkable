@@ -14,23 +14,43 @@ import Planning from '@/views/Planning.vue';
 import Page404 from '@/views/Page404.vue';
 import ProjectParticulier from '@/views/ProjectParticulier';
 import Createurs from '@/views/Createurs.vue';
+import axios from 'axios';
 const store = require('../store')
-
+function checkAuthorization(user,id)
+{
+    
+    if(user.role=='anonyme')
+        return false;
+    let isAuthorized=false;
+      
+    for (let i = 0; i <user.projects.length; i++) {
+        const project = user.projects[i];
+      
+        if(project.id===id)
+        {
+            isAuthorized=true;
+            break;
+        }   
+    }
+    return isAuthorized;
+}
 const routes=[
     {
         name:'Home',
         path:'/',
         component: Home,
         meta:{
-            roles:['pro', 'consumer','anonyme']
+            roles:['pro', 'consumer','anonyme'],
+            breadcrumb:'Accueil'
         }
     },
     {
         name:'DashboardPro',
-        path:'/dashbord-pro',
+        path:'/dashboard-pro',
         component: DashboardPro,
         meta:{
-            roles:['pro']
+            roles:['pro'],
+            breadcrumb:'Dashboard'
         }
     },
     {
@@ -38,7 +58,8 @@ const routes=[
         path:'/inscriptionPro',
         component:InscriptionPro,
         meta:{
-            roles:['anonyme']
+            roles:['anonyme'],
+            breadcrumb:'Inscriptions tatoueur'
         }
     },
     {
@@ -46,7 +67,8 @@ const routes=[
         path:'/connexion',
         component:Connexion,
         meta:{
-            roles:['anonyme']
+            roles:['anonyme'],
+            breadcrumb:'Connexion'
         }
     },
     {
@@ -54,47 +76,56 @@ const routes=[
         path:'/inscriptionConsumer',
         component:InscriptionConsumer,
         meta:{
-            roles:['anonyme']
+            roles:['anonyme'],
+            breadcrumb:'Inscriptions'
         }
     },
     {
         name:'FormulaireProject',
-        path:'/formulaire-project/:proId',
+        path:'/profil-pro/:id(\\d+)/formulaire-project',
         component:FormulaireProject,
         meta:{
-            roles:['consumer']
+            roles:['consumer'],
+            breadcrumb:'Formulaire'
         }
     },
     {
         name:'Project',
-        path:'/project/:id',
+        path:'/dashboard-pro/project/:id',
+        alias:['/planning/project/:id','/project/:id','/dashboard-pro/project/:id/planning/project/:id','/dashboard-pro/planning/project/:id'],
         component:Project,
         meta:{
-            roles:['pro']
+            roles:['pro'],
+            breadcrumb:'Projet'
         }
     },
     {
         name:'ProjectParticulier',
-        path:'/project-particulier',
+        path:'/dashboard-particulier/project-particulier/:id',
+        
+
         component:ProjectParticulier,
         meta:{
-            roles:['consumer']
+            roles:['consumer'],
+            breadcrumb:'Projet'
         }
     },
     {
         name:'ProfilPro',
-        path:'/profil-pro/:id',
+        path:'/profil-pro/:id(\\d+)',
         component:ProfilPro,
         meta:{
-            roles:['pro', 'consumer','anonyme']
+            roles:['pro', 'consumer','anonyme'],
+            breadcrumb:'Profil Tatoueur'
         }
     },
     {
         name:'DashboardParticulier',
-        path:'/dashbord-particulier',
+        path:'/dashboard-particulier',
         component:DashboardParticulier,
         meta:{
-            roles:['consumer']
+            roles:['consumer'],
+            breadcrumb:'Dashboard'
         }
     },
     {
@@ -102,7 +133,8 @@ const routes=[
         path:'/compte-particulier',
         component:CompteParticulier,
         meta:{
-            roles:['consumer']
+            roles:['consumer'],
+            breadcrumb:'Compte'
         }
     },
     {
@@ -110,21 +142,32 @@ const routes=[
         path:'/compte-pro',
         component:ComptePro,
         meta:{
-            roles:['pro']
+            roles:['pro'],
+            breadcrumb:'Compte'
         }
     },
-
     {
         name:'Planning',
-        path:'/planning',
+        path:'/dashboard-pro/planning/:projectId(\\d+)?',
+        alias:['/planning','/dashboard-pro/project/:projectId(\\d+)?/planning'],
         component:Planning,
         meta:{
-            roles:['pro']
+            roles:['pro'],
+            breadcrumb:'Planning'
         }
     },
+    // {
+    //     name:'Planning',
+    //     path:'/planning/:projectId?',
+    //     component:Planning,
+    //     meta:{
+    //         roles:['pro'],
+    //         breadcrumb:'Planning'
+    //     }
+    // },
     {
-        name:'404',
-        path:'/page404',
+        name:'NotFound',
+        path:'/:pathMatch(.*)*',
         component:Page404,
         meta:{
             roles:['pro', 'consumer','anonyme']
@@ -136,7 +179,8 @@ const routes=[
         path:'/createurs',
         component:Createurs,
         meta:{
-            roles:['pro', 'consumer','anonyme']
+            roles:['pro', 'consumer','anonyme'],
+            breadcrumb:'Créateurs'
         }
     },
     
@@ -148,24 +192,67 @@ const router=createRouter({
 })
 
 
-router.beforeEach(async (to,from,next)=>{
-    
+router.beforeEach(async (to,_,next)=>{
     try {
-        await store.default.dispatch('getUser');    
+        const token=localStorage.getItem("token");
+        //met le token dans le header 
+        axios.defaults.headers.common['Authorization']=`Bearer ${token}`
+        await store.default.dispatch('getUser');  
+        const user=store.default._state.data.user;
+        let hasNotif=false;
+        user.projects?.forEach(project => {
+            if(project.status==='en attente' && user.role==='pro'){hasNotif=true}
+            project.notifs?.forEach((notif)=> {
+                if(notif.code==='msg_consumer' && user.role==='pro'){hasNotif=true}
+                
+
+                if(notif.code!=='msg_consumer'&& user.role==='consumer') {hasNotif=true;}
+            });
+        })
+        await store.default.dispatch('setNotifDashboard',{active:hasNotif});
+        console.log("notifs",store.default._state.data.hasNotif);
+
+       
+
     } catch (error) {
-        console.log(error);
+        console.log("error");
     }
-
-
+    
+    
+    if(to.name==='Project'||to.name==='ProjectParticulier')
+    {
+        const isAuthorized=checkAuthorization(store.default._state.data.user,Number(to.params.id));
+        if(!isAuthorized)
+        {
+            return next({
+                path:'/404',
+            })
+        }
+    }
+    else if(to.name==='Planning')
+    {
+        let isAuthorized=true;
+        console.log(to.params.projectId)
+        if(to.params.projectId!== '' && to.params.projectId!== undefined)
+            isAuthorized=checkAuthorization(store.default._state.data.user,Number(to.params.projectId));
+        if(!isAuthorized)
+        {
+            return next({
+                path:'/404',
+            })
+        }
+    }
     if(to.meta.roles && !to.meta.roles.includes(store.default._state.data.user.role)){
-        next({
-        path:'/connexion',
-    })   
+        if(to.name==='FormulaireProject'){
+            return next({
+                path:'/connexion',
+            })   
+        }
+        return next({
+            path:'/',
+        })   
     }
-      
-
-
-    else next();
+    return next();
    
 })
 

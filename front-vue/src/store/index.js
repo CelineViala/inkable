@@ -1,11 +1,7 @@
-import {createStore, createstore} from 'vuex';
+import {createStore} from 'vuex';
 import axios from 'axios';
-import {CloudinaryImage} from '@cloudinary/url-gen';
 import { Cloudinary } from "@cloudinary/url-gen";
-import { thumbnail,scale } from "@cloudinary/url-gen/actions/resize";
-import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
-import {focusOn} from "@cloudinary/url-gen/qualifiers/gravity";
-import {FocusOn} from "@cloudinary/url-gen/qualifiers/focusOn";
+import { fill} from "@cloudinary/url-gen/actions/resize";
 const router=require('../router')
 export default createStore({
     state:{
@@ -14,6 +10,7 @@ export default createStore({
             role:'anonyme'
         },
         styles:[],
+        hasNotif:false,
         cities:[],
         requestObj:{},
         url:null
@@ -43,9 +40,13 @@ export default createStore({
         },
         setAnonymous(state){
             state.user.role="anonyme";
+            state.dataToken=null;
         },
         transformImg(state,url){
             state.url=url;
+        },
+        setNotifDashboard(state,hasNotif){
+            state.hasNotif=hasNotif;
         }
     },
     actions:{
@@ -53,7 +54,7 @@ export default createStore({
             commit('setAnonymous')
         },
         async check({commit}){
-            const response=await axios.get('http://localhost:3000/checkRole');
+            const response=await axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}checkRole`);
             commit('check',response.data)        
         },
         async getUser({dispatch,commit}){
@@ -61,9 +62,9 @@ export default createStore({
                 await dispatch('check');
                 let response;
                 if(this.state.dataToken.role==='pro')
-                    response=await axios.get(`http://localhost:3000/api/pro/${this.state.dataToken.id}`);
+                    response=await axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/pro/${this.state.dataToken.id}`);
                 else if(this.state.dataToken.role==='consumer')
-                    response=await axios.get(`http://localhost:3000/api/consumer/${this.state.dataToken.id}`);
+                    response=await axios.get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/consumer/${this.state.dataToken.id}`);
                 
                 commit('getUser',response.data)
             } catch (error) {
@@ -75,31 +76,27 @@ export default createStore({
             
             //récupération des styles a afficher dans les balises select
             axios
-            .get('http://localhost:3000/api/styles')
-            .then((response)=>{ 
-                commit('getAllStyles',response.data.map((item)=> item.name).sort());
-            })
-            .catch(err=>{
+                .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/styles`)
+                .then((response)=>{ 
+                    commit('getAllStyles',response.data.map((item)=> item.name).sort());
+                })
+                .catch(err=>{
                 
-            })
+                })
         },
         async transformImg({commit},img){
-            console.log("!!!!!!!!!!!!!!!!!!!!",img)
             const cld = new Cloudinary({
                 cloud: {
-                  cloudName: 'dmoacy4yl',
-                  apiKey:'488459514946562',
-                  apiSecret:'1Yb7F1TRgKOX0hIUdgrA4JXlmLM'
+                    cloudName: process.env.VUE_APP_ENV_CLOUDINARY_CLOUDNAME,
+                    apiKey:process.env.VUE_APP_ENV_CLOUDINARY_APIKEY,
+                    apiSecret:process.env.VUE_APP_ENV_CLOUDINARY_APISECRET
                 }
-              }); 
+            }); 
+            
             const myImage = cld.image(img.public_id);
             
             myImage
-                // .resize(thumbnail().width(150).height(200).gravity(focusOn(FocusOn.face())))  // Crop the image, focusing on the face.
-                // .roundCorners(byRadius(20))
-                .resize(scale().height(400).width(300))
-              
-            
+                .resize(fill().width(300).height(300));
             const url=myImage.toURL();
             await commit('transformImg',url);
 
@@ -107,27 +104,27 @@ export default createStore({
         getAllCities({commit}){
             //récupération des styles a afficher dans les balises select
             axios
-            .get('http://localhost:3000/api/cities')
-            .then((response)=>{ 
-                commit('getAllCities',this.cities=response.data[0].map((item)=> item.city).sort());
+                .get(`${process.env.VUE_APP_ENV_ENDPOINT_BACK}api/cities`)
+                .then((response)=>{ 
+                    commit('getAllCities',this.cities=response.data[0].map((item)=> item.city).sort());
 
-            })
-            .catch(err=>{
+                })
+                .catch(err=>{
 
-            })
+                })
         },
         createRequestObjForCloudinary({commit},event){   
             let reader=new FileReader();
             let clientFile;
             reader.addEventListener("load", ()=>{
-            clientFile=reader.result;
-            console.log(clientFile);
-            let requestObj={
-                url:'https://api.cloudinary.com/v1_1/dmoacy4yl/image/upload',
-                method:"POST",
-                data:{upload_preset:"preset",file:clientFile}
-            }
-            commit('createRequestObjForCloudinary',requestObj); 
+                clientFile=reader.result;
+                console.log(clientFile);
+                let requestObj={
+                    url:process.env.VUE_APP_ENV_CLOUDINARY_UPLOAD_URL,
+                    method:"POST",
+                    data:{upload_preset:process.env.VUE_APP_ENV_CLOUDINARY_PRESET,file:clientFile}
+                }
+                commit('createRequestObjForCloudinary',requestObj); 
             })
 
             reader.readAsDataURL(event.target.files[0]);
@@ -146,26 +143,24 @@ export default createStore({
             //mise à jour de user.role à anonyme
             await dispatch('deleteUser');
             await dispatch('setAnonymous');
-            console.log(router)
             router.default.push('/'); 
-
+        },
+        setNotifDashboard({commit},data){
+            commit('setNotifDashboard',data.active);
         },
         handleUploadToCloudinary({commit}){
             let instance = axios.create();
             delete instance.defaults.headers.common['Authorization'];
             console.log(this.state.requestObj)
             
-            let url=instance(this.state.requestObj)
+            let img=instance(this.state.requestObj)
                 .then((response) => {
-                    url=response.data.url;
-                    return url
-                    
-                    
+                    return response.data; 
                 })
                 .catch(err=>{
                     return err;
                 })
-            return url
+            return img;
             
         }
 
